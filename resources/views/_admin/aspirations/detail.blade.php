@@ -152,65 +152,84 @@
                 </div>
             </div>
 
-            <div class="space-y-4">
-                <div class="bg-white overflow-hidden shadow-lg rounded-2xl dark:bg-neutral-800 border-2 border-gray-100 dark:border-neutral-700">
-                    <div class="px-6 py-4 border-b border-gray-200 dark:border-neutral-700">
-                        <h2 class="text-lg font-semibold text-gray-800 dark:text-neutral-200">
-                            Aksi Cepat
-                        </h2>
-                    </div>
-
-                    <div class="p-6 space-y-3">
-                        <button type="button"
-                            onclick="window.location.href = '{{ route('admin.aspirations.index') }}'; setTimeout(() => { document.querySelector(`button[onclick*='openModal({{ $data->id }})']`)?.click(); }, 100);"
-                            class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-800 transition-all duration-200">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                            </svg>
-                            Proses Pengaduan
-                        </button>
-
-                        <a navigate href="{{ route('admin.aspirations.index') }}"
-                            class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 bg-white text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 transition-all">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                            </svg>
-                            Kembali ke Daftar
-                        </a>
-                    </div>
-                </div>
-            </div>
+           
         </div>
     @endif
 
     {{-- Image Zoom Modal --}}
-    <script>
-        function zoomImage(event) {
-            const img = event.currentTarget.querySelector('img');
-            if (!img) return;
+   <script>
+function zoomImage(event) {
+    const img = event.currentTarget.querySelector('img');
+    if (!img) return;
 
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm';
-            modal.onclick = function(e) {
-                if (e.target === this) this.remove();
-            };
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
 
-            const imgContainer = document.createElement('div');
-            imgContainer.className = 'relative max-w-7xl';
+    const modal = document.createElement('div');
+    modal.className =
+        'fixed inset-0 z-[100] bg-black/90 flex items-center justify-center overflow-hidden backdrop-blur-sm';
+    modal.tabIndex = 0;
 
-            const zoomedImg = document.createElement('img');
-            zoomedImg.src = img.src;
-            zoomedImg.className = 'max-w-full max-h-[90vh] rounded-lg shadow-2xl';
+    const zoomedImg = document.createElement('img');
+    zoomedImg.src = img.src;
+    zoomedImg.className =
+        'max-w-none max-h-none cursor-grab select-none';
+    zoomedImg.style.transform = 'translate(0px, 0px) scale(1)';
 
-            const closeBtn = document.createElement('button');
-            closeBtn.innerHTML = '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
-            closeBtn.className = 'absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors bg-gray-800/50 hover:bg-gray-800/70 rounded-lg p-2';
-            closeBtn.onclick = () => modal.remove();
+    // klik background = close
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
 
-            imgContainer.appendChild(zoomedImg);
-            imgContainer.appendChild(closeBtn);
-            modal.appendChild(imgContainer);
-            document.body.appendChild(modal);
+    // ESC = close
+    document.addEventListener('keydown', function esc(e) {
+        if (e.key === 'Escape') {
+            modal.remove();
+            document.removeEventListener('keydown', esc);
         }
-    </script>
+    });
+
+    // zoom pakai scroll
+    modal.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.1 : -0.1;
+        scale = Math.min(Math.max(0.5, scale + delta), 5);
+        updateTransform();
+    }, { passive: false });
+
+    // drag
+    zoomedImg.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+        zoomedImg.classList.add('cursor-grabbing');
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        updateTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        zoomedImg.classList.remove('cursor-grabbing');
+    });
+
+    function updateTransform() {
+        zoomedImg.style.transform =
+            `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    }
+
+    modal.appendChild(zoomedImg);
+    document.body.appendChild(modal);
+    modal.focus();
+}
+</script>
+
 @endsection

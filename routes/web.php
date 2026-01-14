@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\Admin\AspirationController;
 use App\Http\Controllers\Admin\ClassroomController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FacilityCategoryController;
+use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TaskCategoryController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Student\ComplaintController;
 use Illuminate\Support\Facades\Route;
@@ -21,10 +21,8 @@ Route::post('/login', [AuthController::class, 'doLogin'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Admin Users Routes
-Route::middleware('auth', 'role:1')->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('_admin.dashboard');
-    })->name('dashboard');
+Route::middleware(['auth', 'role:1'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
@@ -88,7 +86,6 @@ Route::middleware('auth', 'role:1')->prefix('admin')->name('admin.')->group(func
         Route::get('/add', [AspirationController::class, 'add'])->name('add');
         Route::post('/create', [AspirationController::class, 'doCreate'])->name('do_create');
         Route::get('/detail/{id}', [AspirationController::class, 'detail'])->name('detail');
-        Route::get('/update/{id}', [AspirationController::class, 'update'])->name('update');
         Route::post('/update/{id}', [AspirationController::class, 'doUpdate'])->name('do_update');
         Route::delete('/delete/{id}', [AspirationController::class, 'delete'])->name('delete');
     });
@@ -98,13 +95,12 @@ Route::middleware('auth', 'role:1')->prefix('admin')->name('admin.')->group(func
     });
 });
 
-
-Route::middleware('auth', 'role:2')->prefix('student')->name('student.')->group(function () {
+Route::middleware(['auth', 'role:2'])->prefix('student')->name('student.')->group(function () {
     Route::get('/dashboard', function () {
         return view('_student.dashboard');
     })->name('dashboard');
 
-   Route::prefix('complaints')->name('complaints.')->group(function () {
+    Route::prefix('complaints')->name('complaints.')->group(function () {
         Route::get('/', [ComplaintController::class, 'index'])->name('index');
         Route::get('/add', [ComplaintController::class, 'add'])->name('add');
         Route::post('/create', [ComplaintController::class, 'doCreate'])->name('do_create');

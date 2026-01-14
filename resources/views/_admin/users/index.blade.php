@@ -41,7 +41,7 @@
                                 <div class="relative">
                                     <input type="text" name="keywords" id="keywords" value="{{ $keywords ?? '' }}"
                                         class="py-1 px-3 block w-full border-gray-200 rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 
-                                        placeholder-neutral-300 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                            placeholder-neutral-300 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                         placeholder="Nama atau Email">
                                 </div>
                             </div>
@@ -108,8 +108,7 @@
                                                 <div class="flex items-center gap-x-3">
                                                     <span
                                                         class="inline-flex items-center justify-center size-9.5 rounded-full bg-white border border-gray-300 dark:bg-neutral-800 dark:border-neutral-700">
-                                                        <span
-                                                            class="font-medium text-sm text-gray-800 dark:text-neutral-200">
+                                                        <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
                                                             {{ strtoupper(substr($d->name, 0, 1)) }}
                                                         </span>
                                                     </span>
@@ -124,8 +123,7 @@
                                         </td>
                                         <td class="h-px w-72 whitespace-nowrap">
                                             <div class="px-6 py-3">
-                                                <span
-                                                    class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
+                                                <span class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
                                                     {{ UserConst::getAccessTypes()[$d->access_type] ?? '-' }}
                                                 </span>
                                             </div>
@@ -176,57 +174,38 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div id="delete-modal" class="hs-overlay hidden size-full fixed top-0 start-0 z-80 overflow-x-hidden overflow-y-auto"
-        role="dialog" tabindex="-1" aria-labelledby="delete-modal-label">
-        <div
-            class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
-            <div
-                class="relative flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
-                <div class="absolute top-2 end-2">
-                    <button type="button"
-                        class="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
-                        aria-label="Close" data-hs-overlay="#delete-modal">
-                        <span class="sr-only">Close</span>
-                        @include('_admin._layout.icons.close_modal')
-                    </button>
-                </div>
-
-                <div class="p-4 sm:p-10 text-center overflow-y-auto">
-                    <!-- Icon -->
-                    <span
-                        class="mb-4 inline-flex justify-center items-center size-14 rounded-full border-4 border-red-50 bg-red-100 text-red-500 dark:bg-red-700 dark:border-red-600 dark:text-red-100">
-                        @include('_admin._layout.icons.warning_modal')
-                    </span>
-                    <!-- End Icon -->
-
-                    <h3 id="delete-modal-label" class="mb-2 text-xl font-bold text-gray-800 dark:text-neutral-200">
-                        Hapus Pengguna
-                    </h3>
-                    <p class="text-gray-500 dark:text-neutral-500">
-                        Apakah Anda yakin ingin menghapus <span id="delete-user-name"
-                            class="font-semibold text-gray-800 dark:text-neutral-200"></span>?
-                        <br>Tindakan ini tidak dapat dibatalkan.
-                    </p>
-
-                    <div class="mt-6 flex justify-center gap-x-4">
-                        <button type="button"
-                            class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
-                            data-hs-overlay="#delete-modal">
-                            Batal
-                        </button>
-                        <form id="delete-form" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
-                                Ya, Hapus
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <x-admin.modal id="delete-modal" title="Hapus Pengguna">
+        <div class="text-center">
+            <span
+                class="mb-4 inline-flex justify-center items-center size-14 rounded-full border-4 border-red-50 bg-red-100 text-red-500 dark:bg-red-700 dark:border-red-600 dark:text-red-100">
+                @include('_admin._layout.icons.warning_modal')
+            </span>
+            <h3 class="mb-2 text-xl font-bold text-gray-800 dark:text-neutral-200">
+                Hapus Pengguna
+            </h3>
+            <p class="text-gray-500 dark:text-neutral-500">
+                Apakah Anda yakin ingin menghapus <span id="delete-user-name"
+                    class="font-semibold text-gray-800 dark:text-neutral-200"></span>?
+                <br>Tindakan ini tidak dapat dibatalkan.
+            </p>
         </div>
-    </div>
+
+        <x-slot name="footer">
+            <button type="button"
+                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                data-hs-overlay="#delete-modal">
+                Batal
+            </button>
+            <form id="delete-form" method="POST" class="inline" navigate-form>
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
+                    Ya, Hapus
+                </button>
+            </form>
+        </x-slot>
+    </x-admin.modal>
 
     <script>
         function setDeleteData(id, name) {

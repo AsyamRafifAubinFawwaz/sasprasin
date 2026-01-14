@@ -20,3 +20,18 @@
 .animate-toast-pop {
     animation: toast-pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
+
+/* Hide scrollbar but maintain functionality */
+html,
+body {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}

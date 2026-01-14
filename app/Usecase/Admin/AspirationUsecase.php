@@ -3,9 +3,8 @@
 namespace App\Usecase\Admin;
 
 use App\Constants\DatabaseConst;
-use App\Http\Presenter\Response;
 use App\Constants\ResponseConst;
-use Dflydev\DotAccessData\Data;
+use App\Http\Presenter\Response;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,39 +35,42 @@ class AspirationUsecase
                 )
                 ->whereNull('complaints.deleted_at');
 
-            if (!empty($filter['status'])) {
-                $query->where('aspirations.status', $filter['status']);
+            if (! empty($filter['status'])) {
+                if ($filter['status'] == 1) {
+                    $query->where(function ($q) {
+                        $q->where('aspirations.status', 1)
+                            ->orWhereNull('aspirations.status');
+                    });
+                } else {
+                    $query->where('aspirations.status', $filter['status']);
+                }
             }
 
-            if (!empty($filter['priority'])) {
+            if (! empty($filter['priority'])) {
                 $query->where('facility_categories.priority', $filter['priority']);
             }
 
-            if (!empty($filter['search'])) {
+            if (! empty($filter['search'])) {
                 $query->where(function ($q) use ($filter) {
-                    $q->where('users.name', 'like', '%' . $filter['search'] . '%')
-                        ->orWhere('complaints.location', 'like', '%' . $filter['search'] . '%')
-                        ->orWhere('complaints.description', 'like', '%' . $filter['search'] . '%');
+                    $q->where('users.name', 'like', '%'.$filter['search'].'%')
+                        ->orWhere('complaints.location', 'like', '%'.$filter['search'].'%')
+                        ->orWhere('complaints.description', 'like', '%'.$filter['search'].'%');
                 });
             }
 
-            if (!empty($filter['date_from']) && !empty($filter['date_to'])) {
-                $query->whereBetween('complaints.created_at', [
-                    $filter['date_from'] . ' 00:00:00',
-                    $filter['date_to'] . ' 23:59:59',
-                ]);
+            if (! empty($filter['date'])) {
+                $query->whereDate('complaints.created_at', $filter['date']);
             }
 
-
             return Response::buildSuccess([
-                'list' => $query->orderByDesc('complaints.created_at')->paginate(20)
+                'list' => $query->orderByDesc('complaints.created_at')->paginate(20),
             ]);
         } catch (Exception $e) {
             Log::error($e->getMessage());
+
             return Response::buildErrorService($e->getMessage());
         }
     }
-
 
     public function getById(int $id): array
     {
@@ -94,19 +96,19 @@ class AspirationUsecase
                 ->whereNull('complaints.deleted_at')
                 ->first();
 
-            if (!$data) {
+            if (! $data) {
                 return Response::buildErrorService(ResponseConst::ERROR_MESSAGE_NOT_FOUND);
             }
 
             return Response::buildSuccess([
-                'data' => $data
+                'data' => $data,
             ]);
         } catch (Exception $e) {
-            Log::error('AspirationUsecase::getById - ' . $e->getMessage());
+            Log::error('AspirationUsecase::getById - '.$e->getMessage());
+
             return Response::buildErrorService($e->getMessage());
         }
     }
-
 
     public function updateAspiration(Request $request, int $complaintId): array
     {
@@ -132,6 +134,7 @@ class AspirationUsecase
             );
         } catch (Exception $e) {
             Log::error($e->getMessage());
+
             return Response::buildErrorService($e->getMessage());
         }
     }

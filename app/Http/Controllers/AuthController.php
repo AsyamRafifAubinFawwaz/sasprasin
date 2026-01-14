@@ -13,6 +13,7 @@ class AuthController extends Controller
         if (Auth::check()) {
             return $this->redirectByRole(Auth::user());
         }
+
         return view('_admin.auth.login');
     }
 
@@ -33,13 +34,14 @@ class AuthController extends Controller
             'login_error' => 'Email atau Password tidak sesuai, periksa kembali',
         ])->onlyInput('email');
     }
+
     private function redirectByRole($user)
     {
         switch ($user->access_type) {
             case UserConst::ADMIN:
                 return redirect()->route('admin.dashboard');
             case UserConst::STUDENT:
-                return redirect()->intended(route('student.dashboard'));
+                return redirect()->route('student.dashboard');
 
             default:
                 return redirect()->intended(route('admin.dashboard'));

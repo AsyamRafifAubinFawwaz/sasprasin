@@ -76,7 +76,7 @@
                     @if ($data->updated_at && $data->updated_at !== $data->created_at)
                         <div>
                             <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Terakhir Diperbarui</label>
-                            <p class="text-gray-600 dark:text-neutral-400">{{ $data->updated_at->format('d/m/Y H:i') }}</p>
+                            <p class="text-gray-600 dark:text-neutral-400">{{ \Carbon\Carbon::parse($data->updated_at)->format('d/m/Y H:i') }}</p>
                         </div>
                     @endif
 

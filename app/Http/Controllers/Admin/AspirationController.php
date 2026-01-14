@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Constants\ResponseConst;
 use App\Http\Controllers\Controller;
 use App\Usecase\Admin\AspirationUsecase;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class AspirationController extends Controller
 {
@@ -17,8 +18,7 @@ class AspirationController extends Controller
 
     public function __construct(
         protected AspirationUsecase $usecase
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): View
     {
@@ -26,8 +26,7 @@ class AspirationController extends Controller
             'status' => $request->get('status'),
             'priority' => $request->get('priority'),
             'search' => $request->get('search'),
-            'date_from' => $request->get('date_from'),
-            'date_to' => $request->get('date_to'),
+            'date' => $request->get('date'),
         ]);
 
         return view('_admin.aspirations.index', [
@@ -46,15 +45,17 @@ class AspirationController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $complaintId): RedirectResponse
+    public function doUpdate(Request $request, int $complaintId): RedirectResponse
     {
         $process = $this->usecase->updateAspiration($request, $complaintId);
+        if ($process['success']) {
+            return redirect()
+                ->route('admin.aspirations.index')
+                ->with('success', ResponseConst::SUCCESS_MESSAGE_UPDATED);
+        }
 
         return redirect()
-            ->back()
-            ->with(
-                $process['success'] ? 'success' : 'error',
-                $process['message']
-            );
+            ->route('admin.aspirations.index')
+            ->with('error', $process['message'] ?? ResponseConst::DEFAULT_ERROR_MESSAGE);
     }
 }

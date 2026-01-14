@@ -163,14 +163,15 @@ $(document).ready(function () {
 
     function cleanupModalBackdrops() {
         // backdrop Tailwind / custom
-        document.querySelectorAll(
-            '.delete-modal-backdrop, .modal-backdrop, .hs-overlay-backdrop'
-        ).forEach(el => el.remove());
+        document
+            .querySelectorAll(
+                ".delete-modal-backdrop, .modal-backdrop, .hs-overlay-backdrop"
+            )
+            .forEach((el) => el.remove());
 
         // pastikan body normal lagi
-        document.body.classList.remove('overflow-hidden');
+        document.body.classList.remove("overflow-hidden");
     }
-
 
     // Intercept clicks on elements with 'navigate' attribute
     $("body").on("click", "a[navigate]", function (e) {
@@ -204,6 +205,7 @@ $(document).ready(function () {
         $.ajax({
             url: url,
             success: function (data) {
+                cleanupModalBackdrops();
                 if (!handleSpaResponse(data, url)) {
                     window.location.href = url;
                 }
@@ -238,6 +240,7 @@ $(document).ready(function () {
         $.ajax({
             url: url,
             success: function (data) {
+                cleanupModalBackdrops();
                 // Use DOMParser for reliable parsing
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(data, "text/html");
@@ -300,7 +303,7 @@ $(document).ready(function () {
                         inlineScripts.forEach(function (code) {
                             try {
                                 eval(code);
-                            } catch (e) { }
+                            } catch (e) {}
                         });
                         window.dispatchEvent(new Event("load"));
                     });
@@ -348,8 +351,8 @@ $(document).ready(function () {
                 var message = messages[0];
                 $input.after(
                     '<p class="text-sm text-red-600 mt-1 validation-error">' +
-                    message +
-                    "</p>"
+                        message +
+                        "</p>"
                 );
             }
         });
@@ -442,8 +445,8 @@ $(document).ready(function () {
                     var toastMessage = apiMessage
                         ? apiMessage.trim()
                         : method.toUpperCase() === "GET"
-                            ? ""
-                            : "Form submitted successfully";
+                        ? ""
+                        : "Form submitted successfully";
 
                     // Show Toast Notification
                     if (window.Toastify && toastMessage) {
@@ -497,9 +500,9 @@ $(document).ready(function () {
                         } else {
                             alert(
                                 "An error occurred: " +
-                                xhr.status +
-                                " " +
-                                xhr.statusText
+                                    xhr.status +
+                                    " " +
+                                    xhr.statusText
                             );
                         }
                     }

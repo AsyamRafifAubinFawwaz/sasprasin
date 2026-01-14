@@ -1,4 +1,4 @@
-@extends('_admin._layout.app')
+@extends('_student._layout.app')
 
 @section('title', 'Edit ' . $page['title'])
 
@@ -23,9 +23,8 @@
                 </div>
             </div>
 
-            <form id="update-form" class="p-6" navigate-form
-                action="{{ route('student.complaints.do_update', $data->id) }}" method="POST"
-                enctype="multipart/form-data">
+            <form id="update-form" class="p-6" navigate-form action="{{ route('student.complaints.do_update', $data->id) }}"
+                method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="space-y-4">
@@ -36,16 +35,14 @@
 
                         <select name="facility_category_id" id="facility_category_id"
                             class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm
-                                focus:border-blue-500 focus:ring-blue-500
-                                dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400
-                                @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                            required>
+                                    focus:border-blue-500 focus:ring-blue-500
+                                    dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400
+                                    @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" required>
 
                             <option value="">Pilih Kategori</option>
 
                             @foreach ($facility as $category)
-                                <option value="{{ $category->id }}"
-                                    {{ old('facility_category_id', $data->facility_category_id) == $category->id ? 'selected' : '' }}>
+                                <option value="{{ $category->id }}" {{ old('facility_category_id', $data->facility_category_id) == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
                                 </option>
                             @endforeach
@@ -74,7 +71,8 @@
                                 class="text-red-500">*</span></label>
                         <textarea id="description" name="description" rows="4"
                             class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('description') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                            placeholder="Jelaskan keluhan Anda" required>{{ old('description', $data->description) }}</textarea>
+                            placeholder="Jelaskan keluhan Anda"
+                            required>{{ old('description', $data->description) }}</textarea>
                         @error('description')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                         @enderror
@@ -92,7 +90,8 @@
                                     <button type="button" id="btn-remove-current"
                                         class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
                                         </svg>
                                     </button>
                                 </div>
@@ -104,16 +103,21 @@
                         <div class="flex gap-2 mb-3">
                             <button type="button" id="btn-upload"
                                 class="tab-btn active py-2 px-4 text-sm font-medium rounded-lg border transition-all">
-                                <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                                <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                 </svg>
                                 Upload File
                             </button>
                             <button type="button" id="btn-camera"
                                 class="tab-btn py-2 px-4 text-sm font-medium rounded-lg border transition-all">
-                                <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                                 Ambil Foto
                             </button>
@@ -123,11 +127,14 @@
                         <div id="upload-section" class="upload-area">
                             <div id="drop-zone"
                                 class="border-2 border-dashed border-gray-300 dark:border-neutral-600 rounded-lg p-8 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer">
-                                <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-neutral-500" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                 </svg>
                                 <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-                                    <span class="font-semibold text-blue-600 dark:text-blue-400">Klik untuk upload</span> atau drag & drop
+                                    <span class="font-semibold text-blue-600 dark:text-blue-400">Klik untuk upload</span>
+                                    atau drag & drop
                                 </p>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-neutral-500">PNG, JPG, GIF up to 2MB</p>
                             </div>
@@ -137,23 +144,26 @@
                         {{-- Camera Section --}}
                         <div id="camera-section" class="hidden">
                             <div class="relative">
-                                <video id="camera-preview" autoplay playsinline
-                                    class="w-full rounded-lg bg-black" style="max-height: 400px;"></video>
+                                <video id="camera-preview" autoplay playsinline class="w-full rounded-lg bg-black"
+                                    style="max-height: 400px;"></video>
                                 <canvas id="camera-canvas" class="hidden"></canvas>
 
                                 <div class="flex justify-center gap-3 mt-3">
                                     <button type="button" id="btn-capture"
                                         class="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
-                                        <svg class="inline-block w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
-                                            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                                        <svg class="inline-block w-5 h-5 mr-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <circle cx="12" cy="12" r="10" stroke-width="2" />
+                                            <circle cx="12" cy="12" r="3" fill="currentColor" />
                                         </svg>
                                         Ambil Foto
                                     </button>
                                     <button type="button" id="btn-switch-camera"
                                         class="py-2 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 font-medium">
-                                        <svg class="inline-block w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                        <svg class="inline-block w-5 h-5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                         </svg>
                                     </button>
                                 </div>
@@ -167,11 +177,13 @@
                                 <button type="button" id="btn-remove"
                                     class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
-                            <p class="text-xs text-gray-500 mt-2 dark:text-neutral-400">Gambar baru (akan mengganti gambar lama)</p>
+                            <p class="text-xs text-gray-500 mt-2 dark:text-neutral-400">Gambar baru (akan mengganti gambar
+                                lama)</p>
                         </div>
 
                         <p class="text-xs text-gray-500 mt-2 dark:text-neutral-400">
@@ -213,25 +225,30 @@
             color: #6b7280;
             background: white;
         }
+
         .dark .tab-btn {
             border-color: #404040;
             color: #a3a3a3;
             background: #262626;
         }
+
         .tab-btn.active {
             border-color: #3b82f6;
             color: #3b82f6;
             background: #eff6ff;
         }
+
         .dark .tab-btn.active {
             border-color: #3b82f6;
             color: #60a5fa;
             background: #1e3a8a;
         }
+
         #drop-zone.drag-over {
             border-color: #3b82f6;
             background: #eff6ff;
         }
+
         .dark #drop-zone.drag-over {
             border-color: #3b82f6;
             background: #1e3a8a;
