@@ -16,20 +16,15 @@
                 <a href="#beranda">Beranda</a>
             </li>
             <li class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 transition">
-                <a href="#fitur">Fitur</a>
+                <a href="#fitur">Keunggulan</a>
             </li>
             <li class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 transition">
-                <a href="#materi">Materi</a>
+                <a href="#materi">Cara Kerja Aplikasi</a>
             </li>
             <li class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 transition">
-                <a href="#testimoni">Testimoni</a>
+                <a href="#testimoni">Fitur</a>
             </li>
-            <li class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 transition">
-                <a href="#galeri">Galeri</a>
-            </li>
-            <li class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 transition">
-                <a href="#tentang">Tentang</a>
-            </li>
+         
         </ul>
 
         <!-- BUTTON DESKTOP -->
@@ -57,17 +52,16 @@
     flex flex-col mt-20 xl:hidden transition duration-500 translate-x-[2000px]">
 
     <li class="list-none text-center py-3"><a href="#beranda">Beranda</a></li>
+    <li class="list-none text-center py-3"><a href="#materi">Keunggulan</a></li>
+    <li class="list-none text-center py-3"><a href="#testimoni">Cara Kerja Aplikasi</a></li>
     <li class="list-none text-center py-3"><a href="#fitur">Fitur</a></li>
-    <li class="list-none text-center py-3"><a href="#materi">Materi</a></li>
-    <li class="list-none text-center py-3"><a href="#testimoni">Testimoni</a></li>
-    <li class="list-none text-center py-3"><a href="#galeri">Galeri</a></li>
-    <li class="list-none text-center py-3"><a href="#tentang">Tentang</a></li>
+
 
     <li class="flex justify-center py-3">
         <a href="/login"
             class="flex items-center gap-x-3 px-5 py-2 rounded-full text-sm min-[768px]:text-[15px]
-            font-semibold text-gray-100 bg-blue-500">
-            📚 Masuk & Belajar
+            font-semibold text-gray-100 bg-[#ff7d26]">
+            @include('_landing._layout.icons.log-in') Masuk 
         </a>
     </li>
 </div>
