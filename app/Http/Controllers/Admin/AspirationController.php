@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Constants\ResponseConst;
 use App\Http\Controllers\Controller;
 use App\Usecase\Admin\AspirationUsecase;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,7 +19,8 @@ class AspirationController extends Controller
 
     public function __construct(
         protected AspirationUsecase $usecase
-    ) {}
+    ) {
+    }
 
     public function index(Request $request): View
     {
@@ -43,6 +45,30 @@ class AspirationController extends Controller
             'page' => $this->page,
             'data' => $data['data']['data'] ?? null,
         ]);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $data = $this->usecase->getAllForPdf([
+            'status' => $request->get('status'),
+            'priority' => $request->get('priority'),
+            'search' => $request->get('search'),
+            'date' => $request->get('date'),
+        ]);
+
+        $pdf = Pdf::loadView('_admin.aspirations.pdf', [
+            'data' => $data['data']['list'] ?? [],
+            'filters' => [
+                'status' => $request->get('status'),
+                'priority' => $request->get('priority'),
+                'search' => $request->get('search'),
+                'date' => $request->get('date'),
+            ],
+        ]);
+
+        $pdf->setPaper('a4', 'landscape');
+
+        return $pdf->download('laporan-aspirasi-' . date('Y-m-d') . '.pdf');
     }
 
     public function doUpdate(Request $request, int $complaintId): RedirectResponse

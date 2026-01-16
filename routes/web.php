@@ -85,6 +85,7 @@ Route::middleware(['auth', 'role:1'])->prefix('admin')->name('admin.')->group(fu
 
     Route::prefix('aspirations')->name('aspirations.')->group(function () {
         Route::get('/', [AspirationController::class, 'index'])->name('index');
+        Route::get('/export-pdf', [AspirationController::class, 'exportPdf'])->name('export_pdf');
         Route::get('/add', [AspirationController::class, 'add'])->name('add');
         Route::post('/create', [AspirationController::class, 'doCreate'])->name('do_create');
         Route::get('/detail/{id}', [AspirationController::class, 'detail'])->name('detail');

@@ -35,7 +35,7 @@ class AspirationUsecase
                 )
                 ->whereNull('complaints.deleted_at');
 
-            if (! empty($filter['status'])) {
+            if (!empty($filter['status'])) {
                 if ($filter['status'] == 1) {
                     $query->where(function ($q) {
                         $q->where('aspirations.status', 1)
@@ -46,19 +46,19 @@ class AspirationUsecase
                 }
             }
 
-            if (! empty($filter['priority'])) {
+            if (!empty($filter['priority'])) {
                 $query->where('facility_categories.priority', $filter['priority']);
             }
 
-            if (! empty($filter['search'])) {
+            if (!empty($filter['search'])) {
                 $query->where(function ($q) use ($filter) {
-                    $q->where('users.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('complaints.location', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('complaints.description', 'like', '%'.$filter['search'].'%');
+                    $q->where('users.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('complaints.location', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('complaints.description', 'like', '%' . $filter['search'] . '%');
                 });
             }
 
-            if (! empty($filter['date'])) {
+            if (!empty($filter['date'])) {
                 $query->whereDate('complaints.created_at', $filter['date']);
             }
 
@@ -96,7 +96,7 @@ class AspirationUsecase
                 ->whereNull('complaints.deleted_at')
                 ->first();
 
-            if (! $data) {
+            if (!$data) {
                 return Response::buildErrorService(ResponseConst::ERROR_MESSAGE_NOT_FOUND);
             }
 
@@ -104,7 +104,7 @@ class AspirationUsecase
                 'data' => $data,
             ]);
         } catch (Exception $e) {
-            Log::error('AspirationUsecase::getById - '.$e->getMessage());
+            Log::error('AspirationUsecase::getById - ' . $e->getMessage());
 
             return Response::buildErrorService($e->getMessage());
         }
@@ -132,6 +132,65 @@ class AspirationUsecase
             return Response::buildSuccess(
                 message: ResponseConst::SUCCESS_MESSAGE_UPDATED
             );
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+
+            return Response::buildErrorService($e->getMessage());
+        }
+    }
+
+    public function getAllForPdf(array $filter = []): array
+    {
+        try {
+            $query = DB::table(DatabaseConst::COMPLAINT)
+                ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
+                ->leftJoin('users', 'complaints.student_id', '=', 'users.id')
+                ->leftJoin('students', 'users.id', '=', 'students.user_id')
+                ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
+                ->select(
+                    'complaints.id',
+                    'users.name as student_name',
+                    'complaints.location',
+                    'complaints.description',
+                    'complaints.image',
+                    'complaints.created_at',
+                    'facility_categories.name as category_name',
+                    'facility_categories.priority',
+                    'aspirations.status',
+                    'aspirations.feedback'
+                )
+                ->whereNull('complaints.deleted_at');
+
+            if (!empty($filter['status'])) {
+                if ($filter['status'] == 1) {
+                    $query->where(function ($q) {
+                        $q->where('aspirations.status', 1)
+                            ->orWhereNull('aspirations.status');
+                    });
+                } else {
+                    $query->where('aspirations.status', $filter['status']);
+                }
+            }
+
+            if (!empty($filter['priority'])) {
+                $query->where('facility_categories.priority', $filter['priority']);
+            }
+
+            if (!empty($filter['search'])) {
+                $query->where(function ($q) use ($filter) {
+                    $q->where('users.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('complaints.location', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('complaints.description', 'like', '%' . $filter['search'] . '%');
+                });
+            }
+
+            if (!empty($filter['date'])) {
+                $query->whereDate('complaints.created_at', $filter['date']);
+            }
+
+            return Response::buildSuccess([
+                'list' => $query->orderByDesc('complaints.created_at')->get(),
+            ]);
         } catch (Exception $e) {
             Log::error($e->getMessage());
 

@@ -12,6 +12,21 @@
                 Manajemen Pengaduan Sarana dan Prasarana
             </p>
         </div>
+
+        <div>
+            <a href="{{ route('admin.aspirations.export_pdf', request()->all()) }}"
+                class="py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 focus:outline-hidden focus:bg-orange-700 transition-all shadow-md shadow-orange-500/20 active:scale-95 cursor-pointer">
+                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                </svg>
+                Export PDF
+            </a>
+        </div>
     </div>
 
     <div class="flex flex-col">
@@ -31,25 +46,25 @@
                                                 @include('_admin._layout.icons.search')
                                             </div>
                                             <input type="text" name="search" value="{{ request('search') }}"
-                                                class="py-1 px-3 ps-10 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500"
+                                                class="py-1 px-3 ps-10 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500"
                                                 placeholder="Cari nama, lokasi, atau deskripsi...">
                                         </div>
                                     </div>
 
                                     <div>
                                         <input type="date" name="date" value="{{ request('date') }}"
-                                            class="py-1 px-3 block border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                                            class="py-1 px-3 block border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                                     </div>
 
                                     <div class="w-full sm:w-48">
                                         <select name="priority" data-hs-select='{
-                            "placeholder": "Semua Prioritas",
-                            "toggleTag": "<button type=\"button\"></button>",
-                            "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
-                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
-                            "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
-                            "optionSelectedClasses": "bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-400"
-                        }'>
+                                "placeholder": "Semua Prioritas",
+                                "toggleTag": "<button type=\"button\"></button>",
+                                "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+                                "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                            }'>
                                             <option value="">Semua Prioritas</option>
                                             <option value="1" {{ request('priority') == 1 ? 'selected' : '' }}>Rendah</option>
                                             <option value="2" {{ request('priority') == 2 ? 'selected' : '' }}>Sedang</option>
@@ -59,13 +74,13 @@
 
                                     <div class="w-full sm:w-48">
                                         <select name="status" data-hs-select='{
-                            "placeholder": "Semua Status",
-                            "toggleTag": "<button type=\"button\"></button>",
-                            "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
-                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
-                            "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
-                            "optionSelectedClasses": "bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-400"
-                        }'>
+                                "placeholder": "Semua Status",
+                                "toggleTag": "<button type=\"button\"></button>",
+                                "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+                                "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                            }'>
                                             <option value="">Semua Status</option>
                                             <option value="1" {{ request('status') == 1 ? 'selected' : '' }}>Pending</option>
                                             <option value="2" {{ request('status') == 2 ? 'selected' : '' }}>In Progress
@@ -77,14 +92,14 @@
                                     {{-- Action --}}
                                     <div class="flex gap-2 items-center">
                                         <button type="submit"
-                                            class="py-1 px-3 text-sm font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 cursor-pointer flex items-center gap-x-1">
+                                            class="py-1 px-3 text-sm font-semibold rounded-lg bg-orange-600 text-white hover:bg-orange-700 cursor-pointer flex items-center gap-x-1">
                                             @include('_admin._layout.icons.search')
                                             Cari
                                         </button>
 
                                         @if (request()->hasAny(['priority', 'status', 'search', 'date']) && array_filter(request()->only(['priority', 'status', 'search', 'date'])))
                                             <a href="{{ route('admin.aspirations.index') }}"
-                                                class="py-1 px-3 text-sm font-semibold rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 cursor-pointer flex items-center gap-x-1">
+                                                class="py-1 px-3 text-sm font-semibold rounded-lg border border-orange-600 text-orange-600 hover:bg-orange-50 cursor-pointer flex items-center gap-x-1">
                                                 @include('_admin._layout.icons.reset')
                                                 Reset
                                             </a>

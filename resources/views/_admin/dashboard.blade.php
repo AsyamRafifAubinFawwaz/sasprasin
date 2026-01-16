@@ -151,7 +151,7 @@
                                     View all
                                 </a>
 
-                                <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                                <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-[#ff7d26] text-white hover:bg-[#ff6702] focus:outline-hidden focus:bg-[#ff7d26] disabled:opacity-50 disabled:pointer-events-none"
                                     href="#">
                                     <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -182,7 +182,7 @@
                                 <th scope="col" class="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3 text-start">
                                     <div class="flex items-center gap-x-2">
                                         <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
-                                            Mahasiswa
+                                            Siswa
                                         </span>
                                     </div>
                                 </th>
@@ -275,7 +275,7 @@
                                     </td>
                                     <td class="size-px whitespace-nowrap">
                                         <div class="px-6 py-1.5">
-                                            <a class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
+                                            <a class="inline-flex items-center gap-x-1 text-sm text-orange-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-orange-500"
                                                 href="{{ route('admin.aspirations.detail', $item->id) }}">
                                                 Detail
                                             </a>
