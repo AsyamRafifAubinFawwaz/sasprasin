@@ -365,15 +365,33 @@ $(document).ready(function () {
 
     function getToastNode(message) {
         var html = `
-        <div class="animate-toast-pop bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700" role="alert">
+        <div class="animate-toast-pop max-w-sm w-full bg-white border-l-4 border-teal-500 rounded-r-xl shadow-2xl dark:bg-neutral-800 dark:border-teal-400" role="alert">
             <div class="flex p-4">
-              <p class="text-sm text-gray-700 dark:text-neutral-400">${message}</p>
-              <div class="ms-auto">
-                <button onclick="tostifyCustomClose(this)" type="button" class="inline-flex shrink-0 justify-center items-center size-5 rounded-lg text-gray-800 opacity-50 hover:opacity-100 focus:outline-hidden focus:opacity-100 dark:text-white" aria-label="Close">
-                  <span class="sr-only">Close</span>
-                  <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
-                </button>
-              </div>
+                <div class="shrink-0">
+                    <span class="inline-flex justify-center items-center size-8 rounded-full bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
+                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </span>
+                </div>
+                <div class="ms-3">
+                    <h3 class="text-gray-800 font-semibold text-sm dark:text-white">
+                        Succeed!
+                    </h3>
+                    <p class="text-sm text-gray-700 dark:text-neutral-400">
+                        ${message}
+                    </p>
+                </div>
+                <div class="ms-auto">
+                    <button onclick="tostifyCustomClose(this)" type="button" class="inline-flex shrink-0 justify-center items-center size-5 rounded-lg text-gray-800 opacity-50 hover:opacity-100 focus:outline-hidden focus:opacity-100 dark:text-white" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>`;
         var div = document.createElement("div");

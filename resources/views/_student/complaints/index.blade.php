@@ -110,6 +110,11 @@
                                             Tanggal
                                         </span>
                                     </th>
+                                    <th scope="col" class="px-6 py-3 text-start">
+                                        <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
+                                            Status
+                                        </span>
+                                    </th>
                                     <th scope="col" class="px-6 py-3 text-end"></th>
                                 </tr>
                             </thead>
@@ -146,6 +151,31 @@
                                                 <span
                                                     class="block text-sm text-gray-800 dark:text-neutral-200">{{ \Carbon\Carbon::parse($d->created_at)->format('d/m/Y') }}
                                                 </span>
+                                            </div>
+                                        </td>
+                                        <td class="size-px whitespace-nowrap">
+                                            <div class="px-6 py-3">
+                                                @if ($d->aspiration_status == \App\Constants\ProgressConst::PENDING)
+                                                    <span
+                                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500">
+                                                        Pending
+                                                    </span>
+                                                @elseif($d->aspiration_status == \App\Constants\ProgressConst::IN_PROGRESS)
+                                                    <span
+                                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
+                                                        In Progress
+                                                    </span>
+                                                @elseif($d->aspiration_status == \App\Constants\ProgressConst::DONE)
+                                                    <span
+                                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
+                                                        Done
+                                                    </span>
+                                                @else
+                                                    <span
+                                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-white">
+                                                        Pending
+                                                    </span>
+                                                @endif
                                             </div>
                                         </td>
                                         <td class="size-px whitespace-nowrap">

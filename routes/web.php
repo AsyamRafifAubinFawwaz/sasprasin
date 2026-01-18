@@ -99,9 +99,7 @@ Route::middleware(['auth', 'role:1'])->prefix('admin')->name('admin.')->group(fu
 });
 
 Route::middleware(['auth', 'role:2'])->prefix('student')->name('student.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('_student.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\Student\DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('complaints')->name('complaints.')->group(function () {
         Route::get('/', [ComplaintController::class, 'index'])->name('index');

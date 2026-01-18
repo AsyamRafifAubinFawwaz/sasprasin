@@ -36,12 +36,12 @@ class ComplaintUsecase extends Usecase
                 })
                 ->orderBy('complaints.created_at', 'desc');
 
-            if (! empty($filterData['no_pagination'])) {
+            if (!empty($filterData['no_pagination'])) {
                 $data = $query->get();
             } else {
                 $data = $query->paginate(20);
 
-                if (! empty($filterData)) {
+                if (!empty($filterData)) {
                     $data->appends($filterData);
                 }
             }
@@ -124,8 +124,9 @@ class ComplaintUsecase extends Usecase
     {
         try {
             $data = DB::table('complaints')
+                ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
-                ->select('complaints.*', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
+                ->select('complaints.*', 'facility_categories.name as category_name', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
                 ->where('complaints.id', $id)
                 ->whereNull('complaints.deleted_at')
                 ->first();
@@ -238,12 +239,12 @@ class ComplaintUsecase extends Usecase
                 ->orderBy('complaints.created_at', 'desc');
 
 
-            if (! empty($filterData['no_pagination'])) {
+            if (!empty($filterData['no_pagination'])) {
                 $data = $query->get();
             } else {
                 $data = $query->paginate(20);
 
-                if (! empty($filterData)) {
+                if (!empty($filterData)) {
                     $data->appends($filterData);
                 }
             }

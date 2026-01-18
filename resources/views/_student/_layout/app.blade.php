@@ -56,8 +56,7 @@
                         <path
                             d="M5 29.5V16.66C5 12.1534 8.58172 8.5 13 8.5C17.4183 8.5 21 12.1534 21 16.66C21 21.1666 17.4183 24.82 13 24.82H12"
                             class="stroke-blue-600 dark:stroke-white" stroke="currentColor" stroke-width="2" />
-                        <circle cx="13" cy="16.5214" r="5" class="fill-blue-600 dark:fill-white"
-                            fill="currentColor" />
+                        <circle cx="13" cy="16.5214" r="5" class="fill-blue-600 dark:fill-white" fill="currentColor" />
                     </svg>
                 </a>
                 <!-- End Logo -->
@@ -72,7 +71,7 @@
     </header>
     <!-- ========== END HEADER ========== -->
 
-    @include('_student._layout.sidebar')
+    @include('_layout.sidebar')
 
     <!-- Content -->
     <div class="w-full lg:ps-64 bg-white dark:bg-neutral-900 min-h-screen">
