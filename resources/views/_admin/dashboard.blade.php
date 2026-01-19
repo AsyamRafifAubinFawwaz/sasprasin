@@ -9,35 +9,20 @@
         <div
             class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
             <div class="p-4 md:p-5">
-                <div class="flex items-center gap-x-2">
-                    <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
-                        Total Keluhan
-                    </p>
-                </div>
-
-                <div class="mt-1 flex items-center gap-x-2">
-                    <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
-                        {{ number_format($stats['totals']->total ?? 0) }}
-                    </h3>
-                </div>
-            </div>
-        </div>
-        <!-- End Card -->
-
-        <!-- Card -->
-        <div
-            class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
-            <div class="p-4 md:p-5">
-                <div class="flex items-center gap-x-2">
-                    <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
-                        Pending
-                    </p>
-                </div>
-
-                <div class="mt-1 flex items-center gap-x-2">
-                    <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
-                        {{ number_format($stats['totals']->pending ?? 0) }}
-                    </h3>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            Total Keluhan
+                        </p>
+                        <div class="mt-1 flex items-center gap-x-2">
+                            <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
+                                {{ number_format($stats['totals']->total ?? 0) }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="shrink-0 flex justify-center items-center size-[46px] bg-blue-100 text-blue-600 rounded-lg dark:bg-blue-500/10 dark:text-blue-500">
+                        @include('_admin._layout.icons.sidebar.task')
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,16 +32,20 @@
         <div
             class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
             <div class="p-4 md:p-5">
-                <div class="flex items-center gap-x-2">
-                    <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
-                        In Progress
-                    </p>
-                </div>
-
-                <div class="mt-1 flex items-center gap-x-2">
-                    <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
-                        {{ number_format($stats['totals']->in_progress ?? 0) }}
-                    </h3>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            Pending
+                        </p>
+                        <div class="mt-1 flex items-center gap-x-2">
+                            <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
+                                {{ number_format($stats['totals']->pending ?? 0) }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="shrink-0 flex justify-center items-center size-[46px] bg-red-100 text-red-600 rounded-lg dark:bg-red-500/10 dark:text-red-500">
+                        <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
                 </div>
             </div>
         </div>
@@ -66,16 +55,43 @@
         <div
             class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
             <div class="p-4 md:p-5">
-                <div class="flex items-center gap-x-2">
-                    <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
-                        Selesai
-                    </p>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            In Progress
+                        </p>
+                        <div class="mt-1 flex items-center gap-x-2">
+                            <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
+                                {{ number_format($stats['totals']->in_progress ?? 0) }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="shrink-0 flex justify-center items-center size-[46px] bg-yellow-100 text-yellow-600 rounded-lg dark:bg-yellow-500/10 dark:text-yellow-500">
+                        @include('_admin._layout.icons.pickaxe')
+                    </div>
                 </div>
+            </div>
+        </div>
+        <!-- End Card -->
 
-                <div class="mt-1 flex items-center gap-x-2">
-                    <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
-                        {{ number_format($stats['totals']->done ?? 0) }}
-                    </h3>
+        <!-- Card -->
+        <div
+            class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
+            <div class="p-4 md:p-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            Selesai
+                        </p>
+                        <div class="mt-1 flex items-center gap-x-2">
+                            <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
+                                {{ number_format($stats['totals']->done ?? 0) }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="shrink-0 flex justify-center items-center size-[46px] bg-green-100 text-green-600 rounded-lg dark:bg-green-500/10 dark:text-green-500">
+                        @include('_admin._layout.icons.sidebar.circle-check-big')
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,7 +2,6 @@
     use App\Constants\UserConst;
 @endphp
 
-<!-- Sidebar -->
 <div id="hs-application-sidebar" class="hs-overlay  [--auto-close:lg]
   hs-overlay-open:translate-x-0
   -translate-x-full transition-all duration-300 transform
@@ -15,7 +14,6 @@
   bg-gray-50" role="dialog" tabindex="-1" aria-label="Sidebar">
     <div class="relative flex flex-col h-full max-h-full">
         <div class="px-6 pt-4 flex items-center">
-            <!-- Logo -->
             <a class="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-hidden focus:opacity-80"
                 href="#" aria-label="Preline">
                 @if (Auth::user()->access_type == UserConst::ADMIN)
@@ -24,16 +22,13 @@
                     @include('_admin._layout.icons.sidebar.logo')
                 @endif
             </a>
-            <!-- End Logo -->
         </div>
 
-        <!-- Content -->
         <div
             class="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 mt-4">
             <nav class="hs-accordion-group p-3 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
                 <ul class="flex flex-col space-y-1">
 
-                    {{-- MENU DASHBOARD (Semua Role) --}}
                     <li>
                         @php
                             $dashboardRoute = match (Auth::user()->access_type) {
@@ -54,7 +49,6 @@
                         </a>
                     </li>
 
-                    {{-- MENU ADMIN --}}
                     @if (Auth::user()->access_type == UserConst::ADMIN)
                         <li>
                             <a navigate
@@ -116,7 +110,6 @@
                         </li>
                     @endif
 
-                    {{-- MENU SISWA --}}
                     @if (Auth::user()->access_type == UserConst::STUDENT)
                         <li>
                             <a navigate
@@ -158,7 +151,6 @@
                 <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mb-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full"
                     role="menu" aria-orientation="vertical" aria-labelledby="sidebar-bottom-dropdown">
                     <div class="p-1.5 space-y-0.5">
-                        <!-- Switch/Toggle -->
                         <div
                             class="px-3 py-2 flex items-center justify-between border-b border-gray-200 dark:border-neutral-700 mb-1">
                             <span class="text-sm text-gray-800 dark:text-neutral-200">Theme</span>
@@ -185,7 +177,6 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- End Switch/Toggle -->
                         <a navigate
                             class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
                             href="{{ route('admin.profile.change_password') }}">
@@ -213,7 +204,5 @@
                 </div>
             </div>
         </div>
-        <!-- End Content -->
     </div>
 </div>
-<!-- End Sidebar -->
