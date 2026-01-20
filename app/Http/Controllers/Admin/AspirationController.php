@@ -54,6 +54,9 @@ class AspirationController extends Controller
             'priority' => $request->get('priority'),
             'search' => $request->get('search'),
             'date' => $request->get('date'),
+            'start_date' => $request->get('start_date'),
+            'end_date' => $request->get('end_date'),
+            'export_all' => $request->get('export_all'),
         ]);
 
         $pdf = Pdf::loadView('_admin.aspirations.pdf', [
@@ -63,6 +66,9 @@ class AspirationController extends Controller
                 'priority' => $request->get('priority'),
                 'search' => $request->get('search'),
                 'date' => $request->get('date'),
+                'start_date' => $request->get('start_date'),
+                'end_date' => $request->get('end_date'),
+                'export_all' => $request->get('export_all'),
             ],
         ]);
 

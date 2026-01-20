@@ -14,7 +14,7 @@
         </div>
 
         <div>
-            <a href="{{ route('admin.aspirations.export_pdf', request()->all()) }}"
+            <button type="button" data-hs-overlay="#modal-export-pdf"
                 class="py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 focus:outline-hidden focus:bg-orange-700 transition-all shadow-md shadow-orange-500/20 active:scale-95 cursor-pointer">
                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -25,7 +25,7 @@
                     <polyline points="10 9 9 9 8 9" />
                 </svg>
                 Export PDF
-            </a>
+            </button>
         </div>
     </div>
 
@@ -58,13 +58,13 @@
 
                                     <div class="w-full sm:w-48">
                                         <select name="priority" data-hs-select='{
-                                "placeholder": "Semua Prioritas",
-                                "toggleTag": "<button type=\"button\"></button>",
-                                "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
-                                "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
-                                "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
-                                "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
-                            }'>
+                                                    "placeholder": "Semua Prioritas",
+                                                    "toggleTag": "<button type=\"button\"></button>",
+                                                    "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+                                                    "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                                    "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                                    "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                                                }'>
                                             <option value="">Semua Prioritas</option>
                                             <option value="1" {{ request('priority') == 1 ? 'selected' : '' }}>Rendah</option>
                                             <option value="2" {{ request('priority') == 2 ? 'selected' : '' }}>Sedang</option>
@@ -74,13 +74,13 @@
 
                                     <div class="w-full sm:w-48">
                                         <select name="status" data-hs-select='{
-                                "placeholder": "Semua Status",
-                                "toggleTag": "<button type=\"button\"></button>",
-                                "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
-                                "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
-                                "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
-                                "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
-                            }'>
+                                                    "placeholder": "Semua Status",
+                                                    "toggleTag": "<button type=\"button\"></button>",
+                                                    "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+                                                    "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                                    "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                                    "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                                                }'>
                                             <option value="">Semua Status</option>
                                             <option value="1" {{ request('status') == 1 ? 'selected' : '' }}>Pending</option>
                                             <option value="2" {{ request('status') == 2 ? 'selected' : '' }}>In Progress
@@ -89,7 +89,6 @@
                                         </select>
                                     </div>
 
-                                    {{-- Action --}}
                                     <div class="flex gap-2 items-center">
                                         <button type="submit"
                                             class="py-1 px-3 text-sm font-semibold rounded-lg bg-orange-600 text-white hover:bg-orange-700 cursor-pointer flex items-center gap-x-1">
@@ -263,7 +262,6 @@
             </div>
         </div>
 
-        {{-- MODAL UPDATE STATUS --}}
         <x-admin.modal id="modal-update" title="Update Pengaduan" formId="formUpdate">
             <div class="space-y-4">
                 <div>
@@ -289,7 +287,100 @@
             </div>
         </x-admin.modal>
 
+        <x-admin.modal id="modal-export-pdf" title="Export Laporan PDF" formId="formExportPdf" method="GET"
+            :navigate="false">
+            <div class="space-y-4">
+                <div
+                    class="flex items-center gap-x-2 mb-4 bg-orange-50 dark:bg-orange-800/10 p-3 rounded-lg border border-orange-100 dark:border-orange-800/20">
+                    <input type="checkbox" id="export_all" name="export_all" value="1"
+                        class="shrink-0 border-gray-300 rounded-sm text-orange-600 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-orange-500 dark:checked:border-orange-500">
+                    <label for="export_all"
+                        class="text-sm font-semibold text-orange-800 dark:text-orange-400 cursor-pointer">Export Keseluruhan
+                        Data</label>
+                </div>
+
+                <div id="filter_options" class="space-y-4 transition-all duration-300">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2 dark:text-white">Tanggal Mulai</label>
+                            <input type="date" name="start_date" id="start_date"
+                                class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 dark:text-white">Tanggal Selesai</label>
+                            <input type="date" name="end_date" id="end_date"
+                                class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Status</label>
+                        <select name="status" id="export_status"
+                            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                            <option value="">Semua Status</option>
+                            <option value="1">Pending</option>
+                            <option value="2">In Progress</option>
+                            <option value="3">Done</option>
+                        </select>
+                    </div>
+                </div>
+
+                <x-slot:footer>
+                    <button type="button" data-hs-overlay="#modal-export-pdf"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+                        Batal
+                    </button>
+                    <button type="button" onclick="handleExportPdf()"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 focus:outline-none focus:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none active:scale-95 transition-all">
+                        Export PDF
+                    </button>
+                </x-slot:footer>
+            </div>
+        </x-admin.modal>
+
         <script>
+            function handleExportPdf() {
+                const form = document.getElementById('formExportPdf');
+                const formData = new FormData(form);
+                const params = new URLSearchParams(formData).toString();
+
+                // Trigger download
+                window.location.href = `{{ route('admin.aspirations.export_pdf') }}?${params}`;
+
+                // Show success toast - call only once
+                if (window.Toastify) {
+                    Toastify({
+                        text: "Laporan PDF sedang diproses dan akan segera diunduh.",
+                        duration: 3000,
+                        className: "p-0 bg-transparent shadow-none max-w-xs",
+                        gravity: "top",
+                        position: "right",
+                        stopOnFocus: true,
+                    }).showToast();
+                }
+
+                // Close modal after export
+                setTimeout(() => {
+                    HSOverlay.close('#modal-export-pdf');
+                    form.reset();
+                    const options = document.getElementById('filter_options');
+                    options.classList.remove('opacity-50', 'pointer-events-none');
+                    options.querySelectorAll('input, select').forEach(i => i.disabled = false);
+                }, 100);
+            }
+
+            document.getElementById('export_all').addEventListener('change', function () {
+                const options = document.getElementById('filter_options');
+                const inputs = options.querySelectorAll('input, select');
+                if (this.checked) {
+                    options.classList.add('opacity-50', 'pointer-events-none');
+                    inputs.forEach(i => i.disabled = true);
+                } else {
+                    options.classList.remove('opacity-50', 'pointer-events-none');
+                    inputs.forEach(i => i.disabled = false);
+                }
+            });
+
             function openModal(id, status, feedback) {
                 document.getElementById('modal_status').value = status;
                 document.getElementById('modal_feedback').value = feedback || '';

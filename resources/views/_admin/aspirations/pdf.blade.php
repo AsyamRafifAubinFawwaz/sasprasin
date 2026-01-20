@@ -162,30 +162,42 @@
         <p>Dicetak pada: {{ date('d F Y H:i:s') }}</p>
     </div>
 
-    @if(!empty($filters['status']) || !empty($filters['priority']) || !empty($filters['search']) || !empty($filters['date']))
+    @if(!empty($filters['export_all']) || !empty($filters['status']) || !empty($filters['priority']) || !empty($filters['search']) || !empty($filters['date']) || !empty($filters['start_date']))
         <div class="filter-info">
             <h3>Filter yang Diterapkan:</h3>
-            @if(!empty($filters['status']))
-                <p><strong>Status:</strong>
-                    @if($filters['status'] == 1) Pending
-                    @elseif($filters['status'] == 2) Dalam Progress
-                    @elseif($filters['status'] == 3) Selesai
-                    @endif
-                </p>
-            @endif
-            @if(!empty($filters['priority']))
-                <p><strong>Prioritas:</strong>
-                    @if($filters['priority'] == 1) Rendah
-                    @elseif($filters['priority'] == 2) Sedang
-                    @elseif($filters['priority'] == 3) Tinggi
-                    @endif
-                </p>
-            @endif
-            @if(!empty($filters['search']))
-                <p><strong>Pencarian:</strong> {{ $filters['search'] }}</p>
-            @endif
-            @if(!empty($filters['date']))
-                <p><strong>Tanggal:</strong> {{ date('d F Y', strtotime($filters['date'])) }}</p>
+            @if(!empty($filters['export_all']))
+                <p><strong>Cakupan Data:</strong> Keseluruhan Data (Tanpa Filter)</p>
+            @else
+                @if(!empty($filters['status']))
+                    <p><strong>Status:</strong>
+                        @if($filters['status'] == 1) Pending
+                        @elseif($filters['status'] == 2) Dalam Progress
+                        @elseif($filters['status'] == 3) Selesai
+                        @endif
+                    </p>
+                @endif
+                @if(!empty($filters['priority']))
+                    <p><strong>Prioritas:</strong>
+                        @if($filters['priority'] == 1) Rendah
+                        @elseif($filters['priority'] == 2) Sedang
+                        @elseif($filters['priority'] == 3) Tinggi
+                        @endif
+                    </p>
+                @endif
+                @if(!empty($filters['search']))
+                    <p><strong>Pencarian:</strong> {{ $filters['search'] }}</p>
+                @endif
+                @if(!empty($filters['date']))
+                    <p><strong>Tanggal:</strong> {{ date('d F Y', strtotime($filters['date'])) }}</p>
+                @endif
+                @if(!empty($filters['start_date']))
+                    <p><strong>Rentang Tanggal:</strong>
+                        {{ date('d/m/Y', strtotime($filters['start_date'])) }}
+                        @if(!empty($filters['end_date']))
+                            s/d {{ date('d/m/Y', strtotime($filters['end_date'])) }}
+                        @endif
+                    </p>
+                @endif
             @endif
         </div>
     @endif

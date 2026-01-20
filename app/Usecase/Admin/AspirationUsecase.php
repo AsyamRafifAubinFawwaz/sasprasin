@@ -42,7 +42,7 @@ class AspirationUsecase
                             ->orWhereNull('aspirations.status');
                     });
                 } else {
-                    $query->where('aspirations.status', $filter['status']);
+                    $queryw->where('aspirations.status', $filter['status']);
                 }
             }
 
@@ -184,8 +184,23 @@ class AspirationUsecase
                 });
             }
 
+            if (!empty($filter['export_all'])) {
+                // Ignore all filters if export_all is checked
+                return Response::buildSuccess([
+                    'list' => $query->orderByDesc('complaints.created_at')->get(),
+                ]);
+            }
+
             if (!empty($filter['date'])) {
                 $query->whereDate('complaints.created_at', $filter['date']);
+            }
+
+            if (!empty($filter['start_date'])) {
+                $query->whereDate('complaints.created_at', '>=', $filter['start_date']);
+            }
+
+            if (!empty($filter['end_date'])) {
+                $query->whereDate('complaints.created_at', '<=', $filter['end_date']);
             }
 
             return Response::buildSuccess([

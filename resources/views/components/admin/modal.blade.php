@@ -2,6 +2,8 @@
     'id',
     'title' => 'Modal Title',
     'formId' => null,
+    'method' => 'POST',
+    'navigate' => true,
     'size' => 'sm:max-w-lg',
     'footer' => null,
 ])
@@ -23,35 +25,38 @@
                     <span class="sr-only">Close</span>
                     <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M18 6 6 18"></path>
-                    <path d="m6 6 12 12"></path>
+                    stroke-linejoin="round">
+                    <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
                 </svg>
                     </button>
             </div>
-   
-                @if ($formId)
-                    <form id="{{ $formId }}" method="POST" navigate-form>
-                    @csrf
-                @endif
     
-            <div class="p-4 overflow-y-auto">
-                    {{ $slot }}
+            @if ($formId)
+                <form id="{{ $formId }}" method="{{ $method }}" {{ $navigate ? 'navigate-form' : '' }}>
+                @if (strtoupper($method) !== 'GET')
+
+                       @csrf
+                @endif
+            @endif
+ 
+               <div class="p-4 overflow-y-auto">
+                {{ $slot }}
             </div>
 
             <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t border-gray-200 dark:border-neutral-700">
                 @if ($footer)
                     {{ $footer }}
                 @else
-                    <button type="button"
-                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                        data-hs-overlay="#{{ $id }}">
+                        <button type="button"
+                                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                                data-hs-overlay="#{{ $id }}">
                             Batal
-                        </button>
-                    <button type="submit" @if($formId) form="{{ $formId }}" @endif
+                            </button>
+                    <button type="submit" @if ($formId) form="{{ $formId }}" @endif
                             class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
-                    Simpan
-                    </button>
+                            Simpan
+                        </button>
                 @endif
             </div>
 
