@@ -9,7 +9,7 @@ $(document).ready(function () {
                 spa: true,
             },
             "",
-            window.location.href
+            window.location.href,
         );
     }
 
@@ -60,14 +60,14 @@ $(document).ready(function () {
                 var content = s.textContent || "";
 
                 // Skip layout scripts
-                var isLayoutScript = layoutScriptPatterns.some(function (
-                    pattern
-                ) {
-                    return (
-                        src.toLowerCase().includes(pattern.toLowerCase()) ||
-                        content.includes(pattern)
-                    );
-                });
+                var isLayoutScript = layoutScriptPatterns.some(
+                    function (pattern) {
+                        return (
+                            src.toLowerCase().includes(pattern.toLowerCase()) ||
+                            content.includes(pattern)
+                        );
+                    },
+                );
 
                 if (isLayoutScript) return;
 
@@ -83,7 +83,7 @@ $(document).ready(function () {
                 externalScripts.length,
                 "external,",
                 inlineScripts.length,
-                "inline"
+                "inline",
             );
 
             // Function to load external scripts sequentially
@@ -141,7 +141,7 @@ $(document).ready(function () {
                     spa: true,
                 },
                 "",
-                urlToPush
+                urlToPush,
             );
         }
 
@@ -165,7 +165,7 @@ $(document).ready(function () {
         // backdrop Tailwind / custom
         document
             .querySelectorAll(
-                ".delete-modal-backdrop, .modal-backdrop, .hs-overlay-backdrop"
+                ".delete-modal-backdrop, .modal-backdrop, .hs-overlay-backdrop",
             )
             .forEach((el) => el.remove());
 
@@ -187,7 +187,7 @@ $(document).ready(function () {
         try {
             if (window.HSOverlay) {
                 HSOverlay.close(
-                    document.querySelector("#hs-application-sidebar")
+                    document.querySelector("#hs-application-sidebar"),
                 );
             }
         } catch (error) {
@@ -274,7 +274,7 @@ $(document).ready(function () {
                                         .includes(pattern.toLowerCase()) ||
                                     content.includes(pattern)
                                 );
-                            }
+                            },
                         );
                         if (isLayoutScript) return;
                         if (s.src) externalScripts.push(s.src);
@@ -352,7 +352,7 @@ $(document).ready(function () {
                 $input.after(
                     '<p class="text-sm text-red-600 mt-1 validation-error">' +
                         message +
-                        "</p>"
+                        "</p>",
                 );
             }
         });
@@ -363,6 +363,7 @@ $(document).ready(function () {
         $(el).closest(".toastify").remove();
     };
 
+    // Global function for creating toast nodes
     function getToastNode(message) {
         var html = `
         <div class="animate-toast-pop max-w-sm w-full bg-white border-l-4 border-teal-500 rounded-r-xl shadow-2xl dark:bg-neutral-800 dark:border-teal-400" role="alert">
@@ -398,6 +399,7 @@ $(document).ready(function () {
         div.innerHTML = html.trim();
         return div.firstChild;
     }
+    window.getToastNode = getToastNode;
 
     // Intercept form submissions with 'navigate-form' attribute
     $("body").on("submit", "form[navigate-form]", function (e) {
@@ -410,7 +412,7 @@ $(document).ready(function () {
         var originalHtml = $btn.html();
         if ($btn.length) {
             $btn.prop("disabled", true).html(
-                '<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent rounded-full" role="status" aria-label="loading"></span> Loading...'
+                '<span class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent rounded-full" role="status" aria-label="loading"></span> Loading...',
             );
         }
 
@@ -463,23 +465,22 @@ $(document).ready(function () {
                     var toastMessage = apiMessage
                         ? apiMessage.trim()
                         : method.toUpperCase() === "GET"
-                        ? ""
-                        : "Form submitted successfully";
+                          ? ""
+                          : "Form submitted successfully";
 
                     // Show Toast Notification
                     if (window.Toastify && toastMessage) {
                         Toastify({
-                            node: getToastNode(toastMessage),
+                            node: getToastNode(data.message),
                             duration: 3000,
-                            className:
-                                "p-0 bg-transparent shadow-none max-w-xs",
-                            gravity: "top",
-                            position: "right",
-                            stopOnFocus: true,
+                            className: "p-0",
                             style: {
                                 background: "transparent",
                                 boxShadow: "none",
                             },
+                            gravity: "top",
+                            position: "right",
+                            stopOnFocus: true,
                         }).showToast();
                     }
                 } else {
@@ -520,7 +521,7 @@ $(document).ready(function () {
                                 "An error occurred: " +
                                     xhr.status +
                                     " " +
-                                    xhr.statusText
+                                    xhr.statusText,
                             );
                         }
                     }
