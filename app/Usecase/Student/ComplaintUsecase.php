@@ -20,21 +20,24 @@ class ComplaintUsecase extends Usecase
     {
         try {
             $query = DB::table(DatabaseConst::COMPLAINT)
-                ->join('facility_categories', 'complaints.category_id', '=', 'facility_categories.id')
+                ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
                 ->select('complaints.*', 'facility_categories.name as category_name', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
                 ->whereNull('complaints.deleted_at')
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
-                    return $query->where('description', 'like', '%' . $keywords . '%')
-                        ->orWhere('location', 'like', '%' . $keywords . '%');
+                    return $query->where(function ($q) use ($keywords) {
+                        $q->where('complaints.description', 'like', '%' . $keywords . '%')
+                            ->orWhere('complaints.location', 'like', '%' . $keywords . '%');
+                    });
                 })
                 ->when($filterData['category_id'] ?? false, function ($query, $categoryId) {
-                    return $query->where('category_id', '=', $categoryId);
+                    return $query->where('complaints.facility_category_id', '=', $categoryId);
                 })
                 ->when($filterData['student_id'] ?? false, function ($query, $studentId) {
                     return $query->where('student_id', '=', $studentId);
                 })
                 ->orderBy('complaints.created_at', 'desc');
+
 
             if (!empty($filterData['no_pagination'])) {
                 $data = $query->get();
@@ -126,7 +129,7 @@ class ComplaintUsecase extends Usecase
             $data = DB::table('complaints')
                 ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
-                ->select('complaints.*', 'facility_categories.name as category_name', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
+                ->select('complaints.*', 'facility_categories.name as category_name', 'aspirations.id as aspiration_id', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
                 ->where('complaints.id', $id)
                 ->whereNull('complaints.deleted_at')
                 ->first();
@@ -135,12 +138,27 @@ class ComplaintUsecase extends Usecase
                 return Response::buildErrorService(ResponseConst::ERROR_MESSAGE_NOT_FOUND);
             }
 
+            // Fetch status logs
+            $logs = [];
+            if ($data->aspiration_id) {
+                $logs = DB::table('aspiration_status_logs')
+                    ->join('users', 'aspiration_status_logs.changed_by', '=', 'users.id')
+                    ->where('aspiration_id', $data->aspiration_id)
+                    ->select('aspiration_status_logs.*', 'users.name as changer_name')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            }
+
             return Response::buildSuccess(
-                ['data' => $data],
+                [
+                    'data' => $data,
+                    'logs' => $logs,
+                ],
                 ResponseConst::HTTP_SUCCESS
             );
         } catch (Exception $e) {
             Log::error($e->getMessage(), ['method' => __METHOD__]);
+
             return Response::buildErrorService($e->getMessage());
         }
     }
@@ -195,6 +213,7 @@ class ComplaintUsecase extends Usecase
             DB::rollback();
 
             Log::error($e->getMessage(), ['method' => __METHOD__]);
+
             return Response::buildErrorService($e->getMessage());
         }
     }
@@ -218,6 +237,7 @@ class ComplaintUsecase extends Usecase
         } catch (Exception $e) {
             DB::rollback();
             Log::error($e->getMessage(), ['method' => __METHOD__]);
+
             return Response::buildErrorService($e->getMessage());
         }
     }
@@ -236,6 +256,15 @@ class ComplaintUsecase extends Usecase
                 ->select('complaints.*', 'facility_categories.name as category_name', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
                 ->where('complaints.student_id', $studentId)
                 ->whereNull('complaints.deleted_at')
+                ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
+                    return $query->where(function ($q) use ($keywords) {
+                        $q->where('complaints.description', 'like', '%' . $keywords . '%')
+                            ->orWhere('complaints.location', 'like', '%' . $keywords . '%');
+                    });
+                })
+                ->when($filterData['category_id'] ?? false, function ($query, $categoryId) {
+                    return $query->where('complaints.facility_category_id', '=', $categoryId);
+                })
                 ->orderBy('complaints.created_at', 'desc');
 
 
@@ -255,6 +284,7 @@ class ComplaintUsecase extends Usecase
             );
         } catch (Exception $e) {
             Log::error($e->getMessage(), ['method' => __METHOD__]);
+
             return Response::buildErrorService($e->getMessage());
         }
     }

@@ -6,7 +6,6 @@ use App\Constants\ResponseConst;
 use App\Http\Controllers\Controller;
 use App\Usecase\Admin\FacilityCategoryUsecase as AdminFacilityCategoryUsecase;
 use App\Usecase\Student\ComplaintUsecase;
-use App\Usecase\FacilityCategoryUsecase;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -35,8 +34,9 @@ class ComplaintController extends Controller
 
         $data = $this->usecase->getByStudentId(studentId: $student->id, filterData: [
             'keywords' => $request->get('keywords'),
-            'facility_category_id' => $request->get('facility_category_id'),
+            'category_id' => $request->get('category_id'),
         ]);
+
 
         $facility = $this->FacilityCategoryUsecase->getAll(['no_pagination' => true])['data']['list'] ?? [];
 
@@ -93,8 +93,10 @@ class ComplaintController extends Controller
         return view('_student.complaints.detail', [
             'page' => $this->page,
             'data' => $complaint['data']['data'],
+            'logs' => $complaint['data']['logs'] ?? [],
             'facility' => $facility,
         ]);
+
     }
 
     public function update(int $id): View|RedirectResponse|Response
@@ -118,7 +120,7 @@ class ComplaintController extends Controller
         ]);
     }
 
-     public function doUpdate(int $id, Request $request): RedirectResponse
+    public function doUpdate(int $id, Request $request): RedirectResponse
     {
         $process = $this->usecase->update(
             data: $request,
