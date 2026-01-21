@@ -5,47 +5,99 @@
 @section('content')
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-
         <div
             class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
             <div class="p-4 md:p-5">
-                <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">Total Aspirasi</p>
-                <h3 class="text-xl sm:text-2xl font-medium mt-1 text-gray-800 dark:text-neutral-200">
-                    {{ $stats->total ?? 0 }}
-                </h3>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            Total Aspirasi
+                        </p>
+                        <div class="mt-1 flex items-center gap-x-2">
+                            <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
+                                {{ $stats->total ?? 0 }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div
+                        class="shrink-0 flex justify-center items-center size-[46px] bg-blue-100 text-blue-600 rounded-lg dark:bg-blue-500/10 dark:text-blue-500">
+                        @include('_admin._layout.icons.sidebar.task')
+                    </div>
+                </div>
             </div>
         </div>
 
         <div
             class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
             <div class="p-4 md:p-5">
-                <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">Sedang Diproses</p>
-                <h3 class="text-xl sm:text-2xl font-medium mt-1 text-gray-800 dark:text-neutral-200">
-                    {{ ($stats->pending ?? 0) + ($stats->in_progress ?? 0) }}
-                </h3>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            Sedang Diproses
+                        </p>
+                        <div class="mt-1 flex items-center gap-x-2">
+                            <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
+                                {{ ($stats->pending ?? 0) + ($stats->in_progress ?? 0) }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div
+                        class="shrink-0 flex justify-center items-center size-[46px] bg-yellow-100 text-yellow-600 rounded-lg dark:bg-yellow-500/10 dark:text-yellow-500">
+                        @include('_admin._layout.icons.pickaxe')
+                    </div>
+                </div>
             </div>
         </div>
 
         <div
             class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
             <div class="p-4 md:p-5">
-                <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">Selesai</p>
-                <h3 class="text-xl sm:text-2xl font-medium mt-1 text-gray-800 dark:text-neutral-200">
-                    {{ $stats->done ?? 0 }}
-                </h3>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            Selesai
+                        </p>
+                        <div class="mt-1 flex items-center gap-x-2">
+                            <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
+                                {{ $stats->done ?? 0 }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div
+                        class="shrink-0 flex justify-center items-center size-[46px] bg-green-100 text-green-600 rounded-lg dark:bg-green-500/10 dark:text-green-500">
+                        @include('_admin._layout.icons.sidebar.circle-check-big')
+                    </div>
+                </div>
             </div>
         </div>
 
         <div
             class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
             <div class="p-4 md:p-5">
-                <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">Ditolak</p>
-                <h3 class="text-xl sm:text-2xl font-medium mt-1 text-gray-800 dark:text-neutral-200">
-                    {{ $stats->rejected ?? 0 }}
-                </h3>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            Ditolak
+                        </p>
+                        <div class="mt-1 flex items-center gap-x-2">
+                            <h3 class="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
+                                {{ $stats->rejected ?? 0 }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div
+                        class="shrink-0 flex justify-center items-center size-[46px] bg-red-100 text-red-600 rounded-lg dark:bg-red-500/10 dark:text-red-500">
+                        <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m15 9-6 6" />
+                            <path d="m9 9 6 6" />
+                        </svg>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
 
     <div class="mt-6 bg-white border border-gray-200 rounded-xl p-4 shadow-sm dark:bg-neutral-800 dark:border-neutral-700">
@@ -304,31 +356,31 @@
                                 const borderColor = mode === 'dark' ? '#404040' : '#e5e7eb';
 
                                 return `
-                                                        <div style="
-                                                            background: ${bgColor};
-                                                            border: 1px solid ${borderColor};
-                                                            border-radius: 8px;
-                                                            padding: 10px 12px;
-                                                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                                                            min-width: 140px;
-                                                        ">
-                                                            <div style="
-                                                                font-size: 14px;
-                                                                font-weight: 700;
-                                                                color: ${textColor};
-                                                                margin-bottom: 4px;
-                                                            ">
-                                                                ${Math.floor(value)} Laporan
-                                                            </div>
-                                                            <div style="
-                                                                font-size: 12px;
-                                                                color: ${secondaryTextColor};
-                                                                font-weight: 400;
-                                                            ">
-                                                                ${titleStr}
-                                                            </div>
-                                                        </div>
-                                                    `;
+                                                                                        <div style="
+                                                                                            background: ${bgColor};
+                                                                                            border: 1px solid ${borderColor};
+                                                                                            border-radius: 8px;
+                                                                                            padding: 10px 12px;
+                                                                                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                                                                                            min-width: 140px;
+                                                                                        ">
+                                                                                            <div style="
+                                                                                                font-size: 14px;
+                                                                                                font-weight: 700;
+                                                                                                color: ${textColor};
+                                                                                                margin-bottom: 4px;
+                                                                                            ">
+                                                                                                ${Math.floor(value)} Laporan
+                                                                                            </div>
+                                                                                            <div style="
+                                                                                                font-size: 12px;
+                                                                                                color: ${secondaryTextColor};
+                                                                                                font-weight: 400;
+                                                                                            ">
+                                                                                                ${titleStr}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    `;
                             }
                         },
                         responsive: [{

@@ -1,15 +1,13 @@
 <header class="fixed top-0 z-99 w-full transition-all duration-300 bg-transparent backdrop-blur shadow-none">
     <div class="max-w-7xl mx-auto px-6 md:px-10 xl:px-16 h-20 flex justify-between items-center">
 
-        <!-- LOGO -->
         <div>
             <a href="/">
-                <img src="{{ asset('/image/logo-terang.svg') }}" class="w-36 min-[380px]:w-40 min-[470px]:w-44 2xl:w-52"
+                <img src="{{ asset('/image/logo-terang.svg') }}" class="w-36 min-[380px]:w-40 min-[470px]:w-40 2xl:w-52"
                     alt="Logo" />
             </a>
         </div>
 
-        <!-- NAV DESKTOP -->
         <ul class="hidden xl:flex gap-x-8 2xl:gap-x-12 text-[15px] 2xl:text-[16px] items-center">
             <li
                 class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 after:transition-transform">
