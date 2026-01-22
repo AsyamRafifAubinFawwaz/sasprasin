@@ -61,7 +61,7 @@ class FacilityCategoryController extends Controller
     {
         $process = $this->usecase->create(
             data: $request,
-        );
+        );;
 
         if ($process['success']) {
             return redirect()

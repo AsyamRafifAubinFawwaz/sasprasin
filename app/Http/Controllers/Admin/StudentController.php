@@ -59,6 +59,7 @@ class StudentController extends Controller
     {
         $process = $this->usecase->create(data: $request);
 
+        
         if ($process['success']) {
             return redirect()
                 ->route('admin.students.index')

@@ -72,8 +72,10 @@ class StudentUsecase extends Usecase
          $validator = Validator::make($data->all(), [
              'name' => 'required|string|max:255',
              'email' => 'required|email|unique:users,email',
-             'nisn' => 'required|int',
+             'nisn' => 'required|int|max:10 ',
              'classroom_id' => 'required|exists:classrooms,id',
+         ], [
+            'nisn.max' => 'NISN harus memiliki maksimal 10 karakter',
          ]);
 
          $validator->validate();
@@ -82,7 +84,6 @@ class StudentUsecase extends Usecase
          try {
              $adminId = Auth::user()?->id;
 
-             // 1. CREATE USER (SISWA)
              $userId = DB::table(DatabaseConst::USER)->insertGetId([
                  'name' => $data->name,
                  'email' => $data->email,

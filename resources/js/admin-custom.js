@@ -13,13 +13,10 @@ $(document).ready(function () {
         );
     }
 
-    // Helper to update content from HTML response
     function handleSpaResponse(data, urlToPush) {
-        // Use DOMParser for reliable script extraction (jQuery strips scripts)
         var parser = new DOMParser();
         var doc = parser.parseFromString(data, "text/html");
 
-        // Extract new content using native DOM
         var mainContentEl = doc.querySelector("#main-content");
         var sidebarEl = doc.querySelector("#hs-application-sidebar");
 
@@ -27,7 +24,6 @@ $(document).ready(function () {
         var newSidebar = sidebarEl ? sidebarEl.innerHTML : null;
 
         if (newContent) {
-            // Close any open overlays before updating content (prevents lingering backdrops)
             if (window.HSOverlay) {
                 document.querySelectorAll(".hs-overlay-open").forEach((el) => {
                     try {
@@ -41,14 +37,12 @@ $(document).ready(function () {
             $("#main-content").html(newContent);
             console.log("Content updated");
 
-            // Extract page-specific scripts from the response body
-            // Exclude layout scripts (jQuery, NProgress, Vite bundles, SPA handler)
             var layoutScriptPatterns = [
                 "jquery",
                 "nprogress",
                 "vite",
-                "SPA Script Loaded", // Our SPA handler
-                "preline/index", // Preline UI bundle (not helper scripts like hs-apexcharts-helpers.js)
+                "SPA Script Loaded",
+                "preline/index",
             ];
 
             var allBodyScripts = doc.body.querySelectorAll("script");
@@ -59,7 +53,6 @@ $(document).ready(function () {
                 var src = s.src || "";
                 var content = s.textContent || "";
 
-                // Skip layout scripts
                 var isLayoutScript = layoutScriptPatterns.some(
                     function (pattern) {
                         return (
@@ -86,14 +79,12 @@ $(document).ready(function () {
                 "inline",
             );
 
-            // Function to load external scripts sequentially
             function loadScriptsSequentially(urls, callback) {
                 if (urls.length === 0) {
                     callback();
                     return;
                 }
                 var url = urls.shift();
-                // Check if script is already loaded
                 if (document.querySelector('script[src="' + url + '"]')) {
                     loadScriptsSequentially(urls, callback);
                     return;
@@ -111,7 +102,6 @@ $(document).ready(function () {
             }
 
             loadScriptsSequentially(externalScripts.slice(), function () {
-                // Execute inline scripts after external ones have loaded
                 inlineScripts.forEach(function (code) {
                     try {
                         eval(code);
@@ -120,7 +110,6 @@ $(document).ready(function () {
                     }
                 });
 
-                // Dispatch load event for scripts waiting on window.load
                 window.dispatchEvent(new Event("load"));
             });
         } else {
@@ -213,12 +202,11 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.error("SPA Load Error:", error);
-                window.location.href = url; // Fallback to normal navigation on error
+                window.location.href = url; 
             },
         });
     }
 
-    // Track if we're in the middle of SPA navigation
     var spaNavigating = false;
 
     // Handle browser back/forward buttons
@@ -471,7 +459,8 @@ $(document).ready(function () {
                     // Show Toast Notification
                     if (window.Toastify && toastMessage) {
                         Toastify({
-                            node: getToastNode(data.message),
+                            node: getToastNode(toastMessage),
+
                             duration: 3000,
                             className: "p-0",
                             style: {

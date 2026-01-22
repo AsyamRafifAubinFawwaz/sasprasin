@@ -463,7 +463,7 @@
                                 const pendingValue = series[0][dataPointIndex];
                                 const inProgressValue = series[1][dataPointIndex];
                                 const doneValue = series[2][dataPointIndex];
-
+1
                                 // Define colors based on mode
                                 const colors = mode === 'dark'
                                     ? ["#f87171", "#fb923c", "#4ade80"]
