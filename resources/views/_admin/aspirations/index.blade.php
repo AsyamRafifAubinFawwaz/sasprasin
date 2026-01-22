@@ -58,13 +58,13 @@
 
                                     <div class="w-full sm:w-48">
                                         <select name="priority" data-hs-select='{
-                                                            "placeholder": "Semua Prioritas",
-                                                            "toggleTag": "<button type=\"button\"></button>",
-                                                            "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
-                                                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
-                                                            "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
-                                                            "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
-                                                        }'>
+                                                                                            "placeholder": "Semua Prioritas",
+                                                                                            "toggleTag": "<button type=\"button\"></button>",
+                                                                                            "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+                                                                                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                                                                            "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                                                                            "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                                                                                        }'>
                                             <option value="">Semua Prioritas</option>
                                             <option value="1" {{ request('priority') == 1 ? 'selected' : '' }}>Rendah</option>
                                             <option value="2" {{ request('priority') == 2 ? 'selected' : '' }}>Sedang</option>
@@ -74,13 +74,13 @@
 
                                     <div class="w-full sm:w-48">
                                         <select name="status" data-hs-select='{
-                                                            "placeholder": "Semua Status",
-                                                            "toggleTag": "<button type=\"button\"></button>",
-                                                            "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
-                                                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
-                                                            "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
-                                                            "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
-                                                        }'>
+                                                                                            "placeholder": "Semua Status",
+                                                                                            "toggleTag": "<button type=\"button\"></button>",
+                                                                                            "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+                                                                                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                                                                            "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                                                                            "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                                                                                        }'>
                                             <option value="">Semua Status</option>
                                             <option value="1" {{ request('status') == 1 ? 'selected' : '' }}>Pending</option>
                                             <option value="2" {{ request('status') == 2 ? 'selected' : '' }}>In Progress
@@ -210,7 +210,8 @@
                                                         $statusMap = [
                                                             1 => ['label' => 'Pending', 'class' => 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'],
                                                             2 => ['label' => 'In Progress', 'class' => 'bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500'],
-                                                            3 => ['label' => 'Done', 'class' => 'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500']
+                                                            3 => ['label' => 'Done', 'class' => 'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500'],
+                                                            4 => ['label' => 'Reject', 'class' => 'bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500']
                                                         ];
                                                         $currentStatus = $statusMap[$d->status] ?? $statusMap[1];
                                                     @endphp
@@ -273,6 +274,7 @@
                         <option value="1">Pending</option>
                         <option value="2">In Progress</option>
                         <option value="3">Done</option>
+                        <option value="4">Reject</option>
                     </select>
                 </div>
 

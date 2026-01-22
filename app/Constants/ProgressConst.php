@@ -10,12 +10,15 @@ class ProgressConst
 
     const DONE = 3;
 
+    const REJECT = 4;
+
     public static function getList()
     {
         return [
             self::PENDING => 'Pending',
             self::IN_PROGRESS => 'In Progress',
             self::DONE => 'Done',
+            self::REJECT => 'Reject',
         ];
     }
 }

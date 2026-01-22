@@ -35,6 +35,7 @@ class ComplaintController extends Controller
         $data = $this->usecase->getByStudentId(studentId: $student->id, filterData: [
             'keywords' => $request->get('keywords'),
             'category_id' => $request->get('category_id'),
+            'status' => $request->get('status'),
         ]);
 
 

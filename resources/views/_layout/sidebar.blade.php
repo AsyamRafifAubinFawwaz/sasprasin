@@ -2,16 +2,7 @@
     use App\Constants\UserConst;
 @endphp
 
-<div id="hs-application-sidebar" class="hs-overlay  [--auto-close:lg]
-  hs-overlay-open:translate-x-0
-  -translate-x-full transition-all duration-300 transform
-  w-65 h-full
-  hidden
-  fixed inset-y-0 start-0 z-60
-   rounded-r-2xl
-  lg:block lg:translate-x-0 lg:end-auto lg:bottom-0
-  dark:bg-neutral-800 dark:border-neutral-700
-  bg-gray-50" role="dialog" tabindex="-1" aria-label="Sidebar">
+<div id="hs-application-sidebar" class="hs-overlay  [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform w-65 h-full hidden fixed inset-y-0 start-0 z-60 rounded-r-2xl lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 dark:bg-neutral-800 dark:border-neutral-700 bg-gray-50" role="dialog" tabindex="-1" aria-label="Sidebar">
     <div class="relative flex flex-col h-full max-h-full">
         <div class="px-6 pt-4 flex items-center">
             <a class="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-hidden focus:opacity-80"

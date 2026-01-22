@@ -40,7 +40,6 @@
                 </div>
 
                 <div class="p-6 space-y-6">
-                    {{-- Image --}}
                     @if ($data->image)
                         <div>
                             <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Gambar</label>
@@ -48,31 +47,26 @@
                         </div>
                     @endif
 
-                    {{-- Category --}}
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Kategori</label>
                         <p class="text-gray-600 dark:text-neutral-400">{{ $data->category_name ?? 'N/A' }}</p>
                     </div>
 
-                    {{-- Location --}}
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Lokasi</label>
                         <p class="text-gray-600 dark:text-neutral-400">{{ $data->location }}</p>
                     </div>
 
-                    {{-- Description --}}
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Deskripsi</label>
                         <p class="text-gray-600 dark:text-neutral-400 whitespace-pre-wrap">{{ $data->description }}</p>
                     </div>
 
-                    {{-- Created At --}}
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Tanggal Dibuat</label>
                         <p class="text-gray-600 dark:text-neutral-400">{{ \Carbon\Carbon::parse($data->created_at)->format('d/m/Y') }}</p>
                     </div>
 
-                    {{-- Updated At --}}
                     @if ($data->updated_at && $data->updated_at !== $data->created_at)
                         <div>
                             <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Terakhir Diperbarui</label>
@@ -80,7 +74,6 @@
                         </div>
                     @endif
 
-                    {{-- Progress Status from Aspirations --}}
                     @if ($data->aspiration_status)
                         <div>
                             <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Status Progres</label>
@@ -104,7 +97,6 @@
                         </div>
                     @endif
 
-                    {{-- Feedback from Aspirations --}}
                     @if ($data->aspiration_feedback)
                         <div>
                             <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Feedback</label>
@@ -113,12 +105,10 @@
                     @endif
                 </div>
 
-                {{-- Footer --}}
 
             </div>
         </div>
 
-        <!-- Sidebar / Timeline -->
         <div class="lg:col-span-1">
             <div class="bg-white shadow-lg rounded-2xl dark:bg-neutral-800 border-2 border-gray-100 dark:border-neutral-700 h-full">
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-neutral-700">
@@ -143,7 +133,7 @@
                                             @if($log->new_status == 1)
                                                 <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                                             @elseif($log->new_status == 2)
-                                                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/></svg>
+                                            @include('_admin._layout.icons.loader')
                                             @else
                                                 <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
                                             @endif
@@ -174,9 +164,7 @@
                                             </div>
                                         @endif
 
-                                        <p class="mt-1 text-xs text-gray-400 dark:text-neutral-500">
-                                            Diperbarui oleh: <span class="font-medium text-gray-600 dark:text-neutral-300">{{ $log->changer_name }}</span>
-                                        </p>
+                                        
                                     </div>
                                 </div>
                             @endforeach

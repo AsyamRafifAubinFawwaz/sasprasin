@@ -63,15 +63,32 @@
                                 </select>
                             </div>
 
-
+                        <div class="w-full sm:w-48">
+                                        <select name="status" data-hs-select='{
+                                        "placeholder": "Semua Status",
+                                        "toggleTag": "<button type=\"button\"></button>",
+                                        "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+                                        "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                        "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                        "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                                    }'>
+                                            <option value="">Semua Status</option>
+                                            <option value="1" {{ request('status') == 1 ? 'selected' : '' }}>Pending</option>
+                                            <option value="2" {{ request('status') == 2 ? 'selected' : '' }}>In Progress
+                                            </option>
+                                            <option value="3" {{ request('status') == 3 ? 'selected' : '' }}>Done</option>
+                                            <option value="4" {{ request('status') == 4 ? 'selected' : '' }}>Reject</option>
+                                        </select>
+                                    </div>
                             <div>
                                 <button type="submit"
                                     class="py-1 px-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 cursor-pointer">
                                     @include('_admin._layout.icons.search')
                                     Cari
                                 </button>
-                                @if (!empty($keywords) || !empty($category_id))
-                                    <a class="py-1 px-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-orange-600 text-orange-600 hover:border-orange-500 hover:text-orange-500 hover:bg-blue-50 disabled:opacity-50 disabled:pointer-events-none dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500/10 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 cursor-pointer"
+                             @if (request()->filled('keywords') || request()->filled('category_id') || request()->filled('status'))
+
+                                    <a class="py-1 px-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-orange-600 text-orange-600 hover:border-orange-500 hover:text-orange-500 hover:bg-blue-50 disabled:opacity-50 disabled:pointer-events-none dark:border-orange-500 dark:text-orange-500 dark:hover:bg-orange-500/10 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 cursor-pointer"
                                         href="{{ route('student.complaints.index') }}">
                                         @include('_admin._layout.icons.reset')
                                         Reset
@@ -170,6 +187,12 @@
                                                         class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
                                                         Done
                                                     </span>
+                                                @elseif ($d->aspiration_status == \App\Constants\ProgressConst::REJECT)
+                                                    <span
+                                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium 
+                                                        bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
+                                                        Reject
+                                                    </span>
                                                 @else
                                                     <span
                                                         class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-white">
@@ -180,23 +203,30 @@
                                         </td>
                                         <td class="size-px whitespace-nowrap">
                                             <div class="px-6 py-1.5 flex items-center gap-x-2 justify-end">
-                                                <a navigate
-                                                    class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
+                                                  <a navigate
+                                                    class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg bg-blue-100 text-blue-800 dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
                                                     href="{{ route('student.complaints.detail', $d->id) }}"
                                                     title="Lihat Detail">
                                                     @include('_admin._layout.icons.view_detail')
                                                 </a>
-                                                <a navigate
-                                                    class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
-                                                    href="{{ route('student.complaints.update', $d->id) }}" title="Edit">
-                                                    @include('_admin._layout.icons.pencil')
-                                                </a>
-                                                <button type="button"
-                                                    class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-red-100 text-red-800 hover:bg-red-200 focus:outline-none focus:bg-red-200 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:bg-red-800/30 dark:hover:bg-red-800/20 dark:focus:bg-red-800/20 cursor-pointer"
-                                                    title="Hapus" data-hs-overlay="#delete-modal"
-                                                    onclick="setDeleteData('{{ $d->id }}', '{{ $d->location }}')">
-                                                    @include('_admin._layout.icons.trash')
-                                                </button>
+                                @if ( $d->aspiration_status == \App\Constants\ProgressConst::PENDING || $d->aspiration_status == \App\Constants\ProgressConst::REJECT)
+                                <a navigate
+                                    class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-green-100 text-green-800 hover:bg-green-200 focus:outline-none focus:bg-green-200 disabled:opacity-50 disabled:pointer-events-none dark:text-green-400 dark:bg-green-800/30 dark:hover:bg-green-800/20 dark:focus:bg-green-800/20 cursor-pointer"
+                                    href="{{ route('student.complaints.update', $d->id) }}"
+                                    title="Edit">
+                                    @include('_admin._layout.icons.pencil')
+                                </a>
+                            @endif
+
+                            @if ($d->aspiration_status == \App\Constants\ProgressConst::PENDING)
+                                <button type="button"
+                                    class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-red-100 text-red-800 hover:bg-red-200 focus:outline-none focus:bg-red-200 disabled:opacity-50 disabled:pointer-events-none dark:text-red-400 dark:bg-red-800/30 dark:hover:bg-red-800/20 dark:focus:bg-red-800/20 cursor-pointer"
+                                    title="Hapus"
+                                    data-hs-overlay="#delete-modal"
+                                    onclick="setDeleteData('{{ $d->id }}', '{{ $d->location }}')">
+                                    @include('_admin._layout.icons.trash')
+                                </button>
+                            @endif
                                             </div>
                                         </td>
                                     </tr>

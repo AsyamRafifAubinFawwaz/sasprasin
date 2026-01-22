@@ -114,7 +114,7 @@ class AspirationUsecase
     public function updateAspiration(Request $request, int $complaintId): array
     {
         $validator = Validator::make($request->all(), [
-            'status' => 'required|integer|in:1,2,3',
+            'status' => 'required|integer|in:1,2,3,4',
             'feedback' => 'nullable|string',
         ]);
 

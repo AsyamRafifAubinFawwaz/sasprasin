@@ -36,6 +36,9 @@ class ComplaintUsecase extends Usecase
                 ->when($filterData['student_id'] ?? false, function ($query, $studentId) {
                     return $query->where('student_id', '=', $studentId);
                 })
+                ->when($filterData['status'] ?? false, function ($query, $status) {
+                    return $query->where('aspirations.status', '=', $status);
+                })
                 ->orderBy('complaints.created_at', 'desc');
 
 
@@ -264,6 +267,9 @@ class ComplaintUsecase extends Usecase
                 })
                 ->when($filterData['category_id'] ?? false, function ($query, $categoryId) {
                     return $query->where('complaints.facility_category_id', '=', $categoryId);
+                })
+                ->when($filterData['status'] ?? false, function ($query, $status) {
+                    return $query->where('aspirations.status', '=', $status);
                 })
                 ->orderBy('complaints.created_at', 'desc');
 
