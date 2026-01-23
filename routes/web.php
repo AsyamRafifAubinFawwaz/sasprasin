@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AspirationController;
 use App\Http\Controllers\Admin\ClassroomController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FacilityCategoryController;
+use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TaskCategoryController;
 use App\Http\Controllers\Admin\TaskController;
@@ -71,6 +72,15 @@ Route::middleware(['auth', 'role:1'])->prefix('admin')->name('admin.')->group(fu
         Route::post('/update/{id}', [StudentController::class, 'doUpdate'])->name('do_update');
         Route::delete('/delete/{id}', [StudentController::class, 'delete'])->name('delete');
         Route::post('/reset-password/{id}', [StudentController::class, 'doResetPassword'])->name('doResetPassword');
+    });
+
+    Route::prefix('locations')->name('locations.')->group(function () {
+        Route::get('/', [LocationController::class, 'index'])->name('index');
+        Route::get('/add', [LocationController::class, 'add'])->name('add');
+        Route::post('/create', [LocationController::class, 'doCreate'])->name('do_create');
+        Route::get('/update/{id}', [LocationController::class, 'update'])->name('update');
+        Route::post('/update/{id}', [LocationController::class, 'doUpdate'])->name('do_update');
+        Route::delete('/delete/{id}', [LocationController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('facility-categories')->name('facility-categories.')->group(function () {

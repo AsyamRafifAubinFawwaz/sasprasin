@@ -35,9 +35,9 @@
 
                         <select name="facility_category_id" id="facility_category_id"
                             class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm
-                                    focus:border-blue-500 focus:ring-blue-500
-                                    dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400
-                                    @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" required>
+                                        focus:border-blue-500 focus:ring-blue-500
+                                        dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400
+                                        @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" required>
 
                             <option value="">Pilih Kategori</option>
 
@@ -55,12 +55,19 @@
 
                     {{-- Location --}}
                     <div>
-                        <label for="location" class="block text-sm font-medium mb-2 dark:text-white">Lokasi <span
+                        <label for="location_id" class="block text-sm font-medium mb-2 dark:text-white">Lokasi <span
                                 class="text-red-500">*</span></label>
-                        <input type="text" id="location" name="location" value="{{ old('location', $data->location) }}"
-                            class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('location') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                            placeholder="Contoh: Ruang Kelas 1A" required>
-                        @error('location')
+                        <select name="location_id" id="location_id"
+                            class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('location_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
+                            required>
+                            <option value="">Pilih Lokasi</option>
+                            @foreach ($locations as $location)
+                                <option value="{{ $location->id }}" {{ old('location_id', $data->location_id) == $location->id ? 'selected' : '' }}>
+                                    {{ $location->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('location_id')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                         @enderror
                     </div>

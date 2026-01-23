@@ -21,13 +21,14 @@ class ComplaintUsecase extends Usecase
         try {
             $query = DB::table(DatabaseConst::COMPLAINT)
                 ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
+                ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
-                ->select('complaints.*', 'facility_categories.name as category_name', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
+                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
                 ->whereNull('complaints.deleted_at')
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
                     return $query->where(function ($q) use ($keywords) {
-                        $q->where('complaints.description', 'like', '%' . $keywords . '%')
-                            ->orWhere('complaints.location', 'like', '%' . $keywords . '%');
+                        $q->where('complaints.description', 'like', '%'.$keywords.'%')
+                            ->orWhere('locations.name', 'like', '%'.$keywords.'%');
                     });
                 })
                 ->when($filterData['category_id'] ?? false, function ($query, $categoryId) {
@@ -41,13 +42,12 @@ class ComplaintUsecase extends Usecase
                 })
                 ->orderBy('complaints.created_at', 'desc');
 
-
-            if (!empty($filterData['no_pagination'])) {
+            if (! empty($filterData['no_pagination'])) {
                 $data = $query->get();
             } else {
                 $data = $query->paginate(20);
 
-                if (!empty($filterData)) {
+                if (! empty($filterData)) {
                     $data->appends($filterData);
                 }
             }
@@ -76,7 +76,7 @@ class ComplaintUsecase extends Usecase
             'student_id' => 'required|integer|exists:users,id',
             'facility_category_id' => 'required|integer|exists:facility_categories,id',
             'description' => 'required|string',
-            'location' => 'required|string|max:255',
+            'location_id' => 'required|integer|exists:locations,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -84,7 +84,7 @@ class ComplaintUsecase extends Usecase
 
         DB::beginTransaction();
         try {
-            $payload = $data->only(['student_id', 'facility_category_id', 'description', 'location']);
+            $payload = $data->only(['student_id', 'facility_category_id', 'description', 'location_id']);
             $payload['created_by'] = Auth::user()?->id ?? 0;
             $payload['created_at'] = now();
             $payload['updated_at'] = now();
@@ -92,9 +92,9 @@ class ComplaintUsecase extends Usecase
             // Handle file upload
             if ($data->hasFile('image')) {
                 $file = $data->file('image');
-                $filename = time() . '_' . $file->getClientOriginalName();
+                $filename = time().'_'.$file->getClientOriginalName();
                 $file->move(public_path('uploads/complaints'), $filename);
-                $payload['image'] = 'uploads/complaints/' . $filename;
+                $payload['image'] = 'uploads/complaints/'.$filename;
             }
 
             $complaintId = DB::table('complaints')->insertGetId($payload);
@@ -131,13 +131,14 @@ class ComplaintUsecase extends Usecase
         try {
             $data = DB::table('complaints')
                 ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
+                ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
-                ->select('complaints.*', 'facility_categories.name as category_name', 'aspirations.id as aspiration_id', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
+                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'aspirations.id as aspiration_id', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
                 ->where('complaints.id', $id)
                 ->whereNull('complaints.deleted_at')
                 ->first();
 
-            if (!$data) {
+            if (! $data) {
                 return Response::buildErrorService(ResponseConst::ERROR_MESSAGE_NOT_FOUND);
             }
 
@@ -171,7 +172,7 @@ class ComplaintUsecase extends Usecase
         $validator = Validator::make($data->all(), [
             'facility_category_id' => 'required|integer|exists:facility_categories,id',
             'description' => 'required|string',
-            'location' => 'required|string|max:255',
+            'location_id' => 'required|integer|exists:locations,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -180,7 +181,7 @@ class ComplaintUsecase extends Usecase
         $update = [
             'facility_category_id' => $data['facility_category_id'],
             'description' => $data['description'],
-            'location' => $data['location'],
+            'location_id' => $data['location_id'],
             'updated_by' => Auth::user()?->id,
             'updated_at' => now(),
         ];
@@ -188,9 +189,9 @@ class ComplaintUsecase extends Usecase
         // Handle file upload
         if ($data->hasFile('image')) {
             $file = $data->file('image');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = time().'_'.$file->getClientOriginalName();
             $file->move(public_path('uploads/complaints'), $filename);
-            $update['image'] = 'uploads/complaints/' . $filename;
+            $update['image'] = 'uploads/complaints/'.$filename;
         }
 
         DB::beginTransaction();
@@ -255,14 +256,15 @@ class ComplaintUsecase extends Usecase
                     '=',
                     'facility_categories.id'
                 )
+                ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
-                ->select('complaints.*', 'facility_categories.name as category_name', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
+                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
                 ->where('complaints.student_id', $studentId)
                 ->whereNull('complaints.deleted_at')
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
                     return $query->where(function ($q) use ($keywords) {
-                        $q->where('complaints.description', 'like', '%' . $keywords . '%')
-                            ->orWhere('complaints.location', 'like', '%' . $keywords . '%');
+                        $q->where('complaints.description', 'like', '%'.$keywords.'%')
+                            ->orWhere('locations.name', 'like', '%'.$keywords.'%');
                     });
                 })
                 ->when($filterData['category_id'] ?? false, function ($query, $categoryId) {
@@ -273,13 +275,12 @@ class ComplaintUsecase extends Usecase
                 })
                 ->orderBy('complaints.created_at', 'desc');
 
-
-            if (!empty($filterData['no_pagination'])) {
+            if (! empty($filterData['no_pagination'])) {
                 $data = $query->get();
             } else {
                 $data = $query->paginate(20);
 
-                if (!empty($filterData)) {
+                if (! empty($filterData)) {
                     $data->appends($filterData);
                 }
             }

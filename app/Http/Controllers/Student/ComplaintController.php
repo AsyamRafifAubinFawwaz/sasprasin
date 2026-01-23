@@ -23,9 +23,10 @@ class ComplaintController extends Controller
 
     public function __construct(
         protected ComplaintUsecase $usecase,
-        protected AdminFacilityCategoryUsecase $FacilityCategoryUsecase
+        protected AdminFacilityCategoryUsecase $FacilityCategoryUsecase,
+        protected \App\Usecase\Admin\LocationUsecase $LocationUsecase
     ) {
-        $this->baseRedirect = 'student/' . $this->page['route'];
+        $this->baseRedirect = 'student/'.$this->page['route'];
     }
 
     public function index(Request $request): View|Response
@@ -37,7 +38,6 @@ class ComplaintController extends Controller
             'category_id' => $request->get('category_id'),
             'status' => $request->get('status'),
         ]);
-
 
         $facility = $this->FacilityCategoryUsecase->getAll(['no_pagination' => true])['data']['list'] ?? [];
 
@@ -53,10 +53,12 @@ class ComplaintController extends Controller
     public function add(): View|Response
     {
         $facility = $this->FacilityCategoryUsecase->getAll(['no_pagination' => true]);
+        $locations = $this->LocationUsecase->getAll(['no_pagination' => true]);
 
         return view('_student.complaints.add', [
             'page' => $this->page,
             'facility' => $facility['data']['list'] ?? [],
+            'locations' => $locations['data']['list'] ?? [],
         ]);
     }
 
@@ -113,11 +115,13 @@ class ComplaintController extends Controller
         }
 
         $facility = $this->FacilityCategoryUsecase->getAll(['no_pagination' => true])['data']['list'] ?? [];
+        $locations = $this->LocationUsecase->getAll(['no_pagination' => true])['data']['list'] ?? [];
 
         return view('_student.complaints.update', [
             'page' => $this->page,
             'data' => $complaint['data']['data'],
             'facility' => $facility,
+            'locations' => $locations,
         ]);
     }
 

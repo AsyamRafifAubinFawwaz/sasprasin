@@ -20,5 +20,7 @@ class DatabaseConst
 
     const COMPLAINT = 'complaints';
 
+    const LOCATION = 'locations';
+
     const ASPIRATION = 'aspirations';
 }

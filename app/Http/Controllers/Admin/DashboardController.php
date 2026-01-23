@@ -11,16 +11,28 @@ class DashboardController extends Controller
 {
     public function __construct(
         protected DashboardUsecase $usecase
-    ) {
-    }
+    ) {}
 
     public function index(): View|Response
     {
-        \Illuminate\Support\Facades\Log::info('DashboardController@index hit');
-        $stats = $this->usecase->getStatistics();
+        $response = $this->usecase->getStatistics();
+        $stats = $response['data'] ?? [
+            'chart' => [
+                'categories' => [],
+                'pending' => [],
+                'in_progress' => [],
+                'done' => [],
+            ],
+            'totals' => (object) [
+                'total' => 0,
+                'pending' => 0,
+                'in_progress' => 0,
+                'done' => 0,
+            ],
+            'total_users' => 0,
+            'latest' => [],
+        ];
 
-        return view('_admin.dashboard', [
-            'stats' => $stats['data'] ?? [],
-        ]);
+        return view('_admin.dashboard', compact('stats'));
     }
 }

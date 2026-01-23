@@ -19,13 +19,14 @@ class AspirationUsecase
         try {
             $query = DB::table(DatabaseConst::COMPLAINT)
                 ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
+                ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('users', 'complaints.student_id', '=', 'users.id')
                 ->leftJoin('students', 'users.id', '=', 'students.user_id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
                 ->select(
                     'complaints.id',
                     'users.name as student_name',
-                    'complaints.location',
+                    'locations.name as location',
                     'complaints.description',
                     'complaints.created_at',
                     'facility_categories.name as category_name',
@@ -54,7 +55,7 @@ class AspirationUsecase
             if (! empty($filter['search'])) {
                 $query->where(function ($q) use ($filter) {
                     $q->where('users.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('complaints.location', 'like', '%'.$filter['search'].'%')
+                        ->orWhere('locations.name', 'like', '%'.$filter['search'].'%')
                         ->orWhere('complaints.description', 'like', '%'.$filter['search'].'%');
                 });
             }
@@ -78,13 +79,14 @@ class AspirationUsecase
         try {
             $data = DB::table('complaints')
                 ->leftJoin('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
+                ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('users', 'complaints.student_id', '=', 'users.id')
                 ->leftJoin('students', 'users.id', '=', 'students.user_id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
                 ->select(
                     'complaints.id',
                     'users.name as student_name',
-                    'complaints.location',
+                    'locations.name as location',
                     'complaints.description',
                     'complaints.image',
                     'complaints.created_at',
@@ -160,13 +162,14 @@ class AspirationUsecase
         try {
             $query = DB::table(DatabaseConst::COMPLAINT)
                 ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
+                ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('users', 'complaints.student_id', '=', 'users.id')
                 ->leftJoin('students', 'users.id', '=', 'students.user_id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
                 ->select(
                     'complaints.id',
                     'users.name as student_name',
-                    'complaints.location',
+                    'locations.name as location',
                     'complaints.description',
                     'complaints.image',
                     'complaints.created_at',
@@ -195,7 +198,7 @@ class AspirationUsecase
             if (! empty($filter['search'])) {
                 $query->where(function ($q) use ($filter) {
                     $q->where('users.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('complaints.location', 'like', '%'.$filter['search'].'%')
+                        ->orWhere('locations.name', 'like', '%'.$filter['search'].'%')
                         ->orWhere('complaints.description', 'like', '%'.$filter['search'].'%');
                 });
             }
