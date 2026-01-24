@@ -53,7 +53,6 @@
                         @enderror
                     </div>
 
-                    {{-- Location --}}
                     <div>
                         <label for="location_id" class="block text-sm font-medium mb-2 dark:text-white">Lokasi <span
                                 class="text-red-500">*</span></label>
@@ -72,7 +71,6 @@
                         @enderror
                     </div>
 
-                    {{-- Description --}}
                     <div>
                         <label for="description" class="block text-sm font-medium mb-2 dark:text-white">Deskripsi <span
                                 class="text-red-500">*</span></label>
@@ -85,11 +83,9 @@
                         @enderror
                     </div>
 
-                    {{-- Image Upload with Camera & Drag Drop --}}
                     <div>
                         <label class="block text-sm font-medium mb-2 dark:text-white">Gambar (Opsional)</label>
 
-                        {{-- Current Image --}}
                         @if ($data->image)
                             <div id="current-image" class="mb-3">
                                 <div class="relative inline-block">
@@ -106,7 +102,6 @@
                             </div>
                         @endif
 
-                        {{-- Tab Buttons --}}
                         <div class="flex gap-2 mb-3">
                             <button type="button" id="btn-upload"
                                 class="tab-btn active py-2 px-4 text-sm font-medium rounded-lg border transition-all">
@@ -130,7 +125,6 @@
                             </button>
                         </div>
 
-                        {{-- Upload Section --}}
                         <div id="upload-section" class="upload-area">
                             <div id="drop-zone"
                                 class="border-2 border-dashed border-gray-300 dark:border-neutral-600 rounded-lg p-8 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer">
@@ -148,7 +142,6 @@
                             <input type="file" id="image" name="image" accept="image/*" class="hidden">
                         </div>
 
-                        {{-- Camera Section --}}
                         <div id="camera-section" class="hidden">
                             <div class="relative">
                                 <video id="camera-preview" autoplay playsinline class="w-full rounded-lg bg-black"
@@ -177,7 +170,6 @@
                             </div>
                         </div>
 
-                        {{-- New Image Preview --}}
                         <div id="preview-container" class="hidden mt-3">
                             <div class="relative inline-block">
                                 <img id="image-preview" class="rounded-lg max-h-60" alt="Preview">
@@ -205,7 +197,6 @@
                     </div>
                 </div>
 
-                {{-- Footer --}}
                 <div class="mt-4 flex justify-start gap-x-2">
                     <a navigate href="{{ route('student.complaints.index') }}"
                         class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800">

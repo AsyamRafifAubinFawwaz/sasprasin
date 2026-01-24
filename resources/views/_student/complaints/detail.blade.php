@@ -83,11 +83,13 @@
                                         1 => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-200',
                                         2 => 'bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-200',
                                         3 => 'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-200',
+                                        4 => "bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-200",
                                     ];
                                     $statusLabels = [
                                         1 => 'Pending',
                                         2 => 'In Progress',
                                         3 => 'Done',
+                                        4 => 'Rejected',
                                     ];
                                 @endphp
                                 <span class="px-3 py-1 rounded-full text-sm font-semibold {{ $statusColors[$data->aspiration_status] ?? 'bg-gray-100 text-gray-800' }}">
@@ -127,6 +129,7 @@
                                                 1 => 'bg-yellow-500',
                                                 2 => 'bg-blue-500',
                                                 3 => 'bg-green-500',
+                                                4 => 'bg-red-500',
                                             ];
                                         @endphp
                                         <div class="relative z-10 size-7 flex justify-center items-center rounded-full {{ $iconColors[$log->new_status] ?? 'bg-gray-500' }} text-white shadow-md">
@@ -134,8 +137,10 @@
                                                 <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                                             @elseif($log->new_status == 2)
                                             @include('_admin._layout.icons.loader')
-                                            @else
-                                                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                                            @elseif($log->new_status == 3)
+                                            @include('_student._layout.icons.check')
+                                            @elseif($log->new_status == 4)
+                                            @include('_student._layout.icons.octagon-alert')
                                             @endif
                                         </div>
                                     </div>
@@ -153,6 +158,7 @@
                                                     1 => 'Pending',
                                                     2 => 'In Progress',
                                                     3 => 'Done',
+                                                    4 => 'Rejected',
                                                 ];
                                             @endphp
                                             Status: {{ $statusLabels[$log->new_status] ?? 'Unknown' }}

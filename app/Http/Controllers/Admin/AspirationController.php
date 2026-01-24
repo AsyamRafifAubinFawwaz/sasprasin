@@ -19,8 +19,7 @@ class AspirationController extends Controller
 
     public function __construct(
         protected AspirationUsecase $usecase
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): View
     {
@@ -44,6 +43,7 @@ class AspirationController extends Controller
         return view('_admin.aspirations.detail', [
             'page' => $this->page,
             'data' => $data['data']['data'] ?? null,
+            'student' => $data['data']['student'] ?? null,
         ]);
     }
 
@@ -74,7 +74,7 @@ class AspirationController extends Controller
 
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->download('laporan-aspirasi-' . date('Y-m-d') . '.pdf');
+        return $pdf->download('laporan-aspirasi-'.date('Y-m-d').'.pdf');
     }
 
     public function doUpdate(Request $request, int $complaintId): RedirectResponse

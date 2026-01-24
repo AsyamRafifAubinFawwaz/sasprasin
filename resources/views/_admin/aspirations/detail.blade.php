@@ -152,7 +152,77 @@
                 </div>
             </div>
 
-           
+            <!-- Kolom Kanan: Profil Pelapor -->
+            <div class="lg:col-span-1">
+                <div class="bg-white overflow-hidden shadow-lg rounded-2xl dark:bg-neutral-800 border-2 border-gray-100 dark:border-neutral-700 sticky top-4">
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-neutral-700">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-neutral-200">
+                            Profil Pelapor
+                        </h2>
+                    </div>
+
+                    @if($student)
+                        <div class="p-6">
+                            <!-- Avatar with Initial -->
+                            <div class="flex flex-col items-center mb-6">
+                                <div class="size-20 flex items-center justify-center rounded-2xl bg-blue-500 text-white text-2xl font-bold shadow-lg mb-3">
+                                    {{ !empty($data->student_name) ? strtoupper(substr($data->student_name, 0, 1)) : '?' }}
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800 dark:text-neutral-200 text-center">
+                                    {{ $student->name ?? 'N/A' }}
+                                </h3>
+                                <p class="text-xs text-gray-500 dark:text-neutral-500 mt-1">
+                                    Student ID: #{{ $student->nisn ?? 'N/A' }}
+                                </p>
+                            </div>
+
+                            <!-- Student Info -->
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-neutral-700/50 rounded-lg">
+                                    <div class="flex items-center gap-x-3">
+                                        <div class="size-10 flex items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                                            <svg class="size-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500 dark:text-neutral-500">NISN</p>
+                                            <p class="text-sm font-semibold text-gray-800 dark:text-neutral-200">
+                                                {{ $student->nisn ?? 'N/A' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-neutral-700/50 rounded-lg">
+                                    <div class="flex items-center gap-x-3">
+                                        <div class="size-10 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30">
+                                            <svg class="size-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500 dark:text-neutral-500">Kelas</p>
+                                            <p class="text-sm font-semibold text-gray-800 dark:text-neutral-200">
+                                                {{ $student->class_name ?? 'N/A' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="p-6">
+                            <div class="text-center text-gray-500 dark:text-neutral-500">
+                                <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                <p class="text-sm">Data siswa tidak tersedia</p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
         </div>
     @endif
 

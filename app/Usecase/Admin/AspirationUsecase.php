@@ -77,15 +77,18 @@ class AspirationUsecase
     public function getById(int $id): array
     {
         try {
-            $data = DB::table('complaints')
+            $data = DB::table(DatabaseConst::COMPLAINT)
                 ->leftJoin('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
                 ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('users', 'complaints.student_id', '=', 'users.id')
                 ->leftJoin('students', 'users.id', '=', 'students.user_id')
+                ->leftJoin('classrooms', 'students.classroom_id', '=', 'classrooms.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
                 ->select(
                     'complaints.id',
                     'users.name as student_name',
+                    'students.nisn',
+                    'classrooms.class_name',
                     'locations.name as location',
                     'complaints.description',
                     'complaints.image',
@@ -105,6 +108,11 @@ class AspirationUsecase
 
             return Response::buildSuccess([
                 'data' => $data,
+                'student' => (object) [
+                    'name' => $data->student_name,
+                    'nisn' => $data->nisn,
+                    'class_name' => $data->class_name,
+                ],
             ]);
         } catch (Exception $e) {
             Log::error('AspirationUsecase::getById - '.$e->getMessage());

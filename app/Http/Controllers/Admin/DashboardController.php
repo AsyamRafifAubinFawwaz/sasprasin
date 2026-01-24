@@ -13,15 +13,14 @@ class DashboardController extends Controller
         protected DashboardUsecase $usecase
     ) {}
 
-    public function index(): View|Response
+    public function index(\Illuminate\Http\Request $request): View|Response
     {
-        $response = $this->usecase->getStatistics();
+        $range = $request->get('range', '30_days');
+        $response = $this->usecase->getStatistics($range);
         $stats = $response['data'] ?? [
             'chart' => [
                 'categories' => [],
-                'pending' => [],
-                'in_progress' => [],
-                'done' => [],
+                'series' => [],
             ],
             'totals' => (object) [
                 'total' => 0,
@@ -33,6 +32,6 @@ class DashboardController extends Controller
             'latest' => [],
         ];
 
-        return view('_admin.dashboard', compact('stats'));
+        return view('_admin.dashboard', compact('stats', 'range'));
     }
 }

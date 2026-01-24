@@ -200,13 +200,39 @@ class ComplaintUsecase extends Usecase
                 ->where('id', $id)
                 ->update($update);
 
-            // Update aspirations table
-            DB::table('aspirations')
+            // Get current aspiration status before reset
+            $currentAspiration = DB::table('aspirations')
                 ->where('complaint_id', $id)
-                ->update([
-                    'updated_by' => Auth::user()?->id,
-                    'updated_at' => now(),
+                ->first();
+
+            if ($currentAspiration && $currentAspiration->status != ProgressConst::PENDING) {
+                // Update aspirations table to Pending
+                DB::table('aspirations')
+                    ->where('complaint_id', $id)
+                    ->update([
+                        'status' => ProgressConst::PENDING,
+                        'updated_by' => Auth::user()?->id,
+                        'updated_at' => now(),
+                    ]);
+
+                // Log status change
+                DB::table('aspiration_status_logs')->insert([
+                    'aspiration_id' => $currentAspiration->id,
+                    'old_status' => $currentAspiration->status,
+                    'new_status' => ProgressConst::PENDING,
+                    'note' => 'Otomatis kembali ke Pending karena aduan diedit oleh siswa.',
+                    'changed_by' => Auth::user()?->id,
+                    'created_at' => now(),
                 ]);
+            } else {
+                // Just update timestamps if already pending
+                DB::table('aspirations')
+                    ->where('complaint_id', $id)
+                    ->update([
+                        'updated_by' => Auth::user()?->id,
+                        'updated_at' => now(),
+                    ]);
+            }
 
             DB::commit();
 

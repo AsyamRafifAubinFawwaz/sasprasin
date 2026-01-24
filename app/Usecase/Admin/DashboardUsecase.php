@@ -13,44 +13,66 @@ use Illuminate\Support\Facades\Log;
 
 class DashboardUsecase extends Usecase
 {
-    public function getStatistics(): array
+    public function getStatistics(string $range = '30_days'): array
     {
         try {
-            // Get last 12 days dates
-            $dates = [];
-            for ($i = 11; $i >= 0; $i--) {
-                $dates[] = Carbon::now()->subDays($i)->format('Y-m-d');
-            }
+            $useMonthlyGrouping = $range === '1_year';
 
-            $stats = DB::table(DatabaseConst::COMPLAINT)
-                ->leftJoin(DatabaseConst::ASPIRATION, 'complaints.id', '=', 'aspirations.complaint_id')
-                ->select(
-                    DB::raw('DATE(complaints.created_at) as date'),
-                    DB::raw('SUM(CASE WHEN COALESCE(aspirations.status, '.ProgressConst::PENDING.') = '.ProgressConst::PENDING.' THEN 1 ELSE 0 END) as pending'),
-                    DB::raw('SUM(CASE WHEN aspirations.status = '.ProgressConst::IN_PROGRESS.' THEN 1 ELSE 0 END) as in_progress'),
-                    DB::raw('SUM(CASE WHEN aspirations.status = '.ProgressConst::DONE.' THEN 1 ELSE 0 END) as done')
-                )
-                ->where('complaints.created_at', '>=', Carbon::now()->subDays(11)->startOfDay())
-                ->whereNull('complaints.deleted_at')
-                ->groupBy('date')
-                ->get()
-                ->keyBy('date');
+            // Determine days/period based on range
+            $days = match ($range) {
+                '12_days' => 11,
+                '1_year' => 12, // months
+                default => 29, // 30_days
+            };
 
             $chartData = [
                 'categories' => [],
-                'pending' => [],
-                'in_progress' => [],
-                'done' => [],
+                'series' => [],
             ];
 
-            foreach ($dates as $date) {
-                $formattedDate = Carbon::parse($date)->format('d F Y');
-                $chartData['categories'][] = $formattedDate;
+            if ($useMonthlyGrouping) {
+                $months = [];
+                for ($i = $days - 1; $i >= 0; $i--) {
+                    $months[] = Carbon::now()->subMonths($i)->format('Y-m');
+                }
 
-                $dayStats = $stats->get($date);
-                $chartData['pending'][] = $dayStats ? (int) $dayStats->pending : 0;
-                $chartData['in_progress'][] = $dayStats ? (int) $dayStats->in_progress : 0;
-                $chartData['done'][] = $dayStats ? (int) $dayStats->done : 0;
+                $stats = DB::table(DatabaseConst::COMPLAINT)
+                    ->select(
+                        DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                        DB::raw('COUNT(*) as total')
+                    )
+                    ->where('created_at', '>=', Carbon::now()->subMonths($days - 1)->startOfMonth())
+                    ->whereNull('deleted_at')
+                    ->groupBy('month')
+                    ->get()
+                    ->keyBy('month');
+
+                foreach ($months as $month) {
+                    $chartData['categories'][] = Carbon::parse($month.'-01')->format('M Y');
+                    $chartData['series'][] = (int) (optional($stats->get($month))->total ?? 0);
+                }
+            } else {
+                // Get dates for the range
+                $dates = [];
+                for ($i = $days; $i >= 0; $i--) {
+                    $dates[] = Carbon::now()->subDays($i)->format('Y-m-d');
+                }
+
+                $stats = DB::table(DatabaseConst::COMPLAINT)
+                    ->select(
+                        DB::raw('DATE(created_at) as date'),
+                        DB::raw('COUNT(*) as total')
+                    )
+                    ->where('created_at', '>=', Carbon::now()->subDays($days)->startOfDay())
+                    ->whereNull('deleted_at')
+                    ->groupBy('date')
+                    ->get()
+                    ->keyBy('date');
+
+                foreach ($dates as $date) {
+                    $chartData['categories'][] = Carbon::parse($date)->format('d M Y');
+                    $chartData['series'][] = (int) (optional($stats->get($date))->total ?? 0);
+                }
             }
 
             $totals = DB::table(DatabaseConst::COMPLAINT)

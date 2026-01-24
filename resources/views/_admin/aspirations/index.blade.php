@@ -36,7 +36,8 @@
 
                     <div class="px-2 pt-0">
                         <div class="px-2 pt-0">
-                            <form method="GET" class="flex flex-col sm:flex-row gap-3" navigate-form>
+                            <form method="GET" action="{{ route('admin.aspirations.index') }}"
+                                class="flex flex-col sm:flex-row gap-3" navigate-form>
                                 <div class="flex flex-wrap gap-3">
 
                                     <div class="w-full sm:w-64">
@@ -58,13 +59,13 @@
 
                                     <div class="w-full sm:w-48">
                                         <select name="priority" data-hs-select='{
-                                                                                            "placeholder": "Semua Prioritas",
-                                                                                            "toggleTag": "<button type=\"button\"></button>",
-                                                                                            "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
-                                                                                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
-                                                                                            "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
-                                                                                            "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
-                                                                                        }'>
+                                                                                                    "placeholder": "Semua Prioritas",
+                                                                                                    "toggleTag": "<button type=\"button\"></button>",
+                                                                                                    "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+                                                                                                    "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                                                                                    "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                                                                                    "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                                                                                                }'>
                                             <option value="">Semua Prioritas</option>
                                             <option value="1" {{ request('priority') == 1 ? 'selected' : '' }}>Rendah</option>
                                             <option value="2" {{ request('priority') == 2 ? 'selected' : '' }}>Sedang</option>
@@ -74,13 +75,13 @@
 
                                     <div class="w-full sm:w-48">
                                         <select name="status" data-hs-select='{
-                                                                                            "placeholder": "Semua Status",
-                                                                                            "toggleTag": "<button type=\"button\"></button>",
-                                                                                            "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
-                                                                                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
-                                                                                            "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
-                                                                                            "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
-                                                                                        }'>
+                                                                                                    "placeholder": "Semua Status",
+                                                                                                    "toggleTag": "<button type=\"button\"></button>",
+                                                                                                    "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+                                                                                                    "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                                                                                    "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                                                                                    "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                                                                                                }'>
                                             <option value="">Semua Status</option>
                                             <option value="1" {{ request('status') == 1 ? 'selected' : '' }}>Pending</option>
                                             <option value="2" {{ request('status') == 2 ? 'selected' : '' }}>In Progress
