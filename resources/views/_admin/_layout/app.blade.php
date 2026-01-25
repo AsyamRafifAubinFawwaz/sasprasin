@@ -24,7 +24,7 @@
 
 <body>
     <header
-        class="inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] fixed w-full bg-white border-b border-gray-200 text-sm py-2.5 lg:py-0 xl:py-0 lg:ps-65 dark:bg-neutral-800 dark:border-neutral-700">
+        class="inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-48 fixed w-full bg-white border-b border-gray-200 text-sm py-2.5 lg:py-0 xl:py-0 lg:ps-65 dark:bg-neutral-800 dark:border-neutral-700">
         <nav class="px-4 sm:px-6 flex basis-full items-center w-full mx-auto">
             <div class="me-5 lg:me-0 lg:hidden flex items-center">
                 <button type="button"
@@ -54,7 +54,7 @@
 
     <!-- Content -->
     <div class="w-full lg:ps-64 bg-white dark:bg-neutral-900 min-h-screen">
-        <div id="main-content" class="p-2 2xl:px-25 px-3 md:px-8 pt-10 sm:p-6 space-y-4 sm:space-y-6">
+        <div id="main-content" class="p-2 2xl:px-25 px-3 md:px-8 pt-24 lg:pt-10 sm:p-6 space-y-4 sm:space-y-6">
             @if (session('success'))
                 <div id="spa-flash-success" style="display: none;">{{ session('success') }}</div>
             @endif

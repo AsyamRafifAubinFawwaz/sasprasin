@@ -43,7 +43,7 @@
         </div>
     @else
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div class="lg:col-span-2">
+            <div class="lg:col-span-2 order-2 lg:order-1">
                 <div class="bg-white overflow-hidden shadow-lg rounded-2xl dark:bg-neutral-800 border-2 border-gray-100 dark:border-neutral-700">
                     <div class="px-6 py-4 border-b border-gray-200 dark:border-neutral-700">
                         <h2 class="text-xl font-semibold text-gray-800 dark:text-neutral-200">
@@ -124,14 +124,16 @@
                             <div class="inline-block">
                                 @php
                                     $statusColors = [
-                                        1 => 'bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-500',
+                                        1 => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500',
                                         2 => 'bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500',
                                         3 => 'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500',
+                                        4 => 'bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500',
                                     ];
                                     $statusLabels = [
                                         1 => 'Pending',
                                         2 => 'In Progress',
                                         3 => 'Done',
+                                        4 => 'Rejected',
                                     ];
                                 @endphp
                                 <span class="px-4 py-2 rounded-lg text-sm font-semibold {{ $statusColors[$data->status] ?? 'bg-gray-100 text-gray-800' }}">
@@ -153,7 +155,7 @@
             </div>
 
             <!-- Kolom Kanan: Profil Pelapor -->
-            <div class="lg:col-span-1">
+            <div class="lg:col-span-1 order-1 lg:order-2">
                 <div class="bg-white overflow-hidden shadow-lg rounded-2xl dark:bg-neutral-800 border-2 border-gray-100 dark:border-neutral-700 sticky top-4">
                     <div class="px-6 py-4 border-b border-gray-200 dark:border-neutral-700">
                         <h2 class="text-lg font-semibold text-gray-800 dark:text-neutral-200">
@@ -226,7 +228,6 @@
         </div>
     @endif
 
-    {{-- Image Zoom Modal --}}
    <script>
         function zoomImage(event) {
             const img = event.currentTarget.querySelector('img');
@@ -284,7 +285,6 @@
                 const delta = e.deltaY < 0 ? 0.15 : -0.15;
                 const newScale = Math.min(Math.max(0.7, scale + delta), 8);
                 
-                // Allow intuitive zoom (smaller steps for lower zoom)
                 scale = newScale;
                 updateTransform();
             }, {
