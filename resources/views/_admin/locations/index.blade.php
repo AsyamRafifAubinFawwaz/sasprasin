@@ -15,12 +15,12 @@
 
         <div>
             <div class="inline-flex gap-x-2">
-                <a navigate
+                <button type="button"
                     class="py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-xl border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-orange-700 transition-all shadow-md shadow-orange-500/20 active:scale-95 cursor-pointer"
-                    href="{{ route('admin.locations.add') }}">
+                    data-hs-overlay="#add-modal">
                     @include('_admin._layout.icons.add')
                     Tambah Lokasi
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
                                 <div class="relative">
                                     <input type="text" name="keywords" id="keywords" value="{{ $keywords ?? '' }}"
                                         class="py-1 px-3 block w-full border-gray-200 rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900
-                                                placeholder-neutral-300 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                            placeholder-neutral-300 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                         placeholder="Cari Nama Lokasi">
                                 </div>
                             </div>
@@ -106,11 +106,12 @@
                                                         <td class="size-px whitespace-nowrap">
                                                             <div class="px-6 py-1.5 flex items-center gap-x-2 justify-end">
 
-                                                                <a navigate
-                                                                    class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
-                                                                    href="{{ route('admin.locations.update', $d->id) }}">
+                                                                <button type="button"
+                                                                    class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20 cursor-pointer"
+                                                                    data-hs-overlay="#edit-modal"
+                                                                    onclick="setEditData('{{ $d->id }}', '{{ $d->name }}')">
                                                                     @include('_admin._layout.icons.pencil')
-                                                                </a>
+                                                                </button>
                                                                 <button type="button"
                                                                     class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-red-100 text-red-800 hover:bg-red-200 focus:outline-none focus:bg-red-200 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:bg-red-800/30 dark:hover:bg-red-800/20 dark:focus:bg-red-800/20 cursor-pointer"
                                                                     title="Delete" data-hs-overlay="#delete-modal"
@@ -144,6 +145,32 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Add Modal -->
+                <x-admin.modal id="add-modal" title="Tambah Lokasi" formId="add-form"
+                    action="{{ route('admin.locations.do_create') }}">
+                    <div class="space-y-3">
+                        <div>
+                            <label for="name" class="block text-sm font-medium mb-2 dark:text-white">Nama Lokasi</label>
+                            <input type="text" name="name" id="name"
+                                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                placeholder="Masukkan nama lokasi" required>
+                        </div>
+                    </div>
+                </x-admin.modal>
+
+                <!-- Edit Modal -->
+                <x-admin.modal id="edit-modal" title="Edit Lokasi" formId="edit-form" method="POST">
+                    <div class="space-y-3">
+                        <div>
+                            <label for="edit-name" class="block text-sm font-medium mb-2 dark:text-white">Nama
+                                Lokasi</label>
+                            <input type="text" name="name" id="edit-name"
+                                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                placeholder="Masukkan nama lokasi" required>
+                        </div>
+                    </div>
+                </x-admin.modal>
 
                 <!-- Delete Confirmation Modal -->
                 <x-admin.modal id="delete-modal" title="Hapus Lokasi">
@@ -180,6 +207,11 @@
                 </x-admin.modal>
 
                 <script>
+                    function setEditData(id, name) {
+                        document.getElementById('edit-name').value = name;
+                        document.getElementById('edit-form').action = '{{ url('admin/locations/update') }}/' + id;
+                    }
+
                     function setDeleteData(id, name) {
                         document.getElementById('delete-item-name').textContent = name;
                         document.getElementById('delete-form').action = '{{ url('admin/locations/delete') }}/' + id;

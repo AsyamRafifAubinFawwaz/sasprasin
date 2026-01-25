@@ -3,6 +3,15 @@
 @section('title', 'Dashboard')
 
 @section('content')
+    <div class="mb-6">
+        <h1 class="text-3xl font-extrabold text-gray-800 dark:text-neutral-200">
+            Selamat Datang, {{ Auth::user()->name }}! 👋
+        </h1>
+        <p class="text-gray-500 dark:text-neutral-400 mt-1">
+            Senang melihat Anda kembali. Berikut adalah ringkasan laporan sarpras hari ini.
+        </p>
+    </div>
+
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <div
             class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
@@ -460,31 +469,31 @@
                                 const borderColor = mode === 'dark' ? '#404040' : '#e5e7eb';
 
                                 return `
-                                <div style="
-                                    background: ${bgColor};
-                                    border: 1px solid ${borderColor};
-                                    border-radius: 8px;
-                                    padding: 10px 12px;
-                                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                                    min-width: 140px;
-                                ">
                                     <div style="
-                                        font-size: 14px;
-                                        font-weight: 700;
-                                        color: ${textColor};
-                                        margin-bottom: 4px;
+                                        background: ${bgColor};
+                                        border: 1px solid ${borderColor};
+                                        border-radius: 8px;
+                                        padding: 10px 12px;
+                                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                                        min-width: 140px;
                                     ">
-                                        ${Math.floor(value)} Laporan
+                                        <div style="
+                                            font-size: 14px;
+                                            font-weight: 700;
+                                            color: ${textColor};
+                                            margin-bottom: 4px;
+                                        ">
+                                            ${Math.floor(value)} Laporan
+                                        </div>
+                                        <div style="
+                                            font-size: 12px;
+                                            color: ${secondaryTextColor};
+                                            font-weight: 400;
+                                        ">
+                                            ${titleStr}
+                                        </div>
                                     </div>
-                                    <div style="
-                                        font-size: 12px;
-                                        color: ${secondaryTextColor};
-                                        font-weight: 400;
-                                    ">
-                                        ${titleStr}
-                                    </div>
-                                </div>
-                            `;
+                                `;
                             },
                         },
                         responsive: [{

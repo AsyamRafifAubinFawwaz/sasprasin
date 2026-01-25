@@ -76,9 +76,7 @@ Route::middleware(['auth', 'role:1'])->prefix('admin')->name('admin.')->group(fu
 
     Route::prefix('locations')->name('locations.')->group(function () {
         Route::get('/', [LocationController::class, 'index'])->name('index');
-        Route::get('/add', [LocationController::class, 'add'])->name('add');
         Route::post('/create', [LocationController::class, 'doCreate'])->name('do_create');
-        Route::get('/update/{id}', [LocationController::class, 'update'])->name('update');
         Route::post('/update/{id}', [LocationController::class, 'doUpdate'])->name('do_update');
         Route::delete('/delete/{id}', [LocationController::class, 'delete'])->name('delete');
     });

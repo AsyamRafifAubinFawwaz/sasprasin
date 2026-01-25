@@ -13,17 +13,17 @@
                 Data {{ $page['title'] }}
             </h1>
             <p class="text-md text-gray-400 dark:text-neutral-400">
-                Pengguna Aplikasi
+                Data Administrator Sistem
             </p>
         </div>
 
         <div>
             <div class="inline-flex gap-x-2">
                 <a navigate
-                    class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none font-bolder"
+                    class="py-3 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-xl border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-orange-700 transition-all shadow-md shadow-orange-500/20 active:scale-95 cursor-pointer"
                     href="{{ route('admin.users.add') }}">
                     @include('_admin._layout.icons.add')
-                    Tambah Data
+                    Tambah Pengguna
                 </a>
             </div>
         </div>
@@ -33,7 +33,7 @@
             <div class="min-w-full inline-block align-middle">
                 <div class="overflow-hidden">
 
-                    <div class="px-2 pt-4">
+                    <div class="px-2 pt-0">
                         <form action="{{ route('admin.users.index') }}" method="GET" navigate-form
                             class="flex flex-col sm:flex-row gap-3">
                             <div class="sm:w-64">
@@ -41,30 +41,18 @@
                                 <div class="relative">
                                     <input type="text" name="keywords" id="keywords" value="{{ $keywords ?? '' }}"
                                         class="py-1 px-3 block w-full border-gray-200 rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 
-                                            placeholder-neutral-300 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                        placeholder="Nama atau Email">
+                                                placeholder-neutral-300 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                        placeholder="Cari Nama atau Email">
                                 </div>
-                            </div>
-                            <div class="sm:w-48">
-                                <select name="access_type"
-                                    class="py-1 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                                    <option value="all" {{ ($access_type ?? 'all') == 'all' ? 'selected' : '' }}>
-                                        Semua Hak Akses
-                                    </option>
-                                    <option value="admin" {{ ($access_type ?? '') == 'admin' ? 'selected' : '' }}>Admin
-                                    </option>
-                                    <option value="user" {{ ($access_type ?? '') == 'user' ? 'selected' : '' }}>User
-                                    </option>
-                                </select>
                             </div>
                             <div>
                                 <button type="submit"
-                                    class="py-1 px-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 cursor-pointer">
+                                    class="py-1 px-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-orange-600 cursor-pointer">
                                     @include('_admin._layout.icons.search')
                                     Cari
                                 </button>
-                                @if (!empty($keywords) || ($access_type ?? 'all') !== 'all')
-                                    <a class="py-1 px-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-blue-600 text-blue-600 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-50 disabled:opacity-50 disabled:pointer-events-none dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500/10 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 cursor-pointer"
+                                @if (!empty($keywords))
+                                    <a class="py-1 px-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-orange-600 text-orange-600 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 disabled:opacity-50 disabled:pointer-events-none dark:border-orange-500 dark:text-orange-500 dark:hover:bg-orange-500/10 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 cursor-pointer"
                                         href="{{ route('admin.users.index') }}">
                                         @include('_admin._layout.icons.reset')
                                         Reset
@@ -76,26 +64,23 @@
 
                     <div class="mx-0 my-4 overflow-x-auto border border-gray-200 rounded-lg dark:border-neutral-700">
                         <table class="w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                            <thead class=" dark:bg-neutral-800">
+                            <thead class="bg-gray-50 dark:bg-neutral-700">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-start">
-                                        <div class="flex items-center gap-x-2">
-                                            <span
-                                                class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
-                                                Nama
-                                            </span>
-                                        </div>
+                                        <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
+                                            No
+                                        </span>
                                     </th>
-
                                     <th scope="col" class="px-6 py-3 text-start">
-                                        <div class="flex items-center gap-x-2">
-                                            <span
-                                                class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
-                                                Hak Akses
-                                            </span>
-                                        </div>
+                                        <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
+                                            Nama
+                                        </span>
                                     </th>
-
+                                    <th scope="col" class="px-6 py-3 text-start">
+                                        <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
+                                            Email
+                                        </span>
+                                    </th>
                                     <th scope="col" class="px-6 py-3 text-end"></th>
                                 </tr>
                             </thead>
@@ -105,43 +90,37 @@
                                     <tr class="hover:bg-gray-100 dark:hover:bg-neutral-700">
                                         <td class="size-px whitespace-nowrap">
                                             <div class="px-6 py-3">
-                                                <div class="flex items-center gap-x-3">
-                                                    <span
-                                                        class="inline-flex items-center justify-center size-9.5 rounded-full bg-white border border-gray-300 dark:bg-neutral-800 dark:border-neutral-700">
-                                                        <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
-                                                            {{ strtoupper(substr($d->name, 0, 1)) }}
-                                                        </span>
-                                                    </span>
-                                                    <div class="grow">
-                                                        <span
-                                                            class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{{ $d->name }}</span>
-                                                        <span
-                                                            class="block text-sm text-gray-500 dark:text-neutral-500">{{ $d->email }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="h-px w-72 whitespace-nowrap">
-                                            <div class="px-6 py-3">
-                                                <span class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
-                                                    {{ UserConst::getAccessTypes()[$d->access_type] ?? '-' }}
-                                                </span>
+                                                <span
+                                                    class="block text-sm text-gray-800 dark:text-neutral-200">{{ $loop->iteration + ($data->firstItem() - 1) }}</span>
                                             </div>
                                         </td>
                                         <td class="size-px whitespace-nowrap">
-                                            <div class="px-6 py-1.5 flex items-center gap-x-1">
+                                            <div class="px-6 py-3">
+                                                <span
+                                                    class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{{ $d->name }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="size-px whitespace-nowrap">
+                                            <div class="px-6 py-3">
+                                                <span
+                                                    class="block text-sm text-gray-800 dark:text-neutral-200">{{ $d->email }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="size-px whitespace-nowrap">
+                                            <div class="px-6 py-1.5 flex items-center gap-x-2 justify-end">
+                                                <button type="button"
+                                                    class="p-2 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-yellow-100 text-yellow-800 hover:bg-yellow-200 focus:outline-none focus:bg-yellow-200 disabled:opacity-50 disabled:pointer-events-none dark:text-yellow-400 dark:bg-yellow-800/30 dark:hover:bg-yellow-800/20 dark:focus:bg-yellow-800/20 cursor-pointer"
+                                                    title="Reset Password" data-hs-overlay="#reset-password-modal"
+                                                    onclick="setResetPasswordData('{{ $d->id }}', '{{ $d->name }}')">
+                                                    @include('_admin._layout.icons.reset')
+                                                </button>
                                                 <a navigate
-                                                    class="inline-flex items-center justify-center size-8 text-sm font-semibold rounded-lg border border-gray-200 bg-white text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
-                                                    href="{{ route('admin.users.detail', $d->id) }}" title="View">
-                                                    @include('_admin._layout.icons.view_detail')
-                                                </a>
-                                                <a navigate
-                                                    class="inline-flex items-center justify-center size-8 text-sm font-semibold rounded-lg border border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:border-blue-300 focus:outline-none focus:bg-blue-100 disabled:opacity-50 disabled:pointer-events-none dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-500 dark:hover:bg-blue-800/30 dark:hover:border-blue-700"
-                                                    href="{{ route('admin.users.update', $d->id) }}" title="Edit">
+                                                    class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
+                                                    href="{{ route('admin.users.update', $d->id) }}">
                                                     @include('_admin._layout.icons.pencil')
                                                 </a>
                                                 <button type="button"
-                                                    class="inline-flex items-center justify-center size-8 text-sm font-semibold rounded-lg border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:border-red-300 focus:outline-none focus:bg-red-100 disabled:opacity-50 disabled:pointer-events-none dark:border-red-800 dark:bg-red-900/20 dark:text-red-500 dark:hover:bg-red-800/30 dark:hover:border-red-700 cursor-pointer"
+                                                    class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-red-100 text-red-800 hover:bg-red-200 focus:outline-none focus:bg-red-200 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:bg-red-800/30 dark:hover:bg-red-800/20 dark:focus:bg-red-800/20 cursor-pointer"
                                                     title="Delete" data-hs-overlay="#delete-modal"
                                                     onclick="setDeleteData('{{ $d->id }}', '{{ $d->name }}')">
                                                     @include('_admin._layout.icons.trash')
@@ -151,7 +130,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6"
+                                        <td colspan="4"
                                             class="px-6 py-4 text-center text-sm text-gray-500 dark:text-neutral-500">
                                             <x-admin.empty-state />
                                         </td>
@@ -207,10 +186,49 @@
         </x-slot>
     </x-admin.modal>
 
+    <!-- Reset Password Confirmation Modal -->
+    <x-admin.modal id="reset-password-modal" title="Reset Password">
+        <div class="text-center">
+            <span
+                class="mb-4 inline-flex justify-center items-center size-14 rounded-full border-4 border-yellow-50 bg-yellow-100 text-yellow-500 dark:bg-yellow-700 dark:border-yellow-600 dark:text-yellow-100">
+                @include('_admin._layout.icons.reset')
+            </span>
+
+            <h3 class="mb-2 text-xl font-bold text-gray-800 dark:text-neutral-200">
+                Reset Password
+            </h3>
+            <p class="text-gray-500 dark:text-neutral-500">
+                Apakah Anda yakin ingin mereset password <span id="reset-item-name"
+                    class="font-semibold text-gray-800 dark:text-neutral-200"></span>?
+                <br>Password akan direset menjadi default: <span class="font-bold text-blue-600">default</span>
+            </p>
+        </div>
+
+        <x-slot name="footer">
+            <button type="button"
+                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                data-hs-overlay="#reset-password-modal">
+                Batal
+            </button>
+            <form id="reset-form" method="POST" class="inline" navigate-form>
+                @csrf
+                <button type="submit"
+                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-yellow-600 text-white hover:bg-yellow-700 focus:outline-none focus:bg-yellow-700 disabled:opacity-50 disabled:pointer-events-none">
+                    Ya, Reset
+                </button>
+            </form>
+        </x-slot>
+    </x-admin.modal>
+
     <script>
         function setDeleteData(id, name) {
             document.getElementById('delete-user-name').textContent = name;
             document.getElementById('delete-form').action = '{{ url('admin/users/delete') }}/' + id;
+        }
+
+        function setResetPasswordData(id, name) {
+            document.getElementById('reset-item-name').textContent = name;
+            document.getElementById('reset-form').action = '{{ url('admin/users/reset-password') }}/' + id;
         }
     </script>
 @endsection

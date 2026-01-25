@@ -22,14 +22,14 @@ class UserController extends Controller
     public function __construct(
         protected UserUsecase $usecase
     ) {
-        $this->baseRedirect = 'admin/' . $this->page['route'];
+        $this->baseRedirect = 'admin/'.$this->page['route'];
     }
 
     public function index(Request $request): View|Response
     {
         $data = $this->usecase->getAll([
             'keywords' => $request->get('keywords'),
-            'access_type' => $request->get('access_type'),
+            'access_type' => \App\Constants\UserConst::ADMIN,
         ]);
         $data = $data['data']['list'] ?? [];
 
@@ -37,7 +37,6 @@ class UserController extends Controller
             'data' => $data,
             'page' => $this->page,
             'keywords' => $request->get('keywords'),
-            'access_type' => $request->get('access_type'),
         ]);
     }
 
@@ -53,8 +52,6 @@ class UserController extends Controller
         $process = $this->usecase->create(
             data: $request,
         );
-
-
 
         if ($process['success']) {
             return redirect()

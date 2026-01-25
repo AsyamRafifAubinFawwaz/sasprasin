@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserUsecase extends Usecase
 {
-    private const DEFAULT_PASSWORD = 'default';
+    private const DEFAULT_PASSWORD = 'password';
 
     public function __construct() {}
 
@@ -38,7 +38,6 @@ class UserUsecase extends Usecase
                 ->orderBy('created_at', 'desc')
                 ->paginate(20);
 
-            // Append filter parameters to pagination links
             if (! empty($filterData)) {
                 $data->appends($filterData);
             }
@@ -89,7 +88,6 @@ class UserUsecase extends Usecase
         $validator = Validator::make($data->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'access_type' => 'required',
         ]);
 
         $validator->validate();
@@ -100,9 +98,8 @@ class UserUsecase extends Usecase
                 ->insert([
                     'name' => $data['name'],
                     'email' => $data['email'],
-                    'access_type' => $data['access_type'],
+                    'access_type' => 1,
                     'password' => Hash::make(self::DEFAULT_PASSWORD),
-                    'is_active' => 1,
                     'created_by' => Auth::user()?->id,
                     'created_at' => now(),
                 ]);
@@ -136,7 +133,6 @@ class UserUsecase extends Usecase
         $update = [
             'name' => $data['name'],
             'email' => $data['email'],
-            'access_type' => $data['access_type'],
             'updated_by' => Auth::user()?->id,
             'updated_at' => now(),
         ];

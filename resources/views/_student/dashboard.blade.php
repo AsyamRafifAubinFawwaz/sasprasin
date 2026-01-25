@@ -4,6 +4,15 @@
 
 @section('content')
 
+    <div class="mb-6">
+        <h1 class="text-3xl font-extrabold text-gray-800 dark:text-neutral-200">
+            Halo, {{ Auth::user()->name }}! 👋
+        </h1>
+        <p class="text-gray-500 dark:text-neutral-400 mt-1">
+            Terima kasih telah berkontribusi untuk menjaga sarana dan prasarana sekolah kita.
+        </p>
+    </div>
+
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <div
             class="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
@@ -222,7 +231,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <script src="https://preline.co/assets/js/hs-apexcharts-helpers.js"></script>
-      
+
     @endpush
 
 @endsection

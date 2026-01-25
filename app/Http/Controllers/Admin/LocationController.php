@@ -39,13 +39,6 @@ class LocationController extends Controller
         ]);
     }
 
-    public function add(): View|Response
-    {
-        return view('_admin.locations.add', [
-            'page' => $this->page,
-        ]);
-    }
-
     public function doCreate(Request $request): RedirectResponse
     {
         $process = $this->usecase->create(
@@ -62,23 +55,6 @@ class LocationController extends Controller
             ->back()
             ->withInput()
             ->with('error', $process['message'] ?? ResponseConst::DEFAULT_ERROR_MESSAGE);
-    }
-
-    public function update(int $id): View|RedirectResponse|Response
-    {
-        $data = $this->usecase->getByID($id);
-
-        if (empty($data['data'])) {
-            return redirect()
-                ->intended($this->baseRedirect)
-                ->with('error', ResponseConst::DEFAULT_ERROR_MESSAGE);
-        }
-
-        return view('_admin.locations.update', [
-            'data' => $data['data']['data'],
-            'id' => $id,
-            'page' => $this->page,
-        ]);
     }
 
     public function doUpdate(int $id, Request $request): RedirectResponse
