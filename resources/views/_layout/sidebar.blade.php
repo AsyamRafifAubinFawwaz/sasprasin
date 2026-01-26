@@ -72,7 +72,7 @@
                             </button>
 
                             <div id="projects-accordion-child"
-                                class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.classrooms.*') || request()->routeIs('admin.facility-categories.*') ? 'block' : 'hidden' }}"
+                                class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.classrooms.*') || request()->routeIs('admin.facility-categories.*') || request()->routeIs('admin.locations.*') ? 'block' : 'hidden' }}"
                                 role="region" aria-labelledby="projects-accordion">
                                 <ul class="ps-8 pt-1 space-y-1">
                                     <li>

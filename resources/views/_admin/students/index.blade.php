@@ -195,6 +195,8 @@
             </div>
         </div>
     </div>
+
+    
     <x-admin.modal id="delete-modal" title="Hapus Data Siswa">
         <div class="text-center">
             <span

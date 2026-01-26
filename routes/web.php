@@ -57,9 +57,7 @@ Route::middleware(['auth', 'role:1'])->prefix('admin')->name('admin.')->group(fu
 
     Route::prefix('classrooms')->name('classrooms.')->group(function () {
         Route::get('/', [ClassroomController::class, 'index'])->name('index');
-        Route::get('/add', [ClassroomController::class, 'add'])->name('add');
         Route::post('/create', [ClassroomController::class, 'doCreate'])->name('do_create');
-        Route::get('/update/{id}', [ClassroomController::class, 'update'])->name('update');
         Route::post('/update/{id}', [ClassroomController::class, 'doUpdate'])->name('do_update');
         Route::delete('/delete/{id}', [ClassroomController::class, 'delete'])->name('delete');
     });
