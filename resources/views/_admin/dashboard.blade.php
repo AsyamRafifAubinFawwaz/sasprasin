@@ -196,10 +196,17 @@
                                     </div>
                                 </th>
 
+                                <th scope="col" class="ps-6 px-6 py-3 text-start">
+                                    <div class="flex items-center gap-x-2">
+                                        <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
+                                            Kategori
+                                        </span>
+                                    </div>
+                                </th>
                                 <th scope="col" class="px-6 py-3 text-start">
                                     <div class="flex items-center gap-x-2">
                                         <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
-                                            Kategori & Lokasi
+                                            Lokasi
                                         </span>
                                     </div>
                                 </th>
@@ -250,9 +257,18 @@
                                             <span class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
                                                 {{ $item->category_name }}
                                             </span>
-                                            <span class="block text-sm text-gray-500 dark:text-neutral-500">
-                                                {{ $item->location }}
-                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
+                                            <div class="flex items-center gap-x-3">
+                                                <div class="grow">
+                                                    <span
+                                                        class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
+                                                        {{ $item->location }}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="size-px whitespace-nowrap">

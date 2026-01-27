@@ -35,12 +35,8 @@
                 navigate-form>
 
                 <div class="relative w-64 max-w-full">
-                    <div
-                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-gray-400 dark:text-neutral-500">
-                        @include('_admin._layout.icons.search')
-                    </div>
                     <input type="text" name="search" value="{{ request('search') }}"
-                        class="py-2 px-3 ps-9 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 shadow-sm"
+                        class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 shadow-sm"
                         placeholder="Cari data...">
                 </div>
 

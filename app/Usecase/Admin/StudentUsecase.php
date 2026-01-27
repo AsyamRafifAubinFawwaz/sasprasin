@@ -19,9 +19,9 @@ class StudentUsecase extends Usecase
     public function getAll(array $filterData = []): array
     {
         try {
-            $query = DB::table(DatabaseConst::STUDENT.' as s')
-                ->join(DatabaseConst::USER.' as u', 's.user_id', '=', 'u.id')
-                ->leftJoin(DatabaseConst::CLASSROOM.' as c', 's.classroom_id', '=', 'c.id')
+            $query = DB::table(DatabaseConst::STUDENT . ' as s')
+                ->join(DatabaseConst::USER . ' as u', 's.user_id', '=', 'u.id')
+                ->leftJoin(DatabaseConst::CLASSROOM . ' as c', 's.classroom_id', '=', 'c.id')
                 ->whereNull('s.deleted_at')
                 ->select(
                     's.id',
@@ -33,19 +33,19 @@ class StudentUsecase extends Usecase
                     's.created_at'
                 )
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
-                    return $query->where('u.name', 'like', '%'.$keywords.'%');
+                    return $query->where('u.name', 'like', '%' . $keywords . '%');
                 })
                 ->when($filterData['classroom_id'] ?? false, function ($query, $classroomId) {
                     return $query->where('s.classroom_id', $classroomId);
                 })
                 ->orderBy('s.created_at', 'desc');
 
-            if (! empty($filterData['no_pagination'])) {
+            if (!empty($filterData['no_pagination'])) {
                 $data = $query->get();
             } else {
                 $data = $query->paginate(20);
 
-                if (! empty($filterData)) {
+                if (!empty($filterData)) {
                     $data->appends($filterData);
                 }
             }
@@ -73,10 +73,11 @@ class StudentUsecase extends Usecase
         $validator = Validator::make($data->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'nisn' => 'required|int|max:10 ',
+            'nisn' => 'required|digits:10|unique:students,nisn',
             'classroom_id' => 'required|exists:classrooms,id',
         ], [
-            'nisn.max' => 'NISN harus memiliki maksimal 10 karakter',
+            'nisn.digits' => 'NISN harus memiliki 10 digit',
+            'nisn.unique' => 'NISN sudah terdaftar',
         ]);
 
         $validator->validate();
@@ -118,8 +119,8 @@ class StudentUsecase extends Usecase
     {
         try {
 
-            $data = DB::table(DatabaseConst::STUDENT.' as s')
-                ->join(DatabaseConst::USER.' as u', 's.user_id', '=', 'u.id')
+            $data = DB::table(DatabaseConst::STUDENT . ' as s')
+                ->join(DatabaseConst::USER . ' as u', 's.user_id', '=', 'u.id')
                 ->whereNull('s.deleted_at')
                 ->where('s.id', $id)
                 ->select(
@@ -129,7 +130,7 @@ class StudentUsecase extends Usecase
                 )
                 ->first();
 
-            if (! $data) {
+            if (!$data) {
                 return Response::buildErrorNotFound('Data siswa tidak ditemukan');
             }
 
@@ -150,9 +151,11 @@ class StudentUsecase extends Usecase
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'classroom_id' => 'required|exists:classrooms,id',
-            'nisn' => 'required|int|max:10',
+            'nisn' => 'required|digits:10|unique:students,nisn,' . $id,
+
         ], [
-            'nisn.max' => 'NISN harus memiliki maksimal 10 karakter',
+            'nisn.digits' => 'NISN harus memiliki 10 digit',
+            'nisn.unique' => 'NISN sudah terdaftar',
         ]);
 
         $validator->validate();
@@ -164,7 +167,7 @@ class StudentUsecase extends Usecase
                 ->whereNull('deleted_at')
                 ->first();
 
-            if (! $student) {
+            if (!$student) {
                 throw new Exception('Data siswa tidak ditemukan');
             }
 
@@ -208,7 +211,7 @@ class StudentUsecase extends Usecase
                 ->whereNull('deleted_at')
                 ->first();
 
-            if (! $student) {
+            if (!$student) {
                 throw new Exception('Data siswa tidak ditemukan');
             }
 

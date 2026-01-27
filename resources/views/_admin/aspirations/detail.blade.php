@@ -52,6 +52,10 @@
                     </div>
 
                     <div class="p-6 space-y-6">
+                         <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Nama Siswa</label>
+                            <p class="text-gray-600 dark:text-neutral-400">{{ $data->student_name ?? 'N/A' }}</p>
+                        </div>
                         @if ($data->image)
                             <div>
                                 <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Gambar</label>
@@ -74,11 +78,6 @@
                         <div>
                             <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Lokasi</label>
                             <p class="text-gray-600 dark:text-neutral-400">{{ $data->location }}</p>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Nama Siswa</label>
-                            <p class="text-gray-600 dark:text-neutral-400">{{ $data->student_name ?? 'N/A' }}</p>
                         </div>
 
                         <div>
