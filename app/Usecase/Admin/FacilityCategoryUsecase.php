@@ -10,7 +10,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,8 +21,9 @@ class FacilityCategoryUsecase extends Usecase
             $query = DB::table(DatabaseConst::FACILITY_CATEGORY)
                 ->whereNull('deleted_at')
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
-                    return $query->where('name', 'like', '%' . $keywords . '%')
-                        ->where('priority', 'like', '%' . $keywords . '%');
+                    return $query->where('name', 'like', '%'.$keywords.'%')
+                        ->where('priority', 'like', '%'.$keywords.'%')
+                        ->where('example_items', 'like', '%'.$keywords.'%');
                 })
                 ->when($filterData['priority_level'] ?? false, function ($query, $priorityLevel) {
                     return $query->where('priority', '=', $priorityLevel);
@@ -57,11 +57,13 @@ class FacilityCategoryUsecase extends Usecase
             return Response::buildErrorService($e->getMessage());
         }
     }
+
     public function create(Request $data): array
     {
         $validator = Validator::make($data->all(), [
             'name' => 'required|string|max:255',
             'priority' => 'required|int',
+            'example_items' => 'required|string',
 
         ]);
 
@@ -69,7 +71,7 @@ class FacilityCategoryUsecase extends Usecase
 
         DB::beginTransaction();
         try {
-            $payload = $data->only(['name', 'priority']);
+            $payload = $data->only(['name', 'priority', 'example_items']);
             $payload['created_by'] = Auth::user()?->id;
             $payload['created_at'] = now();
             $payload['updated_at'] = now();
@@ -101,7 +103,7 @@ class FacilityCategoryUsecase extends Usecase
                 ->whereNull('deleted_at')
                 ->first();
 
-            if (!$data) {
+            if (! $data) {
                 return Response::buildErrorService(ResponseConst::ERROR_MESSAGE_NOT_FOUND);
             }
 
@@ -111,6 +113,7 @@ class FacilityCategoryUsecase extends Usecase
             );
         } catch (Exception $e) {
             Log::error($e->getMessage(), ['method' => __METHOD__]);
+
             return Response::buildErrorService($e->getMessage());
         }
     }
@@ -120,6 +123,7 @@ class FacilityCategoryUsecase extends Usecase
         $validator = Validator::make($data->all(), [
             'name' => 'required|string|max:255',
             'priority' => 'required|int',
+            'example_items' => 'required|string',
 
         ]);
 
@@ -128,6 +132,7 @@ class FacilityCategoryUsecase extends Usecase
         $update = [
             'name' => $data['name'],
             'priority' => $data['priority'],
+            'example_items' => $data['example_items'],
             'updated_by' => Auth::user()?->id,
             'updated_at' => now(),
         ];
@@ -145,11 +150,10 @@ class FacilityCategoryUsecase extends Usecase
             DB::rollback();
 
             Log::error($e->getMessage(), ['method' => __METHOD__]);
+
             return Response::buildErrorService($e->getMessage());
         }
     }
-
-
 
     public function delete(int $id): array
     {
@@ -170,6 +174,7 @@ class FacilityCategoryUsecase extends Usecase
         } catch (Exception $e) {
             DB::rollback();
             Log::error($e->getMessage(), ['method' => __METHOD__]);
+
             return Response::buildErrorService($e->getMessage());
         }
     }

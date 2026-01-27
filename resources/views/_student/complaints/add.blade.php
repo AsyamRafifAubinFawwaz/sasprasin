@@ -38,7 +38,7 @@
                             <option value="">Pilih Kategori</option>
                             @foreach ($facility as $category)
                                 <option value="{{ $category->id }}" {{ old('facility_category_id') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
+                                    {{ $category->name }} {{ $category->example_items ? '(Contoh: ' . $category->example_items . ')' : '' }}
                                 </option>
                             @endforeach
                         </select>

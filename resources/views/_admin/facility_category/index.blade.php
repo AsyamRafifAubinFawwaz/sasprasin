@@ -107,7 +107,12 @@
                                                         </span>
                                                     </th>
 
-
+                                                    <th scope="col" class="px-6 py-3 text-start">
+                                                        <span
+                                                            class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
+                                                            Contoh Barang
+                                                        </span>
+                                                    </th>
                                                     <th scope="col" class="px-6 py-3 text-end"></th>
                                                 </tr>
                                             </thead>
@@ -127,7 +132,7 @@
                                                                     class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{{ $d->name }}</span>
                                                             </div>
                                                         </td>
-                                                          <td class="size-px whitespace-nowrap">
+                                                        <td class="size-px whitespace-nowrap">
                                             <div class="px-6 py-3">
                                                 @if ($d->priority == \App\Constants\PriorityConst::LOW)
                                                     <span
@@ -141,9 +146,15 @@
                                                 @endif
                                             </div>
                                         </td>
+                                                        <td class="size-px whitespace-nowrap">
+                                                            <div class="px-6 py-3">
+                                                                <span
+                                                                    class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{{ $d->example_items }}</span>
+                                                            </div>
+                                                        </td>
                                             </div>
                                         </td>
-
+    
                                                         <td class="size-px whitespace-nowrap">
                                                             <div class="px-6 py-1.5 flex items-center gap-x-2 justify-end">
 

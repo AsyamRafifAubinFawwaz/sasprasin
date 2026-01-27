@@ -202,7 +202,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.error("SPA Load Error:", error);
-                window.location.href = url; 
+                window.location.href = url;
             },
         });
     }
@@ -352,21 +352,30 @@ $(document).ready(function () {
     };
 
     // Global function for creating toast nodes
-    function getToastNode(message) {
+    function getToastNode(message, type = "success") {
+        const isError = type === "error";
+        const themeClass = isError
+            ? "border-red-500 dark:border-red-400"
+            : "border-teal-500 dark:border-teal-400";
+        const iconBgClass = isError
+            ? "bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500"
+            : "bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500";
+        const title = isError ? "Failed!" : "Succeed!";
+        const icon = isError
+            ? `<svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+            : `<svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m9 12 2 2 4-4"></path></svg>`;
+
         var html = `
-        <div class="animate-toast-pop max-w-sm w-full bg-white border-l-4 border-teal-500 rounded-r-xl shadow-2xl dark:bg-neutral-800 dark:border-teal-400" role="alert">
+        <div class="animate-toast-pop max-w-sm w-full bg-white border-l-4 ${themeClass} rounded-r-xl shadow-2xl dark:bg-neutral-800" role="alert">
             <div class="flex p-4">
                 <div class="shrink-0">
-                    <span class="inline-flex justify-center items-center size-8 rounded-full bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
-                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                            <path d="m9 12 2 2 4-4"></path>
-                        </svg>
+                    <span class="inline-flex justify-center items-center size-8 rounded-full ${iconBgClass}">
+                        ${icon}
                     </span>
                 </div>
                 <div class="ms-3">
                     <h3 class="text-gray-800 font-semibold text-sm dark:text-white">
-                        Succeed!
+                        ${title}
                     </h3>
                     <p class="text-sm text-gray-700 dark:text-neutral-400">
                         ${message}
@@ -449,17 +458,24 @@ $(document).ready(function () {
                     // handleSpaResponse doesn't return the parsed DOM, so we parse again or rely on the inserted DOM.
                     // Since handleSpaResponse just updated the DOM, we can just look for the element in document!
                     // Wait, handleSpaResponse replaces #main-content. So #spa-flash-success should be in document now if it was in the response.
-                    var apiMessage = $("#spa-flash-success").text();
-                    var toastMessage = apiMessage
-                        ? apiMessage.trim()
-                        : method.toUpperCase() === "GET"
-                          ? ""
-                          : "Form submitted successfully";
+                    var successMessage = $("#spa-flash-success").text();
+                    var errorMessage = $("#spa-flash-error").text();
+
+                    var toastMessage = successMessage
+                        ? successMessage.trim()
+                        : errorMessage
+                          ? errorMessage.trim()
+                          : null;
+                    var toastType = errorMessage ? "error" : "success";
+
+                    if (!toastMessage && method.toUpperCase() !== "GET") {
+                        toastMessage = "Form submitted successfully";
+                    }
 
                     // Show Toast Notification
                     if (window.Toastify && toastMessage) {
                         Toastify({
-                            node: getToastNode(toastMessage),
+                            node: getToastNode(toastMessage, toastType),
 
                             duration: 3000,
                             className: "p-0",

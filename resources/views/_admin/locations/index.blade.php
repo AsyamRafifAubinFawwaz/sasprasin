@@ -146,7 +146,6 @@
                     </div>
                 </div>
 
-                <!-- Add Modal -->
                 <x-admin.modal id="add-modal" title="Tambah Lokasi" formId="add-form"
                     action="{{ route('admin.locations.do_create') }}">
                     <div class="space-y-3">
@@ -159,7 +158,6 @@
                     </div>
                 </x-admin.modal>
 
-                <!-- Edit Modal -->
                 <x-admin.modal id="edit-modal" title="Edit Lokasi" formId="edit-form" method="POST">
                     <div class="space-y-3">
                         <div>
@@ -172,7 +170,6 @@
                     </div>
                 </x-admin.modal>
 
-                <!-- Delete Confirmation Modal -->
                 <x-admin.modal id="delete-modal" title="Hapus Lokasi">
                     <div class="text-center">
                         <span

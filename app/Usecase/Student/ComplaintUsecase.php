@@ -23,7 +23,7 @@ class ComplaintUsecase extends Usecase
                 ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
                 ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
-                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
+                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'facility_categories.example_items', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
                 ->whereNull('complaints.deleted_at')
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
                     return $query->where(function ($q) use ($keywords) {
@@ -133,7 +133,7 @@ class ComplaintUsecase extends Usecase
                 ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
                 ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
-                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'aspirations.id as aspiration_id', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
+                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'facility_categories.example_items', 'aspirations.id as aspiration_id', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
                 ->where('complaints.id', $id)
                 ->whereNull('complaints.deleted_at')
                 ->first();
@@ -284,7 +284,7 @@ class ComplaintUsecase extends Usecase
                 )
                 ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
-                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
+                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'facility_categories.example_items', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
                 ->where('complaints.student_id', $studentId)
                 ->whereNull('complaints.deleted_at')
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {

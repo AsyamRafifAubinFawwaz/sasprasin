@@ -7,6 +7,7 @@ use App\Constants\ResponseConst;
 use App\Http\Presenter\Response;
 use App\Usecase\Usecase;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -152,6 +153,15 @@ class LocationUsecase extends Usecase
             return Response::buildSuccess(
                 message: ResponseConst::SUCCESS_MESSAGE_DELETED
             );
+        } catch (QueryException $e) {
+            DB::rollback();
+            Log::error($e->getMessage(), ['method' => __METHOD__]);
+
+            if ($e->errorInfo[1] == 1451) {
+                return Response::buildErrorService(ResponseConst::ERROR_MESSAGE_DELETE_CONSTRAINT);
+            }
+
+            return Response::buildErrorService($e->getMessage());
         } catch (Exception $e) {
             DB::rollback();
             Log::error($e->getMessage(), ['method' => __METHOD__]);

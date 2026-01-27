@@ -149,6 +149,11 @@
                                             <div class="px-6 py-3">
                                                 <span
                                                     class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{{ $d->category_name ?? 'N/A' }}</span>
+                                                @if($d->example_items)
+                                                    <span class="block text-xs text-gray-400 dark:text-neutral-500 italic">
+                                                        Contoh: {{ $d->example_items }}
+                                                    </span>
+                                                @endif
                                             </div>
                                         </td>
                                         <td class="size-px whitespace-nowrap">

@@ -35,15 +35,16 @@
 
                         <select name="facility_category_id" id="facility_category_id"
                             class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm
-                                        focus:border-blue-500 focus:ring-blue-500
-                                        dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400
-                                        @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" required>
+                                            focus:border-blue-500 focus:ring-blue-500
+                                            dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400
+                                            @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" required>
 
                             <option value="">Pilih Kategori</option>
 
                             @foreach ($facility as $category)
                                 <option value="{{ $category->id }}" {{ old('facility_category_id', $data->facility_category_id) == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
+                                    {{ $category->example_items ? '(Contoh: ' . $category->example_items . ')' : '' }}
                                 </option>
                             @endforeach
                         </select>

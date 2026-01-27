@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    @include('_admin._layout.favicon')
+
     <title>{{ env('APP_ENV') == 'local' ? '[LOCAL] ' : '' }}Laravel Starter Kit - @yield('title')</title>
 
     <!-- Fonts -->
@@ -23,15 +25,16 @@
 </head>
 
 <body>
-    <!-- ========== HEADER ========== -->
     @include('_landing._layout.navbar')
-    <!-- ========== END HEADER ========== -->
 
     <!-- Content -->
     <div class="w-full ">
         <div id="main-content" class="">
             @if (session('success'))
                 <div id="spa-flash-success" style="display: none;">{{ session('success') }}</div>
+            @endif
+            @if (session('error'))
+                <div id="spa-flash-error" style="display: none;">{{ session('error') }}</div>
             @endif
             @yield('content')
         </div>

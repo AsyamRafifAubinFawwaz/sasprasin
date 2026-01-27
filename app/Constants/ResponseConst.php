@@ -35,4 +35,6 @@ class ResponseConst
     const ERROR_MESSAGE_VALIDATION = 'Data tidak valid';
 
     const DEFAULT_ERROR_MESSAGE = 'Maaf Terjadi kesalahan, silakan coba lagi atau hubungi tim pengembang!';
+
+    const ERROR_MESSAGE_DELETE_CONSTRAINT = 'Data tidak bisa dihapus karena sedang digunakan di tabel lain!';
 }

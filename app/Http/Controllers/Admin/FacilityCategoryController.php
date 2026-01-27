@@ -6,9 +6,6 @@ use App\Constants\PriorityConst;
 use App\Constants\ResponseConst;
 use App\Http\Controllers\Controller;
 use App\Usecase\Admin\FacilityCategoryUsecase;
-use App\Usecase\ClassroomUsecase;
-use App\Usecase\SchoolUsecase;
-use App\Usecase\StudentUsecase;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +23,7 @@ class FacilityCategoryController extends Controller
     public function __construct(
         protected FacilityCategoryUsecase $usecase,
     ) {
-        $this->baseRedirect = 'admin/' . $this->page['route'];
+        $this->baseRedirect = 'admin/'.$this->page['route'];
     }
 
     public function index(Request $request): View|Response
@@ -34,6 +31,7 @@ class FacilityCategoryController extends Controller
         $data = $this->usecase->getAll([
             'keywords' => $request->get('keywords'),
             'priority_level' => $request->get('priority_level'),
+            'example_items' => $request->get('example_items'),
         ]);
         $data = $data['data']['list'] ?? [];
 
@@ -45,6 +43,7 @@ class FacilityCategoryController extends Controller
             'page' => $this->page,
             'keywords' => $request->get('keywords'),
             'priority_level' => $request->get('priority_level'),
+            'example_items' => $request->get('example_items'),
             'priority' => PriorityConst::getList(),
         ]);
     }
@@ -61,7 +60,7 @@ class FacilityCategoryController extends Controller
     {
         $process = $this->usecase->create(
             data: $request,
-        );;
+        );
 
         if ($process['success']) {
             return redirect()
@@ -86,7 +85,7 @@ class FacilityCategoryController extends Controller
         }
 
         return view('_admin.facility_category.update', [
-           'data' => $data['data']['data'],
+            'data' => $data['data']['data'],
             'priority' => PriorityConst::getList(),
             'id' => $id,
             'page' => $this->page,

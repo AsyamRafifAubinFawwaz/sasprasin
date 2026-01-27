@@ -31,12 +31,13 @@ class AspirationUsecase
                     'complaints.created_at',
                     'facility_categories.name as category_name',
                     'facility_categories.priority',
+                    'facility_categories.example_items',
                     'aspirations.status',
                     'aspirations.feedback'
                 )
                 ->whereNull('complaints.deleted_at');
 
-            if (! empty($filter['status'])) {
+            if (!empty($filter['status'])) {
                 if ($filter['status'] == 1) {
                     $query->where(function ($q) {
                         $q->where('aspirations.status', 1)
@@ -48,19 +49,19 @@ class AspirationUsecase
 
             }
 
-            if (! empty($filter['priority'])) {
+            if (!empty($filter['priority'])) {
                 $query->where('facility_categories.priority', $filter['priority']);
             }
 
-            if (! empty($filter['search'])) {
+            if (!empty($filter['search'])) {
                 $query->where(function ($q) use ($filter) {
-                    $q->where('users.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('locations.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('complaints.description', 'like', '%'.$filter['search'].'%');
+                    $q->where('users.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('locations.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('complaints.description', 'like', '%' . $filter['search'] . '%');
                 });
             }
 
-            if (! empty($filter['date'])) {
+            if (!empty($filter['date'])) {
                 $query->whereDate('complaints.created_at', $filter['date']);
             }
 
@@ -95,6 +96,7 @@ class AspirationUsecase
                     'complaints.created_at',
                     DB::raw('COALESCE(facility_categories.name, "Tidak ada kategori") as category_name'),
                     DB::raw('COALESCE(facility_categories.priority, 1) as priority'),
+                    DB::raw('COALESCE(facility_categories.example_items, "Tidak ada contoh") as example_items'),
                     DB::raw('COALESCE(aspirations.status, 1) as status'),
                     'aspirations.feedback'
                 )
@@ -102,7 +104,7 @@ class AspirationUsecase
                 ->whereNull('complaints.deleted_at')
                 ->first();
 
-            if (! $data) {
+            if (!$data) {
                 return Response::buildErrorService(ResponseConst::ERROR_MESSAGE_NOT_FOUND);
             }
 
@@ -115,7 +117,7 @@ class AspirationUsecase
                 ],
             ]);
         } catch (Exception $e) {
-            Log::error('AspirationUsecase::getById - '.$e->getMessage());
+            Log::error('AspirationUsecase::getById - ' . $e->getMessage());
 
             return Response::buildErrorService($e->getMessage());
         }
@@ -188,7 +190,7 @@ class AspirationUsecase
                 )
                 ->whereNull('complaints.deleted_at');
 
-            if (! empty($filter['status'])) {
+            if (!empty($filter['status'])) {
                 if ($filter['status'] == 1) {
                     $query->where(function ($q) {
                         $q->where('aspirations.status', 1)
@@ -199,34 +201,34 @@ class AspirationUsecase
                 }
             }
 
-            if (! empty($filter['priority'])) {
+            if (!empty($filter['priority'])) {
                 $query->where('facility_categories.priority', $filter['priority']);
             }
 
-            if (! empty($filter['search'])) {
+            if (!empty($filter['search'])) {
                 $query->where(function ($q) use ($filter) {
-                    $q->where('users.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('locations.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('complaints.description', 'like', '%'.$filter['search'].'%');
+                    $q->where('users.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('locations.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('complaints.description', 'like', '%' . $filter['search'] . '%');
                 });
             }
 
-            if (! empty($filter['export_all'])) {
+            if (!empty($filter['export_all'])) {
                 // Ignore all filters if export_all is checked
                 return Response::buildSuccess([
                     'list' => $query->orderByDesc('complaints.created_at')->get(),
                 ]);
             }
 
-            if (! empty($filter['date'])) {
+            if (!empty($filter['date'])) {
                 $query->whereDate('complaints.created_at', $filter['date']);
             }
 
-            if (! empty($filter['start_date'])) {
+            if (!empty($filter['start_date'])) {
                 $query->whereDate('complaints.created_at', '>=', $filter['start_date']);
             }
 
-            if (! empty($filter['end_date'])) {
+            if (!empty($filter['end_date'])) {
                 $query->whereDate('complaints.created_at', '<=', $filter['end_date']);
             }
 
