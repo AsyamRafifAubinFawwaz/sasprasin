@@ -24,74 +24,62 @@
             </div>
         </div>
     </div>
-    <!--
-            @if (session('success'))
-    <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg dark:bg-green-900/20 dark:border-green-700">
-                    <p class="text-sm text-green-800 dark:text-green-200">{{ session('success') }}</p>
-                </div>
-    @endif
 
-            @if (session('error'))
-    <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg dark:bg-red-900/20 dark:border-red-700">
-                    <p class="text-sm text-red-800 dark:text-red-200">{{ session('error') }}</p>
-                </div>
-    @endif -->
+    <div class="flex flex-col gap-4">
+        <div class="px-2 pt-2">
+            <form action="{{ route('admin.students.index') }}" method="GET" navigate-form
+                class="flex flex-wrap items-center gap-3">
 
-    <div class="flex flex-col">
+                <div class="relative w-64 max-w-full">
+                    <div
+                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-gray-400 dark:text-neutral-500 text-sm">
+                        @include('_admin._layout.icons.search')
+                    </div>
+                    <input type="text" name="keywords" id="keywords" value="{{ $keywords ?? '' }}"
+                        class="py-2 px-3 ps-9 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 shadow-sm"
+                        placeholder="Cari Nama Siswa">
+                </div>
+
+                <div class="w-48 max-w-full">
+                    <select name="classroom_id" data-hs-select='{
+                            "placeholder": "Semua Kelas",
+                            "toggleTag": "<button type=\"button\"></button>",
+                            "toggleClasses": "py-2 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm",
+                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                            "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                            "optionSelectedClasses": "bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-400"
+                        }'>
+                        <option value="">Semua Kelas</option>
+                        @foreach ($classrooms as $class)
+                            <option value="{{ $class->id }}"
+                                {{ ($classroom_id ?? request('classroom_id')) == $class->id ? 'selected' : '' }}>
+                                {{ $class->display_name ?? $class->class_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button type="submit"
+                        class="py-2 px-6 text-sm font-bold rounded-lg bg-orange-600 text-white hover:bg-orange-700 cursor-pointer flex items-center justify-center gap-x-2 transition-all active:scale-95 shadow-md shadow-orange-500/20">
+                        @include('_admin._layout.icons.search')
+                        Cari
+                    </button>
+
+                    @if (!empty($keywords) || !empty($classroom_id))
+                        <a class="py-2 px-4 text-sm font-semibold rounded-lg border border-orange-600/20 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/10 cursor-pointer flex items-center justify-center gap-x-2 transition-all active:scale-95"
+                            href="{{ route('admin.students.index') }}">
+                            @include('_admin._layout.icons.reset')
+                            Reset
+                        </a>
+                    @endif
+                </div>
+            </form>
+        </div>
+
         <div class="overflow-x-auto">
             <div class="min-w-full inline-block align-middle">
                 <div class="overflow-hidden">
-
-                    <div class="px-2 pt-0">
-                        <form action="{{ route('admin.students.index') }}" method="GET" navigate-form
-                            class="flex flex-col sm:flex-row gap-3">
-                            <div class="sm:w-64">
-                                <label for="keywords" class="sr-only">Search</label>
-                                <div class="relative">
-                                    <input type="text" name="keywords" id="keywords" value="{{ $keywords ?? '' }}"
-                                        class="py-1 px-3 block w-full border-gray-200 rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900
-                                        placeholder-neutral-300 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                        placeholder="Cari Nama Siswa">
-                                </div>
-                            </div>
-                            <div class="sm:w-48">
-                                <select name="classroom_id"
-                                    data-hs-select='{
-            "placeholder": "Semua Kelas",
-            "toggleTag": "<button type=\"button\"></button>",
-            "toggleClasses": "py-1 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
-            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
-            "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
-            "optionSelectedClasses": "bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-400"
-        }'>
-                                    <option value="">Semua Kelas</option>
-
-                                    @foreach ($classrooms as $class)
-                                        <option value="{{ $class->id }}"
-                                            {{ ($classroom_id ?? request('classroom_id')) == $class->id ? 'selected' : '' }}>
-                                            {{ $class->display_name ?? $class->class_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-
-                            <div>
-                                <button type="submit"
-                                    class="py-1 px-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-orange-600 cursor-pointer">
-                                    @include('_admin._layout.icons.search')
-                                    Cari
-                                </button>
-                                @if (!empty($keywords) || !empty($classroom_id))
-                                    <a class="py-1 px-3 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-orange-600 text-orange-600 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 disabled:opacity-50 disabled:pointer-events-none dark:border-orange-500 dark:text-orange-500 dark:hover:bg-orange-500/10 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 cursor-pointer"
-                                        href="{{ route('admin.students.index') }}">
-                                        @include('_admin._layout.icons.reset')
-                                        Reset
-                                    </a>
-                                @endif
-                            </div>
-                        </form>
-                    </div>
 
                     <div class="mx-0 my-4 overflow-x-auto border border-gray-200 rounded-lg dark:border-neutral-700">
                         <table class="w-full divide-y divide-gray-200 dark:divide-neutral-700">

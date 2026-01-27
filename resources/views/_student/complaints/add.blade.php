@@ -109,17 +109,38 @@
                         {{-- Upload Section --}}
                         <div id="upload-section" class="upload-area">
                             <div id="drop-zone"
-                                class="border-2 border-dashed border-gray-300 dark:border-neutral-600 rounded-lg p-8 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer">
-                                <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-neutral-500" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                </svg>
-                                <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-                                    <span class="font-semibold text-blue-600 dark:text-blue-400">Klik untuk upload</span>
-                                    atau drag & drop
-                                </p>
-                                <p class="mt-1 text-xs text-gray-500 dark:text-neutral-500">PNG, JPG, GIF up to 2MB</p>
+                                class="relative border-2 border-dashed border-gray-300 dark:border-neutral-600 rounded-lg p-8 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer min-h-[200px] flex flex-col justify-center items-center">
+                                
+                                {{-- Default Content --}}
+                                <div id="drop-zone-content">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-neutral-500" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
+                                        <span class="font-semibold text-blue-600 dark:text-blue-400">Klik untuk
+                                            upload</span>
+                                        atau drag & drop
+                                    </p>
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-neutral-500">PNG, JPG, GIF up to 2MB
+                                    </p>
+                                </div>
+
+                                {{-- Preview Content (Inside Drop Zone) --}}
+                                <div id="preview-container" class="hidden w-full h-full">
+                                    <div class="relative w-full h-full flex justify-center items-center">
+                                        <img id="image-preview" class="rounded-lg max-h-60 object-contain mx-auto"
+                                            alt="Preview">
+                                        <button type="button" id="btn-remove"
+                                            class="absolute -top-4 -right-4 bg-red-500 text-white rounded-full p-1.5 hover:bg-red-600 shadow-sm z-10 transition-transform hover:scale-110">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <input type="file" id="image" name="image" accept="image/*" class="hidden">
                         </div>
@@ -150,20 +171,6 @@
                                         </svg>
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-
-                        {{-- Preview --}}
-                        <div id="preview-container" class="hidden mt-3">
-                            <div class="relative inline-block">
-                                <img id="image-preview" class="rounded-lg max-h-60" alt="Preview">
-                                <button type="button" id="btn-remove"
-                                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
                             </div>
                         </div>
 
@@ -235,12 +242,14 @@
         let currentCamera = 'user';
         const fileInput = document.getElementById('image');
         const dropZone = document.getElementById('drop-zone');
+        const dropZoneContent = document.getElementById('drop-zone-content');
         const preview = document.getElementById('image-preview');
         const previewContainer = document.getElementById('preview-container');
         const uploadSection = document.getElementById('upload-section');
         const cameraSection = document.getElementById('camera-section');
         const cameraPreview = document.getElementById('camera-preview');
         const cameraCanvas = document.getElementById('camera-canvas');
+        const btnRemove = document.getElementById('btn-remove');
 
         // Tab switching
         document.getElementById('btn-upload').addEventListener('click', () => {
@@ -288,9 +297,7 @@
                 cameraPreview.srcObject = cameraStream;
             } catch (err) {
                 let errorMessage = 'Tidak dapat mengakses kamera: ' + err.message;
-
-                // Jika error karena insecure context (HTTP via IP)
-                if (!window.isSecureContext) {
+                 if (!window.isSecureContext) {
                     errorMessage = `
                             Browser memblokir kamera karena Anda mengakses melalui jaringan lokal (IP) tanpa HTTPS.<br><br>
                             <strong>Cara Perbaikan (Testing):</strong><br>
@@ -303,7 +310,6 @@
                         `;
                 }
 
-                // Gunakan native modal untuk simplicity atau SweetAlert jika ada
                 const errorDiv = document.createElement('div');
                 errorDiv.id = 'camera-error-modal';
                 errorDiv.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm';
@@ -378,13 +384,13 @@
 
         ['dragenter', 'dragover'].forEach(eventName => {
             dropZone.addEventListener(eventName, () => {
-                dropZone.classList.add('drag-over');
+                dropZone.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/10');
             });
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, () => {
-                dropZone.classList.remove('drag-over');
+                dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/10');
             });
         });
 
@@ -400,11 +406,14 @@
         function showPreview(url) {
             preview.src = url;
             previewContainer.classList.remove('hidden');
+            dropZoneContent.classList.add('hidden');
         }
 
-        document.getElementById('btn-remove').addEventListener('click', () => {
+        btnRemove.addEventListener('click', (e) => {
+            e.stopPropagation(); // Stop click from propagating to dropZone (which opens file dialog)
             fileInput.value = '';
             previewContainer.classList.add('hidden');
+            dropZoneContent.classList.remove('hidden');
             preview.src = '';
         });
 

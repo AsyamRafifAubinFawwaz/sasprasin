@@ -38,7 +38,7 @@
                                 <div class="relative">
                                     <input type="text" name="keywords" id="keywords" value="{{ $keywords ?? '' }}"
                                         class="py-1 px-3 block w-full border-gray-200 rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900
-                                                    placeholder-neutral-300 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                        placeholder-neutral-300 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                         placeholder="Cari Nama Kelas">
                                 </div>
                             </div>
@@ -163,12 +163,12 @@
                             <div>
                                 <label for="edit-name" class="block text-sm font-medium mb-2 dark:text-white">Nama
                                     Kelas</label>
-                            <input type="text" name="class_name" id="edit-name"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                placeholder="Masukkan nama kelas" required>
+                                <input type="text" name="class_name" id="edit-name"
+                                    class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                    placeholder="Masukkan nama kelas" required>
+                            </div>
                         </div>
-                    </div>
-                </x-admin.modal>
+                    </x-admin.modal>
                     <x-admin.modal id="delete-modal" title="Hapus Kelas">
                         <div class="text-center">
                             <span

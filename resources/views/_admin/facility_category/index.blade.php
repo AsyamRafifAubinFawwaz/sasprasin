@@ -25,15 +25,15 @@
         </div>
     </div>
 
-    <div class="flex flex-col">
+    <div class="flex flex-col gap-4">
         <div class="overflow-x-auto">
             <div class="min-w-full inline-block align-middle">
                 <div class="overflow-hidden">
 
-                    <div class="px-2 pt-0">
+                    <div class="px-2 pt-2">
                         <form action="{{ route('admin.facility-categories.index') }}" method="GET" navigate-form
-                            class="flex flex-col sm:flex-row gap-3">
-                            <div class="sm:w-64">
+                            class="flex flex-wrap items-center gap-3">
+                            <div class="relative w-64 max-w-full">
                                 <label for="keywords" class="sr-only">Search</label>
                                 <div class="relative">
                                     <input type="text" name="keywords" id="keywords" value="{{ $keywords ?? '' }}"
