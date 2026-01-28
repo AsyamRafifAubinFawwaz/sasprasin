@@ -35,3 +35,167 @@ html::-webkit-scrollbar,
     display: none;
     /* Chrome, Safari, Opera */
 }
+
+/* --- SIDEBAR COLLAPSED LOGIC (Desktop Only) --- */
+@media (min-width: 1024px) {
+
+    /* 1. Sidebar Width */
+    body[data-sidebar-collapsed="true"] #hs-application-sidebar {
+        width: 5rem !important;
+        /* w-20 */
+    }
+
+    /* 2. Main Content Top Margin/Padding */
+    body[data-sidebar-collapsed="true"] #content-wrapper {
+        padding-left: 5rem !important;
+        /* ps-20 */
+    }
+
+    /* 3. Hide Text Labels */
+    body[data-sidebar-collapsed="true"] .sidebar-text {
+        display: none !important;
+    }
+
+    /* 4. Center Navigation Icons/Links */
+    body[data-sidebar-collapsed="true"] #hs-application-sidebar nav a,
+    body[data-sidebar-collapsed="true"] #hs-application-sidebar nav .hs-accordion-toggle {
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* 5. Center Expand Icon inside Toggle Button */
+    body[data-sidebar-collapsed="true"] .hs-accordion-toggle {
+        justify-content: center !important;
+    }
+
+    /* 6. Logo Toggling */
+    body[data-sidebar-collapsed="true"] .logo-full {
+        display: none !important;
+    }
+
+    body[data-sidebar-collapsed="true"] .logo-collapsed {
+        display: block !important;
+    }
+
+    /* 7. Header Adjustment */
+    body[data-sidebar-collapsed="true"] #sidebar-header {
+        padding-left: 0.5rem !important;
+        /* px-2 */
+        padding-right: 0.5rem !important;
+        justify-content: center !important;
+    }
+
+    /* 8. Toggle Icons */
+    body[data-sidebar-collapsed="true"] #toggle-icon-left {
+        display: none !important;
+    }
+
+    body[data-sidebar-collapsed="true"] #toggle-icon-right {
+        display: block !important;
+    }
+
+    /* 9. FLOATING MENUS (Data Master etc.) */
+
+    /* Allow overflow on the scroll container so menus can pop out */
+    body[data-sidebar-collapsed="true"] #hs-application-sidebar .overflow-y-auto {
+        overflow: visible !important;
+    }
+
+    /* The Accordion Item needs relative positioning */
+    body[data-sidebar-collapsed="true"] .hs-accordion {
+        position: relative;
+    }
+
+    /* The Content (Dropdown) */
+    body[data-sidebar-collapsed="true"] .hs-accordion-content {
+        position: absolute !important;
+        left: 4.5rem !important;
+        /* Push to right of sidebar */
+        top: 0 !important;
+        width: 14rem !important;
+        background-color: white !important;
+        border-radius: 0.5rem !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+
+        /* TRANSITION LOGIC INSTEAD OF DISPLAY:NONE */
+        display: block !important;
+        /* Always in layout, but hidden visually */
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transform: translateX(-10px);
+        /* Slide in effect */
+        pointer-events: none !important;
+        /* Prevent clicking when hidden */
+        transition: all 0.1s ease-out !important;
+        /* Fast entry */
+        transition-delay: 0s !important;
+        /* Instant entry */
+
+        z-index: 70 !important;
+        height: auto !important;
+        /* Override preline height anim */
+        padding: 0.5rem !important;
+        border: 1px solid #e5e7eb !important;
+    }
+
+    /* Transparent Bridge to prevent gap issues */
+    body[data-sidebar-collapsed="true"] .hs-accordion-content::before {
+        content: '';
+        position: absolute;
+        left: -1rem;
+        /* Extend left towards the sidebar */
+        top: 0;
+        bottom: 0;
+        width: 1rem;
+        background: transparent;
+    }
+
+    /* Dark mode for floating menu */
+    body[data-sidebar-collapsed="true"].dark .hs-accordion-content {
+        background-color: #262626 !important;
+        /* bg-neutral-800 */
+        border-color: #404040 !important;
+        /* border-neutral-700 */
+    }
+
+    /* Show on Hover - with delay on EXIT */
+    body[data-sidebar-collapsed="true"] .hs-accordion:hover .hs-accordion-content {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateX(0);
+        pointer-events: auto !important;
+        /* Keep it visible immediately on hover, but use the transition from the base class for exit */
+    }
+
+    /* When NOT hovering, the base class transition applies. 
+       We want a delay before it disappears. */
+    body[data-sidebar-collapsed="true"] .hs-accordion-content {
+        transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0.2s !important;
+        /* Wait 0.2s before hiding visibility */
+    }
+
+    body[data-sidebar-collapsed="true"] .hs-accordion:hover .hs-accordion-content {
+        transition-delay: 0s !important;
+        /* No delay on enter */
+    }
+
+    /* Hide the chevron icons in collapsed mode to avoid confusion */
+    body[data-sidebar-collapsed="true"] .hs-accordion-toggle svg:not(:first-child) {
+        display: none !important;
+    }
+
+    /* --- FIXES FOR FLOATING MENU CONTENT --- */
+
+    /* 10. Re-align links in the floating menu to the left */
+    body[data-sidebar-collapsed="true"] .hs-accordion-content a {
+        justify-content: flex-start !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* 11. Force show text inside the floating menu */
+    body[data-sidebar-collapsed="true"] .hs-accordion-content .sidebar-text {
+        display: inline !important;
+    }
+}

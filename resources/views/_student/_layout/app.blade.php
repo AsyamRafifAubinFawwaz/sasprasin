@@ -50,7 +50,40 @@
 
 
     @stack('scripts')
+ <script>
+        function initSidebar() {
+            const body = document.body;
+            const sidebar = document.getElementById('hs-application-sidebar');
+            const toggleBtn = document.getElementById('sidebar-toggle');
 
+            if (!sidebar) return;
+
+            // Helper to set state
+            function setSidebarState(isCollapsed) {
+                // Set the data attribute - CSS handles the rest!
+                body.setAttribute('data-sidebar-collapsed', isCollapsed);
+                localStorage.setItem('sidebar-collapsed', isCollapsed);
+            }
+
+            // Bind Toggle Click
+            // We use a cloning trick or just replace listener to ensure no duplicates
+            const newBtn = toggleBtn.cloneNode(true);
+            toggleBtn.parentNode.replaceChild(newBtn, toggleBtn);
+
+            newBtn.addEventListener('click', function () {
+                const isCollapsed = body.getAttribute('data-sidebar-collapsed') === 'true';
+                setSidebarState(!isCollapsed);
+            });
+
+            // Apply initial state
+            const savedState = localStorage.getItem('sidebar-collapsed') === 'true';
+            setSidebarState(savedState);
+        }
+
+        // Initialize on load and on Livewire navigation
+        document.addEventListener('DOMContentLoaded', initSidebar);
+        document.addEventListener('livewire:navigated', initSidebar);
+    </script>
 </body>
 
 </html>
