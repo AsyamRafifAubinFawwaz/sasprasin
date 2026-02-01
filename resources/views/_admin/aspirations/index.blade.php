@@ -195,7 +195,7 @@
                                             <div class="px-6 py-3">
                                                 @php
                                                     $statusMap = [
-                                                        1 => ['label' => 'Pending', 'class' => 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'],
+                                                        1 => ['label' => 'Pending', 'class' => 'bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-500'],
                                                         2 => ['label' => 'In Progress', 'class' => 'bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500'],
                                                         3 => ['label' => 'Done', 'class' => 'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500'],
                                                         4 => ['label' => 'Reject', 'class' => 'bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500']

@@ -8,9 +8,9 @@
         <div class="flex flex-col md:flex-row items-center justify-between gap-10">
             
             <div class="w-full md:w-1/2 space-y-6">
-                <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
+                {{-- <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
                     <span class="text-gray-700 text-sm font-medium">🌐 We host more than 120,000 websites</span>
-                </div>
+                </div> --}}
 
                 <h1 class="text-5xl md:text-6xl font-bold text-[#1a202c] leading-tight">
                     Selamat Datang di <br> <span class="text-[#1a202c]">Sarprasin</span>

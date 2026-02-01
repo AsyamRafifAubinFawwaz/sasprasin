@@ -29,7 +29,8 @@
     @include('_layout.sidebar')
 
     <!-- Content -->
-    <div class="w-full lg:ps-64 bg-white dark:bg-neutral-900 min-h-screen">
+    <div id="content-wrapper"
+        class="w-full lg:ps-64 bg-white dark:bg-neutral-900 min-h-screen transition-all duration-300">
         <div id="main-content" class="p-2 2xl:px-25 px-3 md:px-8 pt-24 lg:pt-10 sm:p-6 space-y-4 sm:space-y-6">
             @if (session('success'))
                 <div id="spa-flash-success" style="display: none;">{{ session('success') }}</div>
@@ -50,40 +51,7 @@
 
 
     @stack('scripts')
- <script>
-        function initSidebar() {
-            const body = document.body;
-            const sidebar = document.getElementById('hs-application-sidebar');
-            const toggleBtn = document.getElementById('sidebar-toggle');
 
-            if (!sidebar) return;
-
-            // Helper to set state
-            function setSidebarState(isCollapsed) {
-                // Set the data attribute - CSS handles the rest!
-                body.setAttribute('data-sidebar-collapsed', isCollapsed);
-                localStorage.setItem('sidebar-collapsed', isCollapsed);
-            }
-
-            // Bind Toggle Click
-            // We use a cloning trick or just replace listener to ensure no duplicates
-            const newBtn = toggleBtn.cloneNode(true);
-            toggleBtn.parentNode.replaceChild(newBtn, toggleBtn);
-
-            newBtn.addEventListener('click', function () {
-                const isCollapsed = body.getAttribute('data-sidebar-collapsed') === 'true';
-                setSidebarState(!isCollapsed);
-            });
-
-            // Apply initial state
-            const savedState = localStorage.getItem('sidebar-collapsed') === 'true';
-            setSidebarState(savedState);
-        }
-
-        // Initialize on load and on Livewire navigation
-        document.addEventListener('DOMContentLoaded', initSidebar);
-        document.addEventListener('livewire:navigated', initSidebar);
-    </script>
 </body>
 
 </html>

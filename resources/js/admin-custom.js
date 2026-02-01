@@ -13,6 +13,30 @@ $(document).ready(function () {
         );
     }
 
+    // --- SIDEBAR COLLAPSE LOGIC ---
+    window.applySidebarState = function () {
+        const isCollapsed =
+            localStorage.getItem("sidebar-collapsed") === "true";
+        document.body.setAttribute("data-sidebar-collapsed", isCollapsed);
+    };
+
+    // Use delegated listener on document to survive SPA replacements
+    $(document).on("click", "#sidebar-toggle", function (e) {
+        e.preventDefault();
+        const isCollapsed =
+            document.body.getAttribute("data-sidebar-collapsed") === "true";
+        const newState = !isCollapsed;
+        localStorage.setItem("sidebar-collapsed", newState);
+        window.applySidebarState();
+    });
+
+    // Handle Livewire navigation as well
+    document.addEventListener("livewire:navigated", window.applySidebarState);
+
+    // Initial apply
+    window.applySidebarState();
+    // ------------------------------
+
     function handleSpaResponse(data, urlToPush) {
         var parser = new DOMParser();
         var doc = parser.parseFromString(data, "text/html");
@@ -137,6 +161,11 @@ $(document).ready(function () {
         // Re-initialize plugins
         if (window.HSStaticMethods) {
             window.HSStaticMethods.autoInit();
+        }
+
+        // Re-apply sidebar state
+        if (window.applySidebarState) {
+            window.applySidebarState();
         }
 
         // Re-initialize Flatpickr
@@ -303,6 +332,10 @@ $(document).ready(function () {
 
                 if (window.HSStaticMethods) {
                     window.HSStaticMethods.autoInit();
+                }
+
+                if (window.applySidebarState) {
+                    window.applySidebarState();
                 }
 
                 NProgress.done();
