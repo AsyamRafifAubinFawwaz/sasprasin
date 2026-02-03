@@ -236,26 +236,43 @@ class StudentUsecase extends Usecase
     }
 
     public function delete(int $id): array
-    {
-        DB::beginTransaction();
-        try {
-            DB::table(DatabaseConst::STUDENT)
-                ->where('id', $id)
-                ->update([
-                    'deleted_by' => Auth::user()?->id,
-                    'deleted_at' => now(),
-                ]);
+{
+    DB::beginTransaction();
+    try {
+        $student = DB::table(DatabaseConst::STUDENT)
+            ->where('id', $id)
+            ->whereNull('deleted_at')
+            ->first();
 
-            DB::commit();
-
-            return Response::buildSuccess(
-                message: ResponseConst::SUCCESS_MESSAGE_DELETED
-            );
-        } catch (Exception $e) {
-            DB::rollback();
-            Log::error($e->getMessage(), ['method' => __METHOD__]);
-
-            return Response::buildErrorService($e->getMessage());
+        if (!$student) {
+            throw new Exception('Data siswa tidak ditemukan');
         }
+
+        DB::table(DatabaseConst::STUDENT)
+            ->where('id', $id)
+            ->update([
+                'deleted_by' => Auth::user()?->id,
+                'deleted_at' => now(),
+            ]);
+
+        DB::table(DatabaseConst::USER)
+            ->where('id', $student->user_id)
+            ->update([
+                'deleted_by' => Auth::user()?->id,
+                'deleted_at' => now(),
+            ]);
+
+        DB::commit();
+
+        return Response::buildSuccess(
+            message: ResponseConst::SUCCESS_MESSAGE_DELETED
+        );
+    } catch (Exception $e) {
+        DB::rollback();
+        Log::error($e->getMessage(), ['method' => __METHOD__]);
+
+        return Response::buildErrorService($e->getMessage());
     }
+}
+
 }

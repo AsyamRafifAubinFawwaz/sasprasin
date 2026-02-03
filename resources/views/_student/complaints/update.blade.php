@@ -23,8 +23,9 @@
                 </div>
             </div>
 
-            <form id="update-form" class="p-6" navigate-form action="{{ route('student.complaints.do_update', $data->id) }}"
-                method="POST" enctype="multipart/form-data">
+            <form id="update-form" class="p-6" navigate-form
+                action="{{ route('student.complaints.do_update', $data->id) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
 
                 <div class="space-y-4">
@@ -37,12 +38,14 @@
                             class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm
                                             focus:border-blue-500 focus:ring-blue-500
                                             dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400
-                                            @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" required>
+                                            @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
+                            required>
 
                             <option value="">Pilih Kategori</option>
 
                             @foreach ($facility as $category)
-                                <option value="{{ $category->id }}" {{ old('facility_category_id', $data->facility_category_id) == $category->id ? 'selected' : '' }}>
+                                <option value="{{ $category->id }}"
+                                    {{ old('facility_category_id', $data->facility_category_id) == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
                                     {{ $category->example_items ? '(Contoh: ' . $category->example_items . ')' : '' }}
                                 </option>
@@ -62,7 +65,8 @@
                             required>
                             <option value="">Pilih Lokasi</option>
                             @foreach ($locations as $location)
-                                <option value="{{ $location->id }}" {{ old('location_id', $data->location_id) == $location->id ? 'selected' : '' }}>
+                                <option value="{{ $location->id }}"
+                                    {{ old('location_id', $data->location_id) == $location->id ? 'selected' : '' }}>
                                     {{ $location->name }}
                                 </option>
                             @endforeach
@@ -77,8 +81,7 @@
                                 class="text-red-500">*</span></label>
                         <textarea id="description" name="description" rows="4"
                             class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('description') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                            placeholder="Jelaskan keluhan Anda"
-                            required>{{ old('description', $data->description) }}</textarea>
+                            placeholder="Jelaskan keluhan Anda" required>{{ old('description', $data->description) }}</textarea>
                         @error('description')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                         @enderror
@@ -90,7 +93,8 @@
                         @if ($data->image)
                             <div id="current-image" class="mb-3">
                                 <div class="relative inline-block">
-                                    <img src="{{ asset($data->image) }}" alt="Gambar keluhan" class="h-32 rounded-lg">
+                                    <img src="{{ \App\Utils\UrlHelper::getImageUrl($data->image) }}" alt="Gambar keluhan"
+                                        class="h-32 rounded-lg">
                                     <button type="button" id="btn-remove-current"
                                         class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +133,7 @@
                         <div id="upload-section" class="upload-area">
                             <div id="drop-zone"
                                 class="border-2 border-dashed border-gray-300 dark:border-neutral-600 rounded-lg p-8 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer">
-                                
+
                                 <div id="drop-zone-content">
                                     <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-neutral-500" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
@@ -137,7 +141,8 @@
                                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
                                     <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-                                        <span class="font-semibold text-blue-600 dark:text-blue-400">Klik untuk upload</span>
+                                        <span class="font-semibold text-blue-600 dark:text-blue-400">Klik untuk
+                                            upload</span>
                                         atau drag & drop
                                     </p>
                                     <p class="mt-1 text-xs text-gray-500 dark:text-neutral-500">PNG, JPG, GIF up to 2MB</p>
@@ -148,13 +153,15 @@
                                         <img id="image-preview" class="rounded-lg max-h-60" alt="Preview">
                                         <button type="button" id="btn-remove"
                                             class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </button>
                                     </div>
-                                    <p class="text-xs text-gray-500 mt-2 dark:text-neutral-400">Gambar baru (akan mengganti gambar lama)</p>
+                                    <p class="text-xs text-gray-500 mt-2 dark:text-neutral-400">Gambar baru (akan mengganti
+                                        gambar lama)</p>
                                 </div>
 
                             </div>
@@ -191,7 +198,7 @@
 
                         <p class="text-xs text-gray-500 mt-2 dark:text-neutral-400">
                             Format: JPEG, PNG, JPG, GIF. Ukuran max: 2MB.
-                            @if($data->image)
+                            @if ($data->image)
                                 Kosongkan jika tidak ingin mengubah gambar.
                             @endif
                         </p>
@@ -209,8 +216,8 @@
                     <button type="submit"
                         class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none cursor-pointer">
                         <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <path d="M5 12h14" />
                             <path d="M12 5v14" />
                         </svg>
@@ -314,7 +321,9 @@
                     stopCamera();
                 }
                 cameraStream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: currentCamera }
+                    video: {
+                        facingMode: currentCamera
+                    }
                 });
                 cameraPreview.srcObject = cameraStream;
             } catch (err) {
@@ -336,7 +345,9 @@
             context.drawImage(cameraPreview, 0, 0);
 
             cameraCanvas.toBlob(blob => {
-                const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                const file = new File([blob], 'camera-photo.jpg', {
+                    type: 'image/jpeg'
+                });
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(file);
                 fileInput.files = dataTransfer.files;

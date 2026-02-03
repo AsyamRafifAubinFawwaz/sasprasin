@@ -162,38 +162,50 @@
         <p>Dicetak pada: {{ date('d F Y H:i:s') }}</p>
     </div>
 
-    @if(!empty($filters['export_all']) || !empty($filters['status']) || !empty($filters['priority']) || !empty($filters['search']) || !empty($filters['date']) || !empty($filters['start_date']))
+    @if (
+        !empty($filters['export_all']) ||
+            !empty($filters['status']) ||
+            !empty($filters['priority']) ||
+            !empty($filters['search']) ||
+            !empty($filters['date']) ||
+            !empty($filters['start_date']))
         <div class="filter-info">
             <h3>Filter yang Diterapkan:</h3>
-            @if(!empty($filters['export_all']))
+            @if (!empty($filters['export_all']))
                 <p><strong>Cakupan Data:</strong> Keseluruhan Data (Tanpa Filter)</p>
             @else
-                @if(!empty($filters['status']))
+                @if (!empty($filters['status']))
                     <p><strong>Status:</strong>
-                        @if($filters['status'] == 1) Pending
-                        @elseif($filters['status'] == 2) Dalam Progress
-                        @elseif($filters['status'] == 3) Selesai
+                        @if ($filters['status'] == 1)
+                            Pending
+                        @elseif($filters['status'] == 2)
+                            Dalam Progress
+                        @elseif($filters['status'] == 3)
+                            Selesai
                         @endif
                     </p>
                 @endif
-                @if(!empty($filters['priority']))
+                @if (!empty($filters['priority']))
                     <p><strong>Prioritas:</strong>
-                        @if($filters['priority'] == 1) Rendah
-                        @elseif($filters['priority'] == 2) Sedang
-                        @elseif($filters['priority'] == 3) Tinggi
+                        @if ($filters['priority'] == 1)
+                            Rendah
+                        @elseif($filters['priority'] == 2)
+                            Sedang
+                        @elseif($filters['priority'] == 3)
+                            Tinggi
                         @endif
                     </p>
                 @endif
-                @if(!empty($filters['search']))
+                @if (!empty($filters['search']))
                     <p><strong>Pencarian:</strong> {{ $filters['search'] }}</p>
                 @endif
-                @if(!empty($filters['date']))
+                @if (!empty($filters['date']))
                     <p><strong>Tanggal:</strong> {{ date('d F Y', strtotime($filters['date'])) }}</p>
                 @endif
-                @if(!empty($filters['start_date']))
+                @if (!empty($filters['start_date']))
                     <p><strong>Rentang Tanggal:</strong>
                         {{ date('d/m/Y', strtotime($filters['start_date'])) }}
-                        @if(!empty($filters['end_date']))
+                        @if (!empty($filters['end_date']))
                             s/d {{ date('d/m/Y', strtotime($filters['end_date'])) }}
                         @endif
                     </p>
@@ -202,7 +214,7 @@
         </div>
     @endif
 
-    @if(count($data) > 0)
+    @if (count($data) > 0)
         <table>
             <thead>
                 <tr>
@@ -219,14 +231,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($data as $index => $item)
+                @foreach ($data as $index => $item)
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $item->student_name ?? 'N/A' }}</td>
                         <td>{{ date('d/m/Y H:i', strtotime($item->created_at)) }}</td>
                         <td class="image-cell">
-                            @if($item->image)
-                                <img src="{{ public_path('storage/' . $item->image) }}" alt="Gambar">
+                            @if ($item->image)
+                                <img src="{{ public_path($item->image) }}" alt="Gambar">
                             @else
                                 <span style="color: #999; font-size: 8px;">Tidak ada gambar</span>
                             @endif
@@ -234,7 +246,7 @@
                         <td>{{ $item->location }}</td>
                         <td>{{ $item->category_name }}</td>
                         <td>
-                            @if($item->priority == 1)
+                            @if ($item->priority == 1)
                                 <span class="badge badge-low">Rendah</span>
                             @elseif($item->priority == 2)
                                 <span class="badge badge-medium">Sedang</span>
@@ -247,7 +259,7 @@
                             @php
                                 $status = $item->status ?? 1;
                             @endphp
-                            @if($status == 1)
+                            @if ($status == 1)
                                 <span class="badge badge-pending">Pending</span>
                             @elseif($status == 2)
                                 <span class="badge badge-progress">Progress</span>

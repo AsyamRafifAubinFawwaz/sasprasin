@@ -158,6 +158,10 @@ $(document).ready(function () {
             );
         }
 
+        // --- SCROLL RESET & CLEANUP ---
+        window.scrollTo(0, 0);
+        cleanupModalBackdrops();
+
         // Re-initialize plugins
         if (window.HSStaticMethods) {
             window.HSStaticMethods.autoInit();
@@ -180,15 +184,22 @@ $(document).ready(function () {
     }
 
     function cleanupModalBackdrops() {
-        // backdrop Tailwind / custom
+        // Remove backdrops from various libraries
         document
             .querySelectorAll(
                 ".delete-modal-backdrop, .modal-backdrop, .hs-overlay-backdrop",
             )
             .forEach((el) => el.remove());
 
-        // pastikan body normal lagi
-        document.body.classList.remove("overflow-hidden");
+        // Restore scrollability to both html and body
+        // Clearing both common classes and explicit styles
+        $("html, body")
+            .removeClass("overflow-hidden")
+            .removeClass("hs-overlay-open")
+            .css({
+                overflow: "",
+                height: "",
+            });
     }
 
     // Intercept clicks on elements with 'navigate' attribute
