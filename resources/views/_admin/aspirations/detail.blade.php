@@ -135,24 +135,36 @@
                             <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Status
                                 Progres</label>
                             <div class="inline-block">
-                                @php
-                                    $statusColors = [
-                                        1 => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500',
-                                        2 => 'bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500',
-                                        3 => 'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500',
-                                        4 => 'bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500',
-                                    ];
-                                    $statusLabels = [
-                                        1 => 'Pending',
-                                        2 => 'In Progress',
-                                        3 => 'Done',
-                                        4 => 'Rejected',
-                                    ];
-                                @endphp
-                                <span
-                                    class="px-4 py-2 rounded-lg text-sm font-semibold {{ $statusColors[$data->status] ?? 'bg-gray-100 text-gray-800' }}">
-                                    {{ $statusLabels[$data->status] ?? 'N/A' }}
-                                </span>
+                                @if ($data->status == \App\Constants\ProgressConst::PENDING)
+                                    <span
+                                        class="inline-flex items-center gap-x-1.5 py-2 px-4 rounded-lg text-sm font-semibold bg-amber-100 text-amber-800 dark:bg-amber-800/30 dark:text-amber-500 border border-amber-200 dark:border-amber-900/30">
+                                        <span class="size-1.5 rounded-full bg-amber-500"></span>
+                                        Pending
+                                    </span>
+                                @elseif ($data->status == \App\Constants\ProgressConst::IN_PROGRESS)
+                                    <span
+                                        class="inline-flex items-center gap-x-1.5 py-2 px-4 rounded-lg text-sm font-semibold bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500 border border-blue-200 dark:border-blue-900/30">
+                                        <span class="size-1.5 rounded-full bg-blue-500"></span>
+                                        In Progress
+                                    </span>
+                                @elseif ($data->status == \App\Constants\ProgressConst::DONE)
+                                    <span
+                                        class="inline-flex items-center gap-x-1.5 py-2 px-4 rounded-lg text-sm font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-500 border border-emerald-200 dark:border-emerald-900/30">
+                                        <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                        Done
+                                    </span>
+                                @elseif ($data->status == \App\Constants\ProgressConst::REJECT)
+                                    <span
+                                        class="inline-flex items-center gap-x-1.5 py-2 px-4 rounded-lg text-sm font-semibold bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500 border border-red-200 dark:border-red-900/30">
+                                        <span class="size-1.5 rounded-full bg-red-500"></span>
+                                        Reject
+                                    </span>
+                                @else
+                                    <span
+                                        class="inline-flex items-center gap-x-1.5 py-2 px-4 rounded-lg text-sm font-semibold bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-white">
+                                        Pending
+                                    </span>
+                                @endif
                             </div>
                         </div>
 

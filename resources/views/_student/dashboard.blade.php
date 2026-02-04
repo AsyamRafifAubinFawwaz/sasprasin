@@ -183,23 +183,32 @@
                                 <div class="px-6 py-3">
                                     @if ($item->status == \App\Constants\ProgressConst::PENDING)
                                         <span
-                                            class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500">
+                                            class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-800/30 dark:text-amber-500">
+                                            <span class="size-1.5 rounded-full bg-amber-500"></span>
                                             Pending
                                         </span>
                                     @elseif ($item->status == \App\Constants\ProgressConst::IN_PROGRESS)
                                         <span
-                                            class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-500">
+                                            class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
+                                            <span class="size-1.5 rounded-full bg-blue-500"></span>
                                             Diproses
                                         </span>
                                     @elseif ($item->status == \App\Constants\ProgressConst::DONE)
                                         <span
-                                            class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-800/30 dark:text-teal-500">
+                                            class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-500">
+                                            <span class="size-1.5 rounded-full bg-emerald-500"></span>
                                             Selesai
+                                        </span>
+                                    @elseif ($item->status == \App\Constants\ProgressConst::REJECT)
+                                        <span
+                                            class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
+                                            <span class="size-1.5 rounded-full bg-red-500"></span>
+                                            Ditolak
                                         </span>
                                     @else
                                         <span
-                                            class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
-                                            Ditolak
+                                            class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-white">
+                                            Pending
                                         </span>
                                     @endif
                                 </div>
@@ -231,7 +240,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <script src="https://preline.co/assets/js/hs-apexcharts-helpers.js"></script>
-
     @endpush
 
 @endsection

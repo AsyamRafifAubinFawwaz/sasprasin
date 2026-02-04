@@ -4,10 +4,9 @@
 
 @section('content')
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div
-            class="bg-white overflow-hidden shadow-lg rounded-2xl dark:bg-neutral-800 border-2 border-gray-100 dark:border-neutral-700">
+        <div class="bg-white shadow-lg rounded-2xl dark:bg-neutral-800 border-2 border-gray-100 dark:border-neutral-700">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-neutral-700 flex items-center">
-                <a navigate href="{{ route('admin.classrooms.index') }}"
+                <a navigate href="{{ route('admin.facility-categories.index') }}"
                     class="py-3 px-3 inline-flex items-center gap-x-2 text-xl rounded-xl border border-gray-200 bg-white text-gray-800 shadow-md hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 cursor-pointer">
                     <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="90" height="90"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -53,16 +52,32 @@
                     <div class="w-1/2">
                         <label for="priority" class="block text-sm font-medium mb-2 dark:text-white">Prioritas <span
                                 class="text-red-500">*</span></label>
-                        <div class="relative">
-                            <select name="priority" id="priority"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('priority') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                                required>
+                        <div class="relative custom-select-container" id="container-priority">
+                            <input type="hidden" name="priority" id="priority"
+                                value="{{ old('priority', $data->priority) }}" required>
+                            <button type="button"
+                                class="peer group w-full text-left px-4 py-3 border rounded-lg bg-white dark:bg-neutral-900 text-gray-700 dark:text-neutral-400 border-gray-200 dark:border-neutral-700 shadow-sm hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all flex justify-between items-center @error('priority') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror">
+                                <span
+                                    class="selected-text">{{ old('priority', $data->priority) ? $priority[old('priority', $data->priority)] ?? 'Pilih Prioritas' : 'Pilih Prioritas' }}</span>
+                                <svg class="w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="m19 9-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <ul
+                                class="hidden absolute z-50 overflow-y-auto max-h-60 mt-1 w-full bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-lg shadow-lg py-1 custom-select-options">
+                                <li data-value=""
+                                    class="px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer transition-colors text-sm">
+                                    Pilih Prioritas</li>
                                 @foreach ($priority as $key => $label)
-                                    <option value="{{ $key }}"
-                                        {{ old('priority', $data->priority) == $key ? 'selected' : '' }}>
-                                        {{ $label }}</option>
+                                    <li data-value="{{ $key }}"
+                                        class="px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer transition-colors text-sm">
+                                        {{ $label }}
+                                    </li>
                                 @endforeach
-                            </select>
+                            </ul>
                         </div>
                         @error('priority')
                             <p class="text-xs text-red-600 mt-2" id="priority-error">{{ $message }}</p>

@@ -35,7 +35,66 @@ $(document).ready(function () {
 
     // Initial apply
     window.applySidebarState();
-    // ------------------------------
+
+    window.initCustomSelects = function () {
+        console.log("Initializing Custom Selects");
+        document
+            .querySelectorAll(".custom-select-container")
+            .forEach((container) => {
+                const btn = container.querySelector("button");
+                const input = container.querySelector("input");
+                const selectedText = container.querySelector(".selected-text");
+                const options = container.querySelectorAll("li");
+
+                // Remove existing listener to avoid duplicates if re-called
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+
+                // Re-query selectedText from the NEW button
+                const newSelectedText = newBtn.querySelector(".selected-text");
+
+                newBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    // Close other selects
+                    document
+                        .querySelectorAll(".custom-select-container")
+                        .forEach((c) => {
+                            if (c !== container) c.classList.remove("active");
+                        });
+                    container.classList.toggle("active");
+                });
+
+                options.forEach((opt) => {
+                    // Let's use a cleaner approach for re-init:
+                    opt.replaceWith(opt.cloneNode(true));
+                    const newOpt = container.querySelector(
+                        `li[data-value="${opt.getAttribute("data-value")}"]`,
+                    );
+
+                    newOpt.addEventListener("click", () => {
+                        const val = newOpt.getAttribute("data-value");
+                        const text = newOpt.innerText;
+
+                        input.value = val;
+                        if (newSelectedText) newSelectedText.innerText = text;
+                        container.classList.remove("active");
+
+                        // Trigger change event for validation or other listeners
+                        input.dispatchEvent(new Event("change"));
+                    });
+                });
+            });
+    };
+
+    // Global listener for closing dropdowns
+    document.addEventListener("click", () => {
+        document.querySelectorAll(".custom-select-container").forEach((c) => {
+            c.classList.remove("active");
+        });
+    });
+
+    // Initial call
+    window.initCustomSelects();
 
     function handleSpaResponse(data, urlToPush) {
         var parser = new DOMParser();
@@ -178,6 +237,11 @@ $(document).ready(function () {
                 dateFormat: "Y-m-d",
                 allowInput: true,
             });
+        }
+
+        // Re-initialize Custom Selects
+        if (window.initCustomSelects) {
+            window.initCustomSelects();
         }
 
         return true;
@@ -349,6 +413,10 @@ $(document).ready(function () {
                     window.applySidebarState();
                 }
 
+                if (window.initCustomSelects) {
+                    window.initCustomSelects();
+                }
+
                 NProgress.done();
                 spaNavigating = false;
             },
@@ -410,22 +478,22 @@ $(document).ready(function () {
             : `<svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m9 12 2 2 4-4"></path></svg>`;
 
         var html = `
-        <div class="animate-toast-pop max-w-sm w-full bg-white border-l-4 ${themeClass} rounded-r-xl shadow-2xl dark:bg-neutral-800" role="alert">
+        <div class="animate-toast-pop toast-node-custom w-full sm:max-w-sm bg-white border-l-4 ${themeClass} rounded-r-xl shadow-2xl dark:bg-neutral-800" role="alert">
             <div class="flex p-4">
                 <div class="shrink-0">
                     <span class="inline-flex justify-center items-center size-8 rounded-full ${iconBgClass}">
                         ${icon}
                     </span>
                 </div>
-                <div class="ms-3">
-                    <h3 class="text-gray-800 font-semibold text-sm dark:text-white">
+                <div class="ms-3 min-w-0 flex-1">
+                    <h3 class="text-gray-800 font-semibold text-sm dark:text-white truncate">
                         ${title}
                     </h3>
-                    <p class="text-sm text-gray-700 dark:text-neutral-400">
+                    <p class="text-sm text-gray-700 dark:text-neutral-400 wrap-break-word">
                         ${message}
                     </p>
                 </div>
-                <div class="ms-auto">
+                <div class="ms-auto flex-none">
                     <button onclick="tostifyCustomClose(this)" type="button" class="inline-flex shrink-0 justify-center items-center size-5 rounded-lg text-gray-800 opacity-50 hover:opacity-100 focus:outline-hidden focus:opacity-100 dark:text-white" aria-label="Close">
                         <span class="sr-only">Close</span>
                         <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

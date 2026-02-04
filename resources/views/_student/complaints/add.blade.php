@@ -32,16 +32,36 @@
                     <div>
                         <label for="facility_category_id" class="block text-sm font-medium mb-2 dark:text-white">Kategori
                             <span class="text-red-500">*</span></label>
-                        <select name="facility_category_id" id="facility_category_id"
-                            class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                            required>
-                            <option value="">Pilih Kategori</option>
-                            @foreach ($facility as $category)
-                                <option value="{{ $category->id }}" {{ old('facility_category_id') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }} {{ $category->example_items ? '(Contoh: ' . $category->example_items . ')' : '' }}
-                                </option>
-                            @endforeach
-                        </select>
+
+                        <div class="relative custom-select-container" id="container-category">
+                            <input type="hidden" name="facility_category_id" id="facility_category_id"
+                                value="{{ old('facility_category_id') }}" required>
+                            <button type="button"
+                                class="peer group w-full text-left px-4 py-3 border rounded-lg bg-white dark:bg-neutral-900 text-gray-700 dark:text-neutral-400 border-gray-200 dark:border-neutral-700 shadow-sm hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all flex justify-between items-center @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror">
+                                <span
+                                    class="selected-text">{{ old('facility_category_id') ? $facility->find(old('facility_category_id'))->name ?? 'Pilih Kategori' : 'Pilih Kategori' }}</span>
+                                <svg class="w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="m19 9-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <ul
+                                class="hidden absolute z-50 overflow-y-auto max-h-60 mt-1 w-full bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-lg shadow-lg py-1 custom-select-options">
+                                <li data-value=""
+                                    class="px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer transition-colors text-sm">
+                                    Pilih Kategori</li>
+                                @foreach ($facility as $category)
+                                    <li data-value="{{ $category->id }}"
+                                        class="px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer transition-colors text-sm">
+                                        {{ $category->name }}
+                                        {{ $category->example_items ? '(Contoh: ' . $category->example_items . ')' : '' }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
                         @error('facility_category_id')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                         @enderror
@@ -51,38 +71,54 @@
                     <div>
                         <label for="location_id" class="block text-sm font-medium mb-2 dark:text-white">Lokasi <span
                                 class="text-red-500">*</span></label>
-                        <select name="location_id" id="location_id"
-                            class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('location_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                            required>
-                            <option value="">Pilih Lokasi</option>
-                            @foreach ($locations as $location)
-                                <option value="{{ $location->id }}" {{ old('location_id') == $location->id ? 'selected' : '' }}>
-                                    {{ $location->name }}
-                                </option>
-                            @endforeach
-                        </select>
+
+                        <div class="relative custom-select-container" id="container-location">
+                            <input type="hidden" name="location_id" id="location_id" value="{{ old('location_id') }}"
+                                required>
+                            <button type="button"
+                                class="peer group w-full text-left px-4 py-3 border rounded-lg bg-white dark:bg-neutral-900 text-gray-700 dark:text-neutral-400 border-gray-200 dark:border-neutral-700 shadow-sm hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all flex justify-between items-center @error('location_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror">
+                                <span
+                                    class="selected-text">{{ old('location_id') ? $locations->find(old('location_id'))->name ?? 'Pilih Lokasi' : 'Pilih Lokasi' }}</span>
+                                <svg class="w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="m19 9-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <ul
+                                class="hidden absolute z-50 overflow-y-auto max-h-60 mt-1 w-full bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-lg shadow-lg py-1 custom-select-options">
+                                <li data-value=""
+                                    class="px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer transition-colors text-sm">
+                                    Pilih Lokasi</li>
+                                @foreach ($locations as $location)
+                                    <li data-value="{{ $location->id }}"
+                                        class="px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer transition-colors text-sm">
+                                        {{ $location->name }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
                         @error('location_id')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    {{-- Description --}}
                     <div>
                         <label for="description" class="block text-sm font-medium mb-2 dark:text-white">Deskripsi <span
                                 class="text-red-500">*</span></label>
                         <textarea id="description" name="description" rows="4"
-                            class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('description') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
+                            class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('description') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
                             placeholder="Jelaskan keluhan Anda" required>{{ old('description') }}</textarea>
                         @error('description')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    {{-- Image Upload with Camera & Drag Drop --}}
                     <div>
-                        <label class="block text-sm font-medium mb-2 dark:text-white">Gambar (Opsional)</label>
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Gambar</label>
 
-                        {{-- Tab Buttons --}}
                         <div class="flex gap-2 mb-3">
                             <button type="button" id="btn-upload"
                                 class="tab-btn active py-2 px-4 text-sm font-medium rounded-lg border transition-all">
@@ -106,12 +142,10 @@
                             </button>
                         </div>
 
-                        {{-- Upload Section --}}
                         <div id="upload-section" class="upload-area">
                             <div id="drop-zone"
-                                class="relative border-2 border-dashed border-gray-300 dark:border-neutral-600 rounded-lg p-8 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer min-h-[200px] flex flex-col justify-center items-center">
-                                
-                                {{-- Default Content --}}
+                                class="relative border-2 border-dashed border-gray-300 dark:border-neutral-600 rounded-lg p-8 text-center hover:border-orange-400 dark:hover:border-orange-500 transition-colors cursor-pointer min-h-[200px] flex flex-col justify-center items-center">
+
                                 <div id="drop-zone-content">
                                     <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-neutral-500" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
@@ -127,14 +161,14 @@
                                     </p>
                                 </div>
 
-                                {{-- Preview Content (Inside Drop Zone) --}}
                                 <div id="preview-container" class="hidden w-full h-full">
                                     <div class="relative w-full h-full flex justify-center items-center">
                                         <img id="image-preview" class="rounded-lg max-h-60 object-contain mx-auto"
                                             alt="Preview">
                                         <button type="button" id="btn-remove"
                                             class="absolute -top-4 -right-4 bg-red-500 text-white rounded-full p-1.5 hover:bg-red-600 shadow-sm z-10 transition-transform hover:scale-110">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M6 18L18 6M6 6l12 12" />
                                             </svg>
@@ -189,8 +223,8 @@
                     <button type="submit"
                         class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 focus:outline-none focus:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none cursor-pointer">
                         <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <path d="M5 12h14" />
                             <path d="M12 5v14" />
                         </svg>
@@ -234,6 +268,15 @@
         .dark #drop-zone.drag-over {
             border-color: #3b82f6;
             background: #1e3a8a;
+        }
+
+        /* Custom Select Styles */
+        .custom-select-container.active ul {
+            display: block;
+        }
+
+        .custom-select-container.active button svg {
+            transform: rotate(180deg);
         }
     </style>
 
@@ -283,7 +326,8 @@
         async function startCamera() {
             try {
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    throw new Error("Browser Anda tidak mendukung akses kamera di konteks ini (Perlu HTTPS atau localhost)");
+                    throw new Error(
+                        "Browser Anda tidak mendukung akses kamera di konteks ini (Perlu HTTPS atau localhost)");
                 }
 
                 if (cameraStream) {
@@ -297,7 +341,7 @@
                 cameraPreview.srcObject = cameraStream;
             } catch (err) {
                 let errorMessage = 'Tidak dapat mengakses kamera: ' + err.message;
-                 if (!window.isSecureContext) {
+                if (!window.isSecureContext) {
                     errorMessage = `
                             Browser memblokir kamera karena Anda mengakses melalui jaringan lokal (IP) tanpa HTTPS.<br><br>
                             <strong>Cara Perbaikan (Testing):</strong><br>
@@ -312,7 +356,8 @@
 
                 const errorDiv = document.createElement('div');
                 errorDiv.id = 'camera-error-modal';
-                errorDiv.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm';
+                errorDiv.className =
+                    'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm';
                 errorDiv.innerHTML = `
                         <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-xl max-w-sm w-full p-6 animate-toast-pop">
                             <div class="flex items-center gap-3 mb-4 text-red-600">
@@ -337,6 +382,8 @@
             if (cameraStream) {
                 cameraStream.getTracks().forEach(track => track.stop());
                 cameraStream = null;
+                // Explicitly clear srcObject to release hardware fully
+                cameraPreview.srcObject = null;
             }
         }
 
@@ -347,7 +394,9 @@
             context.drawImage(cameraPreview, 0, 0);
 
             cameraCanvas.toBlob(blob => {
-                const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' });
+                const file = new File([blob], 'camera-photo.jpg', {
+                    type: 'image/jpeg'
+                });
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(file);
                 fileInput.files = dataTransfer.files;
@@ -360,7 +409,13 @@
 
         document.getElementById('btn-switch-camera').addEventListener('click', () => {
             currentCamera = currentCamera === 'user' ? 'environment' : 'user';
-            startCamera();
+
+            // Stop current camera and wait a bit before starting new one
+            // This gives mobile hardware time to release and reset
+            stopCamera();
+            setTimeout(() => {
+                startCamera();
+            }, 300);
         });
 
         // File upload
@@ -410,11 +465,13 @@
         }
 
         btnRemove.addEventListener('click', (e) => {
-            e.stopPropagation(); // Stop click from propagating to dropZone (which opens file dialog)
-            fileInput.value = '';
-            previewContainer.classList.add('hidden');
-            dropZoneContent.classList.remove('hidden');
-            preview.src = '';
+        e.stopPropagation(); // Stop click from propagating to dropZone (which opens file dialog)
+        fileInput.value = '';
+        previewContainer.classList.add('hidden');
+        dropZoneContent.classList.remove('hidden');
+        preview.src = '';
+        });
+
         });
 
         // Stop camera when page unloads

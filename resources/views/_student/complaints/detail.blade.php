@@ -89,24 +89,36 @@
                             <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Status
                                 Progres</label>
                             <div class="inline-block">
-                                @php
-                                    $statusColors = [
-                                        1 => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-200',
-                                        2 => 'bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-200',
-                                        3 => 'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-200',
-                                        4 => 'bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-200',
-                                    ];
-                                    $statusLabels = [
-                                        1 => 'Pending',
-                                        2 => 'In Progress',
-                                        3 => 'Done',
-                                        4 => 'Rejected',
-                                    ];
-                                @endphp
-                                <span
-                                    class="px-3 py-1 rounded-full text-sm font-semibold {{ $statusColors[$data->aspiration_status] ?? 'bg-gray-100 text-gray-800' }}">
-                                    {{ $statusLabels[$data->aspiration_status] ?? 'N/A' }}
-                                </span>
+                                @if ($data->aspiration_status == \App\Constants\ProgressConst::PENDING)
+                                    <span
+                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-800/30 dark:text-amber-500">
+                                        <span class="size-1.5 rounded-full bg-amber-500"></span>
+                                        Pending
+                                    </span>
+                                @elseif($data->aspiration_status == \App\Constants\ProgressConst::IN_PROGRESS)
+                                    <span
+                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
+                                        <span class="size-1.5 rounded-full bg-blue-500"></span>
+                                        In Progress
+                                    </span>
+                                @elseif($data->aspiration_status == \App\Constants\ProgressConst::DONE)
+                                    <span
+                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-500">
+                                        <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                        Done
+                                    </span>
+                                @elseif ($data->aspiration_status == \App\Constants\ProgressConst::REJECT)
+                                    <span
+                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
+                                        <span class="size-1.5 rounded-full bg-red-500"></span>
+                                        Reject
+                                    </span>
+                                @else
+                                    <span
+                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-white">
+                                        Pending
+                                    </span>
+                                @endif
                             </div>
                         </div>
                     @endif
@@ -176,15 +188,27 @@
                                         </div>
 
                                         <h3 class="font-bold text-gray-800 dark:text-neutral-200">
-                                            @php
-                                                $statusLabels = [
-                                                    1 => 'Pending',
-                                                    2 => 'In Progress',
-                                                    3 => 'Done',
-                                                    4 => 'Rejected',
-                                                ];
-                                            @endphp
-                                            Status: {{ $statusLabels[$log->new_status] ?? 'Unknown' }}
+                                            @if ($log->new_status == \App\Constants\ProgressConst::PENDING)
+                                                <span
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-800/30 dark:text-amber-500">
+                                                    Status: Pending
+                                                </span>
+                                            @elseif($log->new_status == \App\Constants\ProgressConst::IN_PROGRESS)
+                                                <span
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-lg text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
+                                                    Status: In Progress
+                                                </span>
+                                            @elseif($log->new_status == \App\Constants\ProgressConst::DONE)
+                                                <span
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-500">
+                                                    Status: Done
+                                                </span>
+                                            @elseif($log->new_status == \App\Constants\ProgressConst::REJECT)
+                                                <span
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-lg text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
+                                                    Status: Rejected
+                                                </span>
+                                            @endif
                                         </h3>
 
                                         @if ($log->note)

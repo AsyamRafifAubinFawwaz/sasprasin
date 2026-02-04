@@ -16,8 +16,9 @@
         <div>
             <button type="button" data-hs-overlay="#modal-export-pdf"
                 class="py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 focus:outline-hidden focus:bg-orange-700 transition-all shadow-md shadow-orange-500/20 active:scale-95 cursor-pointer">
-                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                     <polyline points="14 2 14 8 20 8" />
                     <line x1="16" y1="13" x2="8" y2="13" />
@@ -46,7 +47,8 @@
                 </div>
 
                 <div class="w-44 max-w-full">
-                    <select name="priority" data-hs-select='{
+                    <select name="priority"
+                        data-hs-select='{
                                 "placeholder": "Prioritas",
                                 "toggleTag": "<button type=\"button\"></button>",
                                 "toggleClasses": "py-2 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm",
@@ -62,7 +64,8 @@
                 </div>
 
                 <div class="w-44 max-w-full">
-                    <select name="status" data-hs-select='{
+                    <select name="status"
+                        data-hs-select='{
                                     "placeholder": "Status",
                                     "toggleTag": "<button type=\"button\"></button>",
                                     "toggleClasses": "py-2 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm",
@@ -85,7 +88,8 @@
                         Cari
                     </button>
 
-                    @if (request()->hasAny(['priority', 'status', 'search', 'date']) && array_filter(request()->only(['priority', 'status', 'search', 'date'])))
+                    @if (request()->hasAny(['priority', 'status', 'search', 'date']) &&
+                            array_filter(request()->only(['priority', 'status', 'search', 'date'])))
                         <a href="{{ route('admin.aspirations.index') }}"
                             class="py-2 px-4 text-sm font-semibold rounded-lg border border-orange-600/20 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/10 cursor-pointer flex items-center justify-center gap-x-2 transition-all active:scale-95">
                             @include('_admin._layout.icons.reset')
@@ -149,7 +153,8 @@
                                         </td>
                                         <td class="size-px whitespace-nowrap">
                                             <div class="px-6 py-3">
-                                                <span class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
+                                                <span
+                                                    class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
                                                     {{ $d->category_name }}
                                                 </span>
                                                 <span class="block text-sm text-gray-500 dark:text-neutral-500">
@@ -173,7 +178,7 @@
                                         </td>
                                         <td class="size-px whitespace-nowrap">
                                             <div class="px-6 py-3">
-                                                @if($d->priority == 3)
+                                                @if ($d->priority == 3)
                                                     <span
                                                         class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
                                                         Tinggi
@@ -193,26 +198,44 @@
                                         </td>
                                         <td class="size-px whitespace-nowrap">
                                             <div class="px-6 py-3">
-                                                @php
-                                                    $statusMap = [
-                                                        1 => ['label' => 'Pending', 'class' => 'bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-500'],
-                                                        2 => ['label' => 'In Progress', 'class' => 'bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500'],
-                                                        3 => ['label' => 'Done', 'class' => 'bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500'],
-                                                        4 => ['label' => 'Reject', 'class' => 'bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500']
-                                                    ];
-                                                    $currentStatus = $statusMap[$d->status] ?? $statusMap[1];
-                                                @endphp
-                                                <span
-                                                    class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium {{ $currentStatus['class'] }}">
-                                                    {{ $currentStatus['label'] }}
-                                                </span>
+                                                @if ($d->status == \App\Constants\ProgressConst::PENDING)
+                                                    <span
+                                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-800/30 dark:text-amber-500">
+                                                        <span class="size-1.5 rounded-full bg-amber-500"></span>
+                                                        Pending
+                                                    </span>
+                                                @elseif ($d->status == \App\Constants\ProgressConst::IN_PROGRESS)
+                                                    <span
+                                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
+                                                        <span class="size-1.5 rounded-full bg-blue-500"></span>
+                                                        In Progress
+                                                    </span>
+                                                @elseif ($d->status == \App\Constants\ProgressConst::DONE)
+                                                    <span
+                                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-500">
+                                                        <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                                        Done
+                                                    </span>
+                                                @elseif ($d->status == \App\Constants\ProgressConst::REJECT)
+                                                    <span
+                                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
+                                                        <span class="size-1.5 rounded-full bg-red-500"></span>
+                                                        Reject
+                                                    </span>
+                                                @else
+                                                    <span
+                                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-white">
+                                                        Pending
+                                                    </span>
+                                                @endif
                                             </div>
                                         </td>
                                         <td class="size-px whitespace-nowrap">
                                             <div class="px-6 py-1.5 flex items-center gap-x-2 justify-end">
                                                 <a navigate
                                                     class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
-                                                    href="{{ route('admin.aspirations.detail', $d->id) }}" title="Lihat Detail">
+                                                    href="{{ route('admin.aspirations.detail', $d->id) }}"
+                                                    title="Lihat Detail">
                                                     @include('_admin._layout.icons.view_detail')
                                                 </a>
                                                 <button type="button"
@@ -275,7 +298,8 @@
         </div>
     </x-admin.modal>
 
-    <x-admin.modal id="modal-export-pdf" title="Export Laporan PDF" formId="formExportPdf" method="GET" :navigate="false">
+    <x-admin.modal id="modal-export-pdf" title="Export Laporan PDF" formId="formExportPdf" method="GET"
+        :navigate="false">
         <div class="space-y-4">
             <div
                 class="flex items-center gap-x-2 mb-4 bg-orange-50 dark:bg-orange-800/10 p-3 rounded-lg border border-orange-100 dark:border-orange-800/20">
@@ -359,7 +383,7 @@
             }, 100);
         }
 
-        document.getElementById('export_all').addEventListener('change', function () {
+        document.getElementById('export_all').addEventListener('change', function() {
             const options = document.getElementById('filter_options');
             const inputs = options.querySelectorAll('input, select');
             if (this.checked) {

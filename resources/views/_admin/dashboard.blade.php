@@ -275,18 +275,27 @@
                                         <div class="px-6 py-3">
                                             @if ($item->status == \App\Constants\ProgressConst::PENDING)
                                                 <span
-                                                    class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full dark:bg-blue-500/10 dark:text-blue-500">
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-800/30 dark:text-amber-500">
+                                                    <span class="size-1 rounded-full bg-amber-500"></span>
                                                     Pending
                                                 </span>
                                             @elseif($item->status == \App\Constants\ProgressConst::IN_PROGRESS)
                                                 <span
-                                                    class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full dark:bg-yellow-500/10 dark:text-yellow-500">
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
+                                                    <span class="size-1 rounded-full bg-blue-500"></span>
                                                     In Progress
                                                 </span>
-                                            @else
+                                            @elseif($item->status == \App\Constants\ProgressConst::DONE)
                                                 <span
-                                                    class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
-                                                    Selesai
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-500">
+                                                    <span class="size-1 rounded-full bg-emerald-500"></span>
+                                                    Done
+                                                </span>
+                                            @elseif($item->status == \App\Constants\ProgressConst::REJECT)
+                                                <span
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
+                                                    <span class="size-1 rounded-full bg-red-500"></span>
+                                                    Reject
                                                 </span>
                                             @endif
                                         </div>
@@ -362,7 +371,7 @@
 
     <script>
         window.addEventListener("load", () => {
-            (function () {
+            (function() {
                 const categories = {!! json_encode($stats['chart']['categories'] ?? []) !!};
                 const seriesData = {!! json_encode($stats['chart']['series'] ?? []) !!};
 
@@ -465,9 +474,15 @@
                             y: {
                                 formatter: (value) => `${Math.floor(value)} Laporan`,
                             },
-                            custom: function (props) {
-                                const { categories } = props.ctx.opts.xaxis;
-                                const { dataPointIndex, series, seriesIndex } = props;
+                            custom: function(props) {
+                                const {
+                                    categories
+                                } = props.ctx.opts.xaxis;
+                                const {
+                                    dataPointIndex,
+                                    series,
+                                    seriesIndex
+                                } = props;
                                 const titleStr = categories[dataPointIndex];
                                 const value = series[seriesIndex][dataPointIndex];
 
@@ -514,7 +529,8 @@
                                     style: {
                                         fontSize: '11px',
                                     },
-                                    formatter: (title) => title.length > 3 ? title.slice(0, 3) : title
+                                    formatter: (title) => title.length > 3 ? title.slice(0, 3) :
+                                        title
                                 },
                                 yaxis: {
                                     labels: {
@@ -526,14 +542,12 @@
                                 },
                             },
                         }]
-                    }),
-                    {
+                    }), {
                         colors: ["#ff7d26"],
                         grid: {
                             borderColor: "#e5e7eb",
                         },
-                    },
-                    {
+                    }, {
                         colors: ["#ff7d26"],
                         grid: {
                             borderColor: "#404040",

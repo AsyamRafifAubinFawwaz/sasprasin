@@ -84,12 +84,17 @@ class ComplaintController extends Controller
         $complaint = $this->usecase->getById(id: $id);
 
         if (empty($complaint['data'])) {
-            return redirect()->intended($this->baseRedirect)->with('error', ResponseConst::DEFAULT_ERROR_MESSAGE);
+            return redirect()
+    ->route('student.complaints.index')
+    ->with('error', ResponseConst::ERROR_MESSAGE_UNAUTHORIZED);
+
         }
 
-        if ($complaint['data']['data']->student_id !== Auth::user()->id) {
-            return redirect()->intended($this->baseRedirect)->with('error', ResponseConst::ERROR_MESSAGE_UNAUTHORIZED);
-        }
+       if ((int) $complaint['data']['data']->student_id !== (int) Auth::user()->id) {
+    return redirect()->route('student.complaints.index')
+        ->with('error', ResponseConst::ERROR_MESSAGE_UNAUTHORIZED);
+}
+
 
         $facility = $this->FacilityCategoryUsecase->getAll(['no_pagination' => true])['data']['list'] ?? [];
 
@@ -107,12 +112,17 @@ class ComplaintController extends Controller
         $complaint = $this->usecase->getById(id: $id);
 
         if (empty($complaint['data'])) {
-            return redirect()->intended($this->baseRedirect)->with('error', ResponseConst::DEFAULT_ERROR_MESSAGE);
+           return redirect()
+    ->route('student.complaints.index')
+    ->with('error', ResponseConst::ERROR_MESSAGE_UNAUTHORIZED);
+
         }
 
-        if ($complaint['data']['data']->student_id !== Auth::user()->id) {
-            return redirect()->intended($this->baseRedirect)->with('error', ResponseConst::ERROR_MESSAGE_UNAUTHORIZED);
-        }
+        if ((int) $complaint['data']['data']->student_id !== (int) Auth::user()->id) {
+    return redirect()->route('student.complaints.index')
+        ->with('error', ResponseConst::ERROR_MESSAGE_UNAUTHORIZED);
+}
+
 
         $facility = $this->FacilityCategoryUsecase->getAll(['no_pagination' => true])['data']['list'] ?? [];
         $locations = $this->LocationUsecase->getAll(['no_pagination' => true])['data']['list'] ?? [];
@@ -149,12 +159,17 @@ class ComplaintController extends Controller
         $complaint = $this->usecase->getById(id: $id);
 
         if (empty($complaint['data'])) {
-            return redirect()->intended($this->baseRedirect)->with('error', ResponseConst::DEFAULT_ERROR_MESSAGE);
+           return redirect()
+    ->route('student.complaints.index')
+    ->with('error', ResponseConst::ERROR_MESSAGE_UNAUTHORIZED);
+
         }
 
-        if ($complaint['data']['data']->student_id !== Auth::user()->id) {
-            return redirect()->intended($this->baseRedirect)->with('error', ResponseConst::ERROR_MESSAGE_UNAUTHORIZED);
-        }
+        if ((int) $complaint['data']['data']->student_id !== (int) Auth::user()->id) {
+    return redirect()->route('student.complaints.index')
+        ->with('error', ResponseConst::ERROR_MESSAGE_UNAUTHORIZED);
+}
+
 
         $process = $this->usecase->delete(id: $id);
 

@@ -34,23 +34,34 @@
                             Kategori <span class="text-red-500">*</span>
                         </label>
 
-                        <select name="facility_category_id" id="facility_category_id"
-                            class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm
-                                            focus:border-blue-500 focus:ring-blue-500
-                                            dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400
-                                            @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                            required>
+                        <div class="relative custom-select-container" id="container-category">
+                            <input type="hidden" name="facility_category_id" id="facility_category_id"
+                                value="{{ old('facility_category_id', $data->facility_category_id) }}" required>
+                            <button type="button"
+                                class="peer group w-full text-left px-4 py-3 border rounded-lg bg-white dark:bg-neutral-900 text-gray-700 dark:text-neutral-400 border-gray-200 dark:border-neutral-700 shadow-sm hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all flex justify-between items-center @error('facility_category_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror">
+                                <span
+                                    class="selected-text">{{ old('facility_category_id', $data->facility_category_id) ? $facility->firstWhere('id', old('facility_category_id', $data->facility_category_id))->name ?? 'Pilih Kategori' : 'Pilih Kategori' }}</span>
+                                <svg class="w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="m19 9-7 7-7-7" />
+                                </svg>
+                            </button>
 
-                            <option value="">Pilih Kategori</option>
-
-                            @foreach ($facility as $category)
-                                <option value="{{ $category->id }}"
-                                    {{ old('facility_category_id', $data->facility_category_id) == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                    {{ $category->example_items ? '(Contoh: ' . $category->example_items . ')' : '' }}
-                                </option>
-                            @endforeach
-                        </select>
+                            <ul
+                                class="hidden absolute z-50 overflow-y-auto max-h-60 mt-1 w-full bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-lg shadow-lg py-1 custom-select-options">
+                                <li data-value=""
+                                    class="px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer transition-colors text-sm">
+                                    Pilih Kategori</li>
+                                @foreach ($facility as $category)
+                                    <li data-value="{{ $category->id }}"
+                                        class="px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer transition-colors text-sm">
+                                        {{ $category->name }}
+                                        {{ $category->example_items ? '(Contoh: ' . $category->example_items . ')' : '' }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
 
                         @error('facility_category_id')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
@@ -60,17 +71,35 @@
                     <div>
                         <label for="location_id" class="block text-sm font-medium mb-2 dark:text-white">Lokasi <span
                                 class="text-red-500">*</span></label>
-                        <select name="location_id" id="location_id"
-                            class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('location_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                            required>
-                            <option value="">Pilih Lokasi</option>
-                            @foreach ($locations as $location)
-                                <option value="{{ $location->id }}"
-                                    {{ old('location_id', $data->location_id) == $location->id ? 'selected' : '' }}>
-                                    {{ $location->name }}
-                                </option>
-                            @endforeach
-                        </select>
+
+                        <div class="relative custom-select-container" id="container-location">
+                            <input type="hidden" name="location_id" id="location_id"
+                                value="{{ old('location_id', $data->location_id) }}" required>
+                            <button type="button"
+                                class="peer group w-full text-left px-4 py-3 border rounded-lg bg-white dark:bg-neutral-900 text-gray-700 dark:text-neutral-400 border-gray-200 dark:border-neutral-700 shadow-sm hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all flex justify-between items-center @error('location_id') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror">
+                                <span
+                                    class="selected-text">{{ old('location_id', $data->location_id) ? $locations->firstWhere('id', old('location_id', $data->location_id))->name ?? 'Pilih Lokasi' : 'Pilih Lokasi' }}</span>
+                                <svg class="w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="m19 9-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <ul
+                                class="hidden absolute z-50 overflow-y-auto max-h-60 mt-1 w-full bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-lg shadow-lg py-1 custom-select-options">
+                                <li data-value=""
+                                    class="px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer transition-colors text-sm">
+                                    Pilih Lokasi</li>
+                                @foreach ($locations as $location)
+                                    <li data-value="{{ $location->id }}"
+                                        class="px-4 py-2 hover:bg-orange-500 hover:text-white cursor-pointer transition-colors text-sm">
+                                        {{ $location->name }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
                         @error('location_id')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                         @enderror
@@ -80,7 +109,7 @@
                         <label for="description" class="block text-sm font-medium mb-2 dark:text-white">Deskripsi <span
                                 class="text-red-500">*</span></label>
                         <textarea id="description" name="description" rows="4"
-                            class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('description') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
+                            class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 @error('description') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
                             placeholder="Jelaskan keluhan Anda" required>{{ old('description', $data->description) }}</textarea>
                         @error('description')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
@@ -132,7 +161,7 @@
 
                         <div id="upload-section" class="upload-area">
                             <div id="drop-zone"
-                                class="border-2 border-dashed border-gray-300 dark:border-neutral-600 rounded-lg p-8 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-pointer">
+                                class="border-2 border-dashed border-gray-300 dark:border-neutral-600 rounded-lg p-8 text-center hover:border-orange-400 dark:hover:border-orange-500 transition-colors cursor-pointer flex flex-col justify-center items-center min-h-[200px]">
 
                                 <div id="drop-zone-content">
                                     <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-neutral-500" fill="none"
@@ -141,7 +170,7 @@
                                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
                                     <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-                                        <span class="font-semibold text-blue-600 dark:text-blue-400">Klik untuk
+                                        <span class="font-semibold text-orange-600 dark:text-orange-400">Klik untuk
                                             upload</span>
                                         atau drag & drop
                                     </p>
@@ -176,7 +205,7 @@
 
                                 <div class="flex justify-center gap-3 mt-3">
                                     <button type="button" id="btn-capture"
-                                        class="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                                        class="py-2 px-4 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium">
                                         <svg class="inline-block w-5 h-5 mr-1" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <circle cx="12" cy="12" r="10" stroke-width="2" />
@@ -214,7 +243,7 @@
                         Batal
                     </a>
                     <button type="submit"
-                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none cursor-pointer">
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 focus:outline-none focus:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none cursor-pointer">
                         <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -262,6 +291,27 @@
             border-color: #3b82f6;
             background: #1e3a8a;
         }
+
+        /* Custom Select Styles */
+        .custom-select-container.active ul {
+            display: block;
+        }
+
+        .custom-select-container.active button svg {
+            transform: rotate(180deg);
+        }
+
+        .tab-btn.active {
+            border-color: #ea580c;
+            color: #ea580c;
+            background: #fff7ed;
+        }
+
+        .dark .tab-btn.active {
+            border-color: #ea580c;
+            color: #fb923c;
+            background: #431407;
+        }
     </style>
 
     <script>
@@ -281,10 +331,10 @@
         // Remove current image
         const btnRemoveCurrent = document.getElementById('btn-remove-current');
         if (btnRemoveCurrent) {
-            btnRemoveCurrent.addEventListener('click', () => {
-                if (confirm('Yakin ingin menghapus gambar saat ini? Anda perlu upload gambar baru.')) {
-                    currentImage.style.display = 'none';
-                }
+            btnRemoveCurrent.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Seamlessly hide current image without alert
+                currentImage.style.display = 'none';
             });
         }
 
@@ -317,6 +367,11 @@
 
         async function startCamera() {
             try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error(
+                        "Browser Anda tidak mendukung akses kamera di konteks ini (Perlu HTTPS atau localhost)");
+                }
+
                 if (cameraStream) {
                     stopCamera();
                 }
@@ -327,7 +382,41 @@
                 });
                 cameraPreview.srcObject = cameraStream;
             } catch (err) {
-                alert('Tidak dapat mengakses kamera: ' + err.message);
+                let errorMessage = 'Tidak dapat mengakses kamera: ' + err.message;
+                if (!window.isSecureContext) {
+                    errorMessage = `
+                            Browser memblokir kamera karena Anda mengakses melalui jaringan lokal (IP) tanpa HTTPS.<br><br>
+                            <strong>Cara Perbaikan (Testing):</strong><br>
+                            1. Gunakan <strong>localhost</strong> jika di PC.<br>
+                            2. Jika di HP (Chrome), buka:<br>
+                               <code class="bg-gray-100 dark:bg-neutral-700 p-1 rounded text-xs select-all">chrome://flags/#unsafely-treat-insecure-origin-as-secure</code><br>
+                               Lalu masukkan IP: <code class="bg-gray-100 dark:bg-neutral-700 p-1 rounded text-xs">http://${location.host}</code>
+                               <button onclick="navigator.clipboard.writeText('http://' + location.host); this.innerText='Tersalin!'; setTimeout(()=>this.innerText='Salin', 2000)" class="text-[10px] bg-orange-100 dark:bg-orange-900/30 text-orange-600 px-1 rounded ml-1">Salin</button>
+                               dan set <strong>Enabled</strong>.
+                        `;
+                }
+
+                const errorDiv = document.createElement('div');
+                errorDiv.id = 'camera-error-modal';
+                errorDiv.className =
+                    'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm';
+                errorDiv.innerHTML = `
+                        <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-xl max-w-sm w-full p-6 animate-toast-pop">
+                            <div class="flex items-center gap-3 mb-4 text-red-600">
+                                <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                <h3 class="font-bold text-lg">Akses Kamera Gagal</h3>
+                            </div>
+                            <div class="text-sm text-gray-600 dark:text-neutral-400 mb-6">
+                                ${errorMessage}
+                            </div>
+                            <button onclick="document.getElementById('camera-error-modal').remove()" 
+                                class="w-full py-2.5 bg-orange-600 text-white rounded-xl font-semibold hover:bg-orange-700 transition-colors">
+                                Dimengerti
+                            </button>
+                        </div>
+                    `;
+                document.body.appendChild(errorDiv);
+                switchTab('upload');
             }
         }
 
@@ -335,6 +424,8 @@
             if (cameraStream) {
                 cameraStream.getTracks().forEach(track => track.stop());
                 cameraStream = null;
+                // Explicitly clear srcObject to release hardware fully
+                cameraPreview.srcObject = null;
             }
         }
 
@@ -361,7 +452,12 @@
 
         document.getElementById('btn-switch-camera').addEventListener('click', () => {
             currentCamera = currentCamera === 'user' ? 'environment' : 'user';
-            startCamera();
+
+            // Stop current camera and wait a bit before starting new one
+            stopCamera();
+            setTimeout(() => {
+                startCamera();
+            }, 300);
         });
 
         dropZone.addEventListener('click', () => fileInput.click());
@@ -410,12 +506,17 @@
         }
 
         document.getElementById('btn-remove').addEventListener('click', (e) => {
-            e.stopPropagation();
-            fileInput.value = '';
-            previewContainer.classList.add('hidden');
-            dropZoneContent.classList.remove('hidden');
-            preview.src = '';
-            if (currentImage) currentImage.style.display = 'block';
+        e.stopPropagation();
+        fileInput.value = '';
+        previewContainer.classList.add('hidden');
+        dropZoneContent.classList.remove('hidden');
+        preview.src = '';
+        // If we remove the new preview, we show the current image back (only if it wasn't hidden by btnRemoveCurrent)
+        if (currentImage && currentImage.style.display !== 'none') {
+            currentImage.style.display = 'block';
+        }
+        });
+
         });
 
         window.addEventListener('beforeunload', stopCamera);
