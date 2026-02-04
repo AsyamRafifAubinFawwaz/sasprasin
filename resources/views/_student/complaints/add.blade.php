@@ -465,13 +465,11 @@
         }
 
         btnRemove.addEventListener('click', (e) => {
-        e.stopPropagation(); // Stop click from propagating to dropZone (which opens file dialog)
-        fileInput.value = '';
-        previewContainer.classList.add('hidden');
-        dropZoneContent.classList.remove('hidden');
-        preview.src = '';
-        });
-
+            e.stopPropagation(); // Stop click from propagating to dropZone (which opens file dialog)
+            fileInput.value = '';
+            previewContainer.classList.add('hidden');
+            dropZoneContent.classList.remove('hidden');
+            preview.src = '';
         });
 
         // Stop camera when page unloads

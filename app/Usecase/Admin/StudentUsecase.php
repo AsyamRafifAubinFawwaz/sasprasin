@@ -33,7 +33,10 @@ class StudentUsecase extends Usecase
                     's.created_at'
                 )
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
-                    return $query->where('u.name', 'like', '%' . $keywords . '%');
+                    $query->where(function ($q) use ($keywords) {
+                        $q->where('u.name', 'like', "%{$keywords}%")
+                            ->orWhere('s.nisn', 'like', "%{$keywords}%");
+                    });
                 })
                 ->when($filterData['classroom_id'] ?? false, function ($query, $classroomId) {
                     return $query->where('s.classroom_id', $classroomId);

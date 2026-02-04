@@ -99,6 +99,7 @@ class DashboardUsecase extends Usecase
                     'locations.name as location',
                     'complaints.created_at',
                     'facility_categories.name as category_name',
+                    'facility_categories.priority',
                     DB::raw('COALESCE(aspirations.status, '.ProgressConst::PENDING.') as status')
                 )
                 ->whereNull('complaints.deleted_at')
@@ -111,6 +112,7 @@ class DashboardUsecase extends Usecase
             ELSE 5
         END
     ')
+                ->orderBy('facility_categories.priority', 'desc')
                 ->orderBy('complaints.created_at', 'desc')
                 ->limit(5)
                 ->get();

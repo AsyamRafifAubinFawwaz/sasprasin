@@ -27,12 +27,19 @@ class AspirationController extends Controller
             'status' => $request->get('status'),
             'priority' => $request->get('priority'),
             'search' => $request->get('search'),
+            'location' => $request->get('location'),
+            'facility_category_id' => $request->get('facility_category_id'),
             'date' => $request->get('date'),
         ]);
+
+        $locations = \Illuminate\Support\Facades\DB::table(\App\Constants\DatabaseConst::LOCATION)->get();
+        $categories = \Illuminate\Support\Facades\DB::table(\App\Constants\DatabaseConst::FACILITY_CATEGORY)->get();
 
         return view('_admin.aspirations.index', [
             'page' => $this->page,
             'data' => $data['data']['list'] ?? [],
+            'locations' => $locations,
+            'categories' => $categories,
         ]);
     }
 

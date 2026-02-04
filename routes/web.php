@@ -115,4 +115,9 @@ Route::middleware(['auth', 'role:2'])->prefix('student')->name('student.')->grou
         Route::post('/update/{id}', [ComplaintController::class, 'doUpdate'])->name('do_update');
         Route::delete('/delete/{id}', [ComplaintController::class, 'delete'])->name('delete');
     });
+
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/change-password', [\App\Http\Controllers\Student\ProfileController::class, 'changePassword'])->name('change_password');
+        Route::post('/change-password', [\App\Http\Controllers\Student\ProfileController::class, 'doChangePassword'])->name('do_change_password');
+    });
 });

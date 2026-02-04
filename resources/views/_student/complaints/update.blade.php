@@ -506,17 +506,15 @@
         }
 
         document.getElementById('btn-remove').addEventListener('click', (e) => {
-        e.stopPropagation();
-        fileInput.value = '';
-        previewContainer.classList.add('hidden');
-        dropZoneContent.classList.remove('hidden');
-        preview.src = '';
-        // If we remove the new preview, we show the current image back (only if it wasn't hidden by btnRemoveCurrent)
-        if (currentImage && currentImage.style.display !== 'none') {
-            currentImage.style.display = 'block';
-        }
-        });
-
+            e.stopPropagation();
+            fileInput.value = '';
+            previewContainer.classList.add('hidden');
+            dropZoneContent.classList.remove('hidden');
+            preview.src = '';
+            // If we remove the new preview, we show the current image back (only if it wasn't hidden by btnRemoveCurrent)
+            if (currentImage && currentImage.style.display !== 'none') {
+                currentImage.style.display = 'block';
+            }
         });
 
         window.addEventListener('beforeunload', stopCamera);

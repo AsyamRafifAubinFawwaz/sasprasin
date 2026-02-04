@@ -222,9 +222,16 @@
                                 </button>
                             </div>
                         </div>
+                        @php
+                            $changePasswordRoute = match (Auth::user()->access_type) {
+                                UserConst::ADMIN => 'admin.profile.change_password',
+                                UserConst::STUDENT => 'student.profile.change_password',
+                                default => 'admin.profile.change_password',
+                            };
+                        @endphp
                         <a navigate
                             class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                            href="{{ route('admin.profile.change_password') }}">
+                            href="{{ route($changePasswordRoute) }}">
                             @if (Auth::user()->access_type == UserConst::ADMIN)
                                 @include('_admin._layout.icons.sidebar.change-password')
                             @else

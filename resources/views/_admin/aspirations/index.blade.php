@@ -46,6 +46,45 @@
                         class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm">
                 </div>
 
+                {{-- <div class="w-44 max-w-full">
+                    <select name="location"
+                        data-hs-select='{
+                                "placeholder": "Lokasi",
+                                "toggleTag": "<button type=\"button\"></button>",
+                                "toggleClasses": "py-2 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm",
+                                "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                            }'>
+                        <option value="">Semua Lokasi</option>
+                        @foreach ($locations as $location)
+                            <option value="{{ $location->id }}"
+                                {{ request('location') == $location->id ? 'selected' : '' }}>
+                                {{ $location->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div> --}}
+
+                <div class="w-44 max-w-full">
+                    <select name="facility_category_id"
+                        data-hs-select='{
+                                "placeholder": "Kategori Fasilitas",
+                                "toggleTag": "<button type=\"button\"></button>",
+                                "toggleClasses": "py-2 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm",
+                                "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                                "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
+                                "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
+                            }'>
+                        <option value="">Semua Kategori</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}"
+                                {{ request('facility_category_id') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="w-44 max-w-full">
                     <select name="priority"
                         data-hs-select='{
@@ -88,8 +127,8 @@
                         Cari
                     </button>
 
-                    @if (request()->hasAny(['priority', 'status', 'search', 'date']) &&
-                            array_filter(request()->only(['priority', 'status', 'search', 'date'])))
+                    @if (request()->hasAny(['priority', 'status', 'search', 'date', 'location', 'facility_category_id']) &&
+                            array_filter(request()->only(['priority', 'status', 'search', 'date', 'location', 'facility_category_id'])))
                         <a href="{{ route('admin.aspirations.index') }}"
                             class="py-2 px-4 text-sm font-semibold rounded-lg border border-orange-600/20 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/10 cursor-pointer flex items-center justify-center gap-x-2 transition-all active:scale-95">
                             @include('_admin._layout.icons.reset')

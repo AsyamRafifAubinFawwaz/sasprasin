@@ -93,6 +93,12 @@
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-start">
                                         <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
+                                            NISN
+                                        </span>
+                                    </th>
+
+                                    <th scope="col" class="px-6 py-3 text-start">
+                                        <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
                                             Email
                                         </span>
                                     </th>
@@ -119,7 +125,13 @@
                                                 <span
                                                     class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{{ $d->name }}</span>
                                             </div>
+                                        <td class="size-px whitespace-nowrap">
+                                            <div class="px-6 py-3">
+                                                <span
+                                                    class="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{{ $d->nisn }}</span>
+                                            </div>
                                         </td>
+
                                         <td class="size-px whitespace-nowrap">
                                             <div class="px-6 py-3">
                                                 <span

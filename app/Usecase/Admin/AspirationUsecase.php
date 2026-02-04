@@ -52,6 +52,13 @@ class AspirationUsecase
             if (!empty($filter['priority'])) {
                 $query->where('facility_categories.priority', $filter['priority']);
             }
+            if (!empty($filter['location'])) {
+                $query->where('locations.id', $filter['location']);
+            }
+
+            if (!empty($filter['facility_category_id'])) {
+                $query->where('complaints.facility_category_id', $filter['facility_category_id']);
+            }
 
             if (!empty($filter['search'])) {
                 $query->where(function ($q) use ($filter) {

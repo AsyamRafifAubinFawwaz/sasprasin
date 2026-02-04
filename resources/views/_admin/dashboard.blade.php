@@ -214,6 +214,14 @@
                                 <th scope="col" class="px-6 py-3 text-start">
                                     <div class="flex items-center gap-x-2">
                                         <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
+                                            Prioritas
+                                        </span>
+                                    </div>
+                                </th>
+
+                                <th scope="col" class="px-6 py-3 text-start">
+                                    <div class="flex items-center gap-x-2">
+                                        <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
                                             Status
                                         </span>
                                     </div>
@@ -269,6 +277,26 @@
                                                     </span>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </td>
+                                    <td class="size-px whitespace-nowrap">
+                                        <div class="px-6 py-3">
+                                            @if ($item->priority == \App\Constants\PriorityConst::HIGH)
+                                                <span
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 dark:bg-rose-800/30 dark:text-rose-500">
+                                                    High
+                                                </span>
+                                            @elseif($item->priority == \App\Constants\PriorityConst::MEDIUM)
+                                                <span
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
+                                                    Medium
+                                                </span>
+                                            @elseif($item->priority == \App\Constants\PriorityConst::LOW)
+                                                <span
+                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 dark:bg-neutral-800/30 dark:text-neutral-500">
+                                                    Low
+                                                </span>
+                                            @endif
                                         </div>
                                     </td>
                                     <td class="size-px whitespace-nowrap">
