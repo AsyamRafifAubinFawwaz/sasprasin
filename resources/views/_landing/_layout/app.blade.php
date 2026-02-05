@@ -7,12 +7,12 @@
 
     @include('_admin._layout.favicon')
 
-    <title>{{ env('APP_ENV') == 'local' ? '[LOCAL] ' : '' }}Laravel Starter Kit - @yield('title')</title>
+    <title>{{ env('APP_ENV') == 'local' ? '[LOCAL] ' : '' }}SARPRASIN - @yield('title')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
     <script src="https://preline.co/assets/js/hs-datepicker.min.js"></script>
 
@@ -49,10 +49,10 @@
 
     <!-- Smooth Scroll for Landing Page -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Smooth scrolling for buttons with smooth-scroll class
             document.querySelectorAll('.smooth-scroll').forEach(link => {
-                link.addEventListener('click', function (e) {
+                link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href');
                     const targetSection = document.querySelector(targetId);
