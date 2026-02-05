@@ -290,4 +290,51 @@ class UserUsecase extends Usecase
             return Response::buildErrorService($e->getMessage());
         }
     }
+
+    public function updatePersonalInfo(array $data): array
+    {
+        $userID = Auth::user()?->id;
+
+        $validator = Validator::make($data, [
+            'name' => ['required', 'string', 'max:255', 'min:3'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$userID],
+        ]);
+
+        $customAttributes = [
+            'name' => 'Nama',
+            'email' => 'Email',
+        ];
+        $validator->setAttributeNames($customAttributes);
+        $validator->validate();
+
+        DB::beginTransaction();
+
+        try {
+            DB::table(DatabaseConst::USER)
+                ->where('id', $userID)
+                ->update([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'updated_by' => $userID,
+                    'updated_at' => now(),
+                ]);
+
+            DB::commit();
+
+            return Response::buildSuccess(
+                message: ResponseConst::SUCCESS_MESSAGE_UPDATED
+            );
+        } catch (Exception $e) {
+            DB::rollback();
+
+            Log::error(
+                message: $e->getMessage(),
+                context: [
+                    'method' => __METHOD__,
+                ]
+            );
+
+            return Response::buildErrorService($e->getMessage());
+        }
+    }
 }

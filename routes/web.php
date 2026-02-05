@@ -98,6 +98,8 @@ Route::middleware(['auth', 'role:1'])->prefix('admin')->name('admin.')->group(fu
         Route::delete('/delete/{id}', [AspirationController::class, 'delete'])->name('delete');
     });
     Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/update', [UserController::class, 'updateProfile'])->name('update');
+        Route::post('/update', [UserController::class, 'doUpdateProfile'])->name('do_update');
         Route::get('/change-password', [UserController::class, 'changePassword'])->name('change_password');
         Route::post('/change-password', [UserController::class, 'doChangePassword'])->name('do_change_password');
     });
@@ -117,6 +119,8 @@ Route::middleware(['auth', 'role:2'])->prefix('student')->name('student.')->grou
     });
 
     Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/update', [\App\Http\Controllers\Student\ProfileController::class, 'updateProfile'])->name('update');
+        Route::post('/update', [\App\Http\Controllers\Student\ProfileController::class, 'doUpdateProfile'])->name('do_update');
         Route::get('/change-password', [\App\Http\Controllers\Student\ProfileController::class, 'changePassword'])->name('change_password');
         Route::post('/change-password', [\App\Http\Controllers\Student\ProfileController::class, 'doChangePassword'])->name('do_change_password');
     });

@@ -169,4 +169,25 @@ class UserController extends Controller
                 ->with('error', $process['message'] ?? ResponseConst::DEFAULT_ERROR_MESSAGE);
         }
     }
+
+    public function updateProfile(): View
+    {
+        return view('_admin.profile.update');
+    }
+
+    public function doUpdateProfile(Request $request): RedirectResponse
+    {
+        $process = $this->usecase->updatePersonalInfo($request->all());
+
+        if ($process['success']) {
+            return redirect()
+                ->back()
+                ->with('success', 'Profil berhasil diperbarui.');
+        } else {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', $process['message'] ?? ResponseConst::DEFAULT_ERROR_MESSAGE);
+        }
+    }
 }
