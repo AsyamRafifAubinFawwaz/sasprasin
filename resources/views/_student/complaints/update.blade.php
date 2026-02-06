@@ -315,208 +315,215 @@
     </style>
 
     <script>
-        let cameraStream = null;
-        let currentCamera = 'user';
-        const fileInput = document.getElementById('image');
-        const dropZone = document.getElementById('drop-zone');
-        const dropZoneContent = document.getElementById('drop-zone-content');
-        const preview = document.getElementById('image-preview');
-        const previewContainer = document.getElementById('preview-container');
-        const uploadSection = document.getElementById('upload-section');
-        const cameraSection = document.getElementById('camera-section');
-        const cameraPreview = document.getElementById('camera-preview');
-        const cameraCanvas = document.getElementById('camera-canvas');
-        const currentImage = document.getElementById('current-image');
+        (function() {
+            const form = document.getElementById('update-form');
+            if (!form || form.dataset.scriptLoaded) return;
+            form.dataset.scriptLoaded = 'true';
 
-        // Remove current image
-        const btnRemoveCurrent = document.getElementById('btn-remove-current');
-        if (btnRemoveCurrent) {
-            btnRemoveCurrent.addEventListener('click', (e) => {
-                e.stopPropagation();
-                // Seamlessly hide current image without alert
-                currentImage.style.display = 'none';
-            });
-        }
+            let cameraStream = null;
+            let currentCamera = 'user';
+            const fileInput = document.getElementById('image');
+            const dropZone = document.getElementById('drop-zone');
+            const dropZoneContent = document.getElementById('drop-zone-content');
+            const preview = document.getElementById('image-preview');
+            const previewContainer = document.getElementById('preview-container');
+            const uploadSection = document.getElementById('upload-section');
+            const cameraSection = document.getElementById('camera-section');
+            const cameraPreview = document.getElementById('camera-preview');
+            const cameraCanvas = document.getElementById('camera-canvas');
+            const currentImage = document.getElementById('current-image');
 
-        document.getElementById('btn-upload').addEventListener('click', () => {
-            switchTab('upload');
-        });
-
-        document.getElementById('btn-camera').addEventListener('click', () => {
-            switchTab('camera');
-        });
-
-        function switchTab(tab) {
-            const btnUpload = document.getElementById('btn-upload');
-            const btnCamera = document.getElementById('btn-camera');
-
-            if (tab === 'upload') {
-                btnUpload.classList.add('active');
-                btnCamera.classList.remove('active');
-                uploadSection.classList.remove('hidden');
-                cameraSection.classList.add('hidden');
-                stopCamera();
-            } else {
-                btnCamera.classList.add('active');
-                btnUpload.classList.remove('active');
-                cameraSection.classList.remove('hidden');
-                uploadSection.classList.add('hidden');
-                startCamera();
+            // Remove current image
+            const btnRemoveCurrent = document.getElementById('btn-remove-current');
+            if (btnRemoveCurrent) {
+                btnRemoveCurrent.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Seamlessly hide current image without alert
+                    currentImage.style.display = 'none';
+                });
             }
-        }
 
-        async function startCamera() {
-            try {
-                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    throw new Error(
-                        "Browser Anda tidak mendukung akses kamera di konteks ini (Perlu HTTPS atau localhost)");
-                }
+            document.getElementById('btn-upload').addEventListener('click', () => {
+                switchTab('upload');
+            });
 
-                if (cameraStream) {
+            document.getElementById('btn-camera').addEventListener('click', () => {
+                switchTab('camera');
+            });
+
+            function switchTab(tab) {
+                const btnUpload = document.getElementById('btn-upload');
+                const btnCamera = document.getElementById('btn-camera');
+
+                if (tab === 'upload') {
+                    btnUpload.classList.add('active');
+                    btnCamera.classList.remove('active');
+                    uploadSection.classList.remove('hidden');
+                    cameraSection.classList.add('hidden');
                     stopCamera();
+                } else {
+                    btnCamera.classList.add('active');
+                    btnUpload.classList.remove('active');
+                    cameraSection.classList.remove('hidden');
+                    uploadSection.classList.add('hidden');
+                    startCamera();
                 }
-                cameraStream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: currentCamera
+            }
+
+            async function startCamera() {
+                try {
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                        throw new Error(
+                            "Browser Anda tidak mendukung akses kamera di konteks ini (Perlu HTTPS atau localhost)"
+                            );
                     }
-                });
-                cameraPreview.srcObject = cameraStream;
-            } catch (err) {
-                let errorMessage = 'Tidak dapat mengakses kamera: ' + err.message;
-                if (!window.isSecureContext) {
-                    errorMessage = `
-                            Browser memblokir kamera karena Anda mengakses melalui jaringan lokal (IP) tanpa HTTPS.<br><br>
-                            <strong>Cara Perbaikan (Testing):</strong><br>
-                            1. Gunakan <strong>localhost</strong> jika di PC.<br>
-                            2. Jika di HP (Chrome), buka:<br>
-                               <code class="bg-gray-100 dark:bg-neutral-700 p-1 rounded text-xs select-all">chrome://flags/#unsafely-treat-insecure-origin-as-secure</code><br>
-                               Lalu masukkan IP: <code class="bg-gray-100 dark:bg-neutral-700 p-1 rounded text-xs">http://${location.host}</code>
-                               <button onclick="navigator.clipboard.writeText('http://' + location.host); this.innerText='Tersalin!'; setTimeout(()=>this.innerText='Salin', 2000)" class="text-[10px] bg-orange-100 dark:bg-orange-900/30 text-orange-600 px-1 rounded ml-1">Salin</button>
-                               dan set <strong>Enabled</strong>.
+
+                    if (cameraStream) {
+                        stopCamera();
+                    }
+                    cameraStream = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            facingMode: currentCamera
+                        }
+                    });
+                    cameraPreview.srcObject = cameraStream;
+                } catch (err) {
+                    let errorMessage = 'Tidak dapat mengakses kamera: ' + err.message;
+                    if (!window.isSecureContext) {
+                        errorMessage = `
+                                Browser memblokir kamera karena Anda mengakses melalui jaringan lokal (IP) tanpa HTTPS.<br><br>
+                                <strong>Cara Perbaikan (Testing):</strong><br>
+                                1. Gunakan <strong>localhost</strong> jika di PC.<br>
+                                2. Jika di HP (Chrome), buka:<br>
+                                   <code class="bg-gray-100 dark:bg-neutral-700 p-1 rounded text-xs select-all">chrome://flags/#unsafely-treat-insecure-origin-as-secure</code><br>
+                                   Lalu masukkan IP: <code class="bg-gray-100 dark:bg-neutral-700 p-1 rounded text-xs">http://${location.host}</code>
+                                   <button type="button" onclick="navigator.clipboard.writeText('http://' + location.host); this.innerText='Tersalin!'; setTimeout(()=>this.innerText='Salin', 2000)" class="text-[10px] bg-orange-100 dark:bg-orange-900/30 text-orange-600 px-1 rounded ml-1">Salin</button>
+                                   dan set <strong>Enabled</strong>.
+                            `;
+                    }
+
+                    const errorDiv = document.createElement('div');
+                    errorDiv.id = 'camera-error-modal';
+                    errorDiv.className =
+                        'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm';
+                    errorDiv.innerHTML = `
+                            <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-xl max-w-sm w-full p-6 animate-toast-pop">
+                                <div class="flex items-center gap-3 mb-4 text-red-600">
+                                    <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                    <h3 class="font-bold text-lg">Akses Kamera Gagal</h3>
+                                </div>
+                                <div class="text-sm text-gray-600 dark:text-neutral-400 mb-6">
+                                    ${errorMessage}
+                                </div>
+                                <button type="button" onclick="document.getElementById('camera-error-modal').remove()" 
+                                    class="w-full py-2.5 bg-orange-600 text-white rounded-xl font-semibold hover:bg-orange-700 transition-colors">
+                                    Dimengerti
+                                </button>
+                            </div>
                         `;
+                    document.body.appendChild(errorDiv);
+                    switchTab('upload');
                 }
-
-                const errorDiv = document.createElement('div');
-                errorDiv.id = 'camera-error-modal';
-                errorDiv.className =
-                    'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm';
-                errorDiv.innerHTML = `
-                        <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-xl max-w-sm w-full p-6 animate-toast-pop">
-                            <div class="flex items-center gap-3 mb-4 text-red-600">
-                                <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                                <h3 class="font-bold text-lg">Akses Kamera Gagal</h3>
-                            </div>
-                            <div class="text-sm text-gray-600 dark:text-neutral-400 mb-6">
-                                ${errorMessage}
-                            </div>
-                            <button onclick="document.getElementById('camera-error-modal').remove()" 
-                                class="w-full py-2.5 bg-orange-600 text-white rounded-xl font-semibold hover:bg-orange-700 transition-colors">
-                                Dimengerti
-                            </button>
-                        </div>
-                    `;
-                document.body.appendChild(errorDiv);
-                switchTab('upload');
             }
-        }
 
-        function stopCamera() {
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(track => track.stop());
-                cameraStream = null;
-                // Explicitly clear srcObject to release hardware fully
-                cameraPreview.srcObject = null;
+            function stopCamera() {
+                if (cameraStream) {
+                    cameraStream.getTracks().forEach(track => track.stop());
+                    cameraStream = null;
+                    // Explicitly clear srcObject to release hardware fully
+                    cameraPreview.srcObject = null;
+                }
             }
-        }
 
-        document.getElementById('btn-capture').addEventListener('click', () => {
-            const context = cameraCanvas.getContext('2d');
-            cameraCanvas.width = cameraPreview.videoWidth;
-            cameraCanvas.height = cameraPreview.videoHeight;
-            context.drawImage(cameraPreview, 0, 0);
+            document.getElementById('btn-capture').addEventListener('click', () => {
+                const context = cameraCanvas.getContext('2d');
+                cameraCanvas.width = cameraPreview.videoWidth;
+                cameraCanvas.height = cameraPreview.videoHeight;
+                context.drawImage(cameraPreview, 0, 0);
 
-            cameraCanvas.toBlob(blob => {
-                const file = new File([blob], 'camera-photo.jpg', {
-                    type: 'image/jpeg'
-                });
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-                fileInput.files = dataTransfer.files;
+                cameraCanvas.toBlob(blob => {
+                    const file = new File([blob], 'camera-photo.jpg', {
+                        type: 'image/jpeg'
+                    });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;
 
-                showPreview(URL.createObjectURL(blob));
-                if (currentImage) currentImage.style.display = 'none';
+                    showPreview(URL.createObjectURL(blob));
+                    if (currentImage) currentImage.style.display = 'none';
+                    stopCamera();
+                    switchTab('upload');
+                }, 'image/jpeg', 0.95);
+            });
+
+            document.getElementById('btn-switch-camera').addEventListener('click', () => {
+                currentCamera = currentCamera === 'user' ? 'environment' : 'user';
+
+                // Stop current camera and wait a bit before starting new one
                 stopCamera();
-                switchTab('upload');
-            }, 'image/jpeg', 0.95);
-        });
-
-        document.getElementById('btn-switch-camera').addEventListener('click', () => {
-            currentCamera = currentCamera === 'user' ? 'environment' : 'user';
-
-            // Stop current camera and wait a bit before starting new one
-            stopCamera();
-            setTimeout(() => {
-                startCamera();
-            }, 300);
-        });
-
-        dropZone.addEventListener('click', () => fileInput.click());
-
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                showPreview(URL.createObjectURL(e.target.files[0]));
-                if (currentImage) currentImage.style.display = 'none';
-            }
-        });
-
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
-        });
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => {
-                dropZone.classList.add('drag-over');
+                setTimeout(() => {
+                    startCamera();
+                }, 300);
             });
-        });
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => {
-                dropZone.classList.remove('drag-over');
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    showPreview(URL.createObjectURL(e.target.files[0]));
+                    if (currentImage) currentImage.style.display = 'none';
+                }
             });
-        });
 
-        dropZone.addEventListener('drop', (e) => {
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                fileInput.files = files;
-                showPreview(URL.createObjectURL(files[0]));
-                if (currentImage) currentImage.style.display = 'none';
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
             }
-        });
 
-        function showPreview(url) {
-            preview.src = url;
-            dropZoneContent.classList.add('hidden');
-            previewContainer.classList.remove('hidden');
-        }
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.add('drag-over');
+                });
+            });
 
-        document.getElementById('btn-remove').addEventListener('click', (e) => {
-            e.stopPropagation();
-            fileInput.value = '';
-            previewContainer.classList.add('hidden');
-            dropZoneContent.classList.remove('hidden');
-            preview.src = '';
-            // If we remove the new preview, we show the current image back (only if it wasn't hidden by btnRemoveCurrent)
-            if (currentImage && currentImage.style.display !== 'none') {
-                currentImage.style.display = 'block';
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.remove('drag-over');
+                });
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    showPreview(URL.createObjectURL(files[0]));
+                    if (currentImage) currentImage.style.display = 'none';
+                }
+            });
+
+            function showPreview(url) {
+                preview.src = url;
+                dropZoneContent.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
             }
-        });
 
-        window.addEventListener('beforeunload', stopCamera);
+            document.getElementById('btn-remove').addEventListener('click', (e) => {
+                e.stopPropagation();
+                fileInput.value = '';
+                previewContainer.classList.add('hidden');
+                dropZoneContent.classList.remove('hidden');
+                preview.src = '';
+                // If we remove the new preview, we show the current image back (only if it wasn't hidden by btnRemoveCurrent)
+                if (currentImage && currentImage.style.display !== 'none') {
+                    currentImage.style.display = 'block';
+                }
+            });
+
+            window.addEventListener('beforeunload', stopCamera);
+        })();
     </script>
 @endsection

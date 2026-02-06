@@ -14,7 +14,7 @@
                 </div> --}}
 
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-[#1a202c] leading-tight">
-                        Selamat Datang di <br> <span class="text-[#1a202c]">Sarprasin</span>
+                        Selamat Datang  <br> <span class="text-[#1a202c]">di Sarprasin</span>
                     </h1>
 
                     <p class="text-base sm:text-lg text-gray-500 max-w-md leading-relaxed">

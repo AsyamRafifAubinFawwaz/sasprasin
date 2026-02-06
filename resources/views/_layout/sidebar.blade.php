@@ -254,22 +254,52 @@
                             @endif
                             Ubah Password
                         </a>
-                        <form action="{{ route('logout') }}" method="POST"
-                            onsubmit="return confirm('Apakah anda yakin ingin keluar?');">
-                            @csrf
-                            <button type="submit"
-                                class="w-full flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-red-600 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-red-500 dark:hover:bg-neutral-700 dark:hover:text-red-500 dark:focus:bg-neutral-700 dark:focus:text-red-500">
-                                @if (Auth::user()->access_type == UserConst::ADMIN)
-                                    @include('_admin._layout.icons.sidebar.logout')
-                                @else
-                                    @include('_student._layout.icons.sidebar.logout')
-                                @endif
-                                Log out
-                            </button>
-                        </form>
+                        <button type="button"
+                            class="w-full flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-red-600 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-red-500 dark:hover:bg-neutral-700 dark:hover:text-red-500 dark:focus:bg-neutral-700 dark:focus:text-red-500 cursor-pointer"
+                            data-hs-overlay="#logout-modal">
+                            @if (Auth::user()->access_type == UserConst::ADMIN)
+                                @include('_admin._layout.icons.sidebar.logout')
+                            @else
+                                @include('_student._layout.icons.sidebar.logout')
+                            @endif
+                            Log out
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+</div>
+
+<!-- Logout Confirmation Modal -->
+<x-admin.modal id="logout-modal" title="Konfirmasi Keluar">
+    <div class="text-center">
+        <span
+            class="mb-4 inline-flex justify-center items-center size-14 rounded-full border-4 border-red-50 bg-red-100 text-red-500 dark:bg-red-700 dark:border-red-600 dark:text-red-100">
+            @include('_admin._layout.icons.warning_modal')
+        </span>
+        <h3 class="mb-2 text-xl font-bold text-gray-800 dark:text-neutral-200">
+            Konfirmasi Keluar
+        </h3>
+        <p class="text-gray-500 dark:text-neutral-500">
+            Apakah anda yakin ingin keluar dari aplikasi?
+        </p>
+    </div>
+
+    <x-slot name="footer">
+        <button type="button"
+            class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+            data-hs-overlay="#logout-modal">
+            Batal
+        </button>
+        <form action="{{ route('logout') }}" method="POST" class="inline">
+            @csrf
+            <button type="submit"
+                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:bg-red-700 disabled:opacity-50 disabled:pointer-events-none">
+                Ya, Keluar
+            </button>
+        </form>
+    </x-slot>
+</x-admin.modal>

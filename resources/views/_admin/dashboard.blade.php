@@ -398,192 +398,202 @@
     <script src="https://preline.co/assets/js/hs-apexcharts-helpers.js"></script>
 
     <script>
-        window.addEventListener("load", () => {
-            (function() {
-                const categories = {!! json_encode($stats['chart']['categories'] ?? []) !!};
-                const seriesData = {!! json_encode($stats['chart']['series'] ?? []) !!};
+        (function() {
+            const chartId = "#hs-single-area-chart";
+            const container = document.querySelector(chartId);
 
-                buildChart(
-                    "#hs-single-area-chart",
-                    (mode) => ({
-                        chart: {
-                            height: 300,
-                            type: "area",
-                            toolbar: {
-                                show: false,
-                            },
-                            zoom: {
-                                enabled: false,
-                            },
-                        },
-                        series: [{
-                            name: "Total Laporan",
-                            data: seriesData,
-                        }],
-                        legend: {
+            if (!container || container.dataset.chartInitialized) {
+                return;
+            }
+
+            // Mark as initialized to prevent double-run in SPA environments
+            container.dataset.chartInitialized = "true";
+
+            // Safety cleanup
+            container.innerHTML = '';
+
+            const categories = {!! json_encode($stats['chart']['categories'] ?? []) !!};
+            const seriesData = {!! json_encode($stats['chart']['series'] ?? []) !!};
+
+            buildChart(
+                chartId,
+                (mode) => ({
+                    chart: {
+                        height: 300,
+                        type: "area",
+                        toolbar: {
                             show: false,
                         },
-                        dataLabels: {
+                        zoom: {
                             enabled: false,
                         },
-                        stroke: {
-                            curve: "straight",
-                            width: 2,
+                    },
+                    series: [{
+                        name: "Total Laporan",
+                        data: seriesData,
+                    }],
+                    legend: {
+                        show: false,
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    stroke: {
+                        curve: "straight",
+                        width: 2,
+                    },
+                    grid: {
+                        strokeDashArray: 2,
+                    },
+                    fill: {
+                        type: "gradient",
+                        gradient: {
+                            type: "vertical",
+                            shadeIntensity: 0,
+                            opacityFrom: 0.4,
+                            opacityTo: 0.1,
+                            stops: [0, 100],
                         },
-                        grid: {
-                            strokeDashArray: 2,
+                    },
+                    xaxis: {
+                        type: "category",
+                        tickPlacement: "on",
+                        categories: categories,
+                        axisBorder: {
+                            show: false,
                         },
-                        fill: {
-                            type: "gradient",
-                            gradient: {
-                                type: "vertical",
-                                shadeIntensity: 0,
-                                opacityFrom: 0.4,
-                                opacityTo: 0.1,
-                                stops: [0, 100],
+                        axisTicks: {
+                            show: false,
+                        },
+                        crosshairs: {
+                            stroke: {
+                                dashArray: 0,
                             },
-                        },
-                        xaxis: {
-                            type: "category",
-                            tickPlacement: "on",
-                            categories: categories,
-                            axisBorder: {
+                            dropShadow: {
                                 show: false,
-                            },
-                            axisTicks: {
-                                show: false,
-                            },
-                            crosshairs: {
-                                stroke: {
-                                    dashArray: 0,
-                                },
-                                dropShadow: {
-                                    show: false,
-                                },
-                            },
-                            tooltip: {
-                                enabled: false,
-                            },
-                            labels: {
-                                style: {
-                                    colors: mode === 'dark' ? "#a3a3a3" : "#9ca3af",
-                                    fontSize: "13px",
-                                    fontFamily: "Inter, ui-sans-serif",
-                                    fontWeight: 400,
-                                },
-                                formatter: (title) => {
-                                    if (!title || typeof title !== 'string') return title;
-                                    const parts = title.split(' ');
-                                    if (parts.length === 3) {
-                                        return `${parts[0]} ${parts[1]}`;
-                                    }
-                                    return title;
-                                },
-                            },
-                        },
-                        yaxis: {
-                            labels: {
-                                align: "left",
-                                minWidth: 0,
-                                maxWidth: 140,
-                                style: {
-                                    colors: mode === 'dark' ? "#a3a3a3" : "#9ca3af",
-                                    fontSize: "13px",
-                                    fontFamily: "Inter, ui-sans-serif",
-                                    fontWeight: 400,
-                                },
-                                formatter: (value) => Math.floor(value),
                             },
                         },
                         tooltip: {
-                            x: {
-                                show: false,
+                            enabled: false,
+                        },
+                        labels: {
+                            style: {
+                                colors: mode === 'dark' ? "#a3a3a3" : "#9ca3af",
+                                fontSize: "13px",
+                                fontFamily: "Inter, ui-sans-serif",
+                                fontWeight: 400,
                             },
-                            y: {
-                                formatter: (value) => `${Math.floor(value)} Laporan`,
-                            },
-                            custom: function(props) {
-                                const {
-                                    categories
-                                } = props.ctx.opts.xaxis;
-                                const {
-                                    dataPointIndex,
-                                    series,
-                                    seriesIndex
-                                } = props;
-                                const titleStr = categories[dataPointIndex];
-                                const value = series[seriesIndex][dataPointIndex];
-
-                                const bgColor = mode === 'dark' ? '#262626' : '#ffffff';
-                                const textColor = mode === 'dark' ? '#e5e5e5' : '#1f2937';
-                                const secondaryTextColor = mode === 'dark' ? '#a3a3a3' : '#6b7280';
-                                const borderColor = mode === 'dark' ? '#404040' : '#e5e7eb';
-
-                                return `
-                                    <div style="
-                                        background: ${bgColor};
-                                        border: 1px solid ${borderColor};
-                                        border-radius: 8px;
-                                        padding: 10px 12px;
-                                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                                        min-width: 140px;
-                                    ">
-                                        <div style="
-                                            font-size: 14px;
-                                            font-weight: 700;
-                                            color: ${textColor};
-                                            margin-bottom: 4px;
-                                        ">
-                                            ${Math.floor(value)} Laporan
-                                        </div>
-                                        <div style="
-                                            font-size: 12px;
-                                            color: ${secondaryTextColor};
-                                            font-weight: 400;
-                                        ">
-                                            ${titleStr}
-                                        </div>
-                                    </div>
-                                `;
+                            formatter: (title) => {
+                                if (!title || typeof title !== 'string') return title;
+                                const parts = title.split(' ');
+                                if (parts.length === 3) {
+                                    return `${parts[0]} ${parts[1]}`;
+                                }
+                                return title;
                             },
                         },
-                        responsive: [{
-                            breakpoint: 568,
-                            options: {
-                                chart: {
-                                    height: 300
+                    },
+                    yaxis: {
+                        labels: {
+                            align: "left",
+                            minWidth: 0,
+                            maxWidth: 140,
+                            style: {
+                                colors: mode === 'dark' ? "#a3a3a3" : "#9ca3af",
+                                fontSize: "13px",
+                                fontFamily: "Inter, ui-sans-serif",
+                                fontWeight: 400,
+                            },
+                            formatter: (value) => Math.floor(value),
+                        },
+                    },
+                    tooltip: {
+                        x: {
+                            show: false,
+                        },
+                        y: {
+                            formatter: (value) => `${Math.floor(value)} Laporan`,
+                        },
+                        custom: function(props) {
+                            const {
+                                categories
+                            } = props.ctx.opts.xaxis;
+                            const {
+                                dataPointIndex,
+                                series,
+                                seriesIndex
+                            } = props;
+                            const titleStr = categories[dataPointIndex];
+                            const value = series[seriesIndex][dataPointIndex];
+
+                            const bgColor = mode === 'dark' ? '#262626' : '#ffffff';
+                            const textColor = mode === 'dark' ? '#1f2937' : '#1f2937';
+                            const secondaryTextColor = mode === 'dark' ? '#a3a3a3' : '#6b7280';
+                            const borderColor = mode === 'dark' ? '#404040' : '#e5e7eb';
+
+                            return `
+                                <div style="
+                                    background: ${bgColor};
+                                    border: 1px solid ${borderColor};
+                                    border-radius: 8px;
+                                    padding: 10px 12px;
+                                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                                    min-width: 140px;
+                                ">
+                                    <div style="
+                                        font-size: 14px;
+                                        font-weight: 700;
+                                        color: ${textColor};
+                                        margin-bottom: 4px;
+                                    ">
+                                        ${Math.floor(value)} Laporan
+                                    </div>
+                                    <div style="
+                                        font-size: 12px;
+                                        color: ${secondaryTextColor};
+                                        font-weight: 400;
+                                    ">
+                                        ${titleStr}
+                                    </div>
+                                </div>
+                            `;
+                        },
+                    },
+                    responsive: [{
+                        breakpoint: 568,
+                        options: {
+                            chart: {
+                                height: 300
+                            },
+                            labels: {
+                                style: {
+                                    fontSize: '11px',
                                 },
+                                formatter: (title) => title.length > 3 ? title.slice(0, 3) : title
+                            },
+                            yaxis: {
                                 labels: {
                                     style: {
                                         fontSize: '11px',
                                     },
-                                    formatter: (title) => title.length > 3 ? title.slice(0, 3) :
-                                        title
-                                },
-                                yaxis: {
-                                    labels: {
-                                        style: {
-                                            fontSize: '11px',
-                                        },
-                                        formatter: (value) => Math.floor(value)
-                                    }
-                                },
+                                    formatter: (value) => Math.floor(value)
+                                }
                             },
-                        }]
-                    }), {
-                        colors: ["#ff7d26"],
-                        grid: {
-                            borderColor: "#e5e7eb",
                         },
-                    }, {
-                        colors: ["#ff7d26"],
-                        grid: {
-                            borderColor: "#404040",
-                        },
-                    }
-                );
-            })();
-        });
+                    }]
+                }), {
+                    colors: ["#ff7d26"],
+                    grid: {
+                        borderColor: "#e5e7eb",
+                    },
+                }, {
+                    colors: ["#ff7d26"],
+                    grid: {
+                        borderColor: "#404040",
+                    },
+                }
+            );
+        })();
     </script>
 
 @endsection
