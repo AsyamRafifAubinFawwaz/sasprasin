@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Constants\DatabaseConst;
 use App\Constants\ResponseConst;
 use App\Http\Controllers\Controller;
 use App\Usecase\Admin\AspirationUsecase;
@@ -9,6 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AspirationController extends Controller
 {
@@ -32,8 +34,8 @@ class AspirationController extends Controller
             'date' => $request->get('date'),
         ]);
 
-        $locations = \Illuminate\Support\Facades\DB::table(\App\Constants\DatabaseConst::LOCATION)->get();
-        $categories = \Illuminate\Support\Facades\DB::table(\App\Constants\DatabaseConst::FACILITY_CATEGORY)->get();
+        $locations = DB::table(DatabaseConst::LOCATION)->get();
+        $categories = DB::table(DatabaseConst::FACILITY_CATEGORY)->get();
 
         return view('_admin.aspirations.index', [
             'page' => $this->page,

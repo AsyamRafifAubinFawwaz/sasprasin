@@ -153,7 +153,7 @@
                                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
                                     <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-                                        <span class="font-semibold text-blue-600 dark:text-blue-400">Klik untuk
+                                        <span class="font-semibold text-orange-600 dark:text-orange-400">Klik untuk
                                             upload</span>
                                         atau drag & drop
                                     </p>
@@ -188,7 +188,7 @@
 
                                 <div class="flex justify-center gap-3 mt-3">
                                     <button type="button" id="btn-capture"
-                                        class="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                                        class="py-2 px-4 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium">
                                         <svg class="inline-block w-5 h-5 mr-1" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <circle cx="12" cy="12" r="10" stroke-width="2" />
@@ -249,25 +249,25 @@
         }
 
         .tab-btn.active {
-            border-color: #3b82f6;
-            color: #3b82f6;
-            background: #eff6ff;
+            border-color: #f97316;
+            color: #f97316;
+            background: #fff7ed;
         }
 
         .dark .tab-btn.active {
-            border-color: #3b82f6;
-            color: #60a5fa;
-            background: #1e3a8a;
+            border-color: #f97316;
+            color: #fb923c;
+            background: #7c2d12;
         }
 
         #drop-zone.drag-over {
-            border-color: #3b82f6;
-            background: #eff6ff;
+            border-color: #f97316;
+            background: #fff7ed;
         }
 
         .dark #drop-zone.drag-over {
-            border-color: #3b82f6;
-            background: #1e3a8a;
+            border-color: #f97316;
+            background: #7c2d12;
         }
 
         /* Custom Select Styles */
@@ -333,7 +333,7 @@
                     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                         throw new Error(
                             "Browser Anda tidak mendukung akses kamera di konteks ini (Perlu HTTPS atau localhost)"
-                            );
+                        );
                     }
 
                     if (cameraStream) {
@@ -445,13 +445,15 @@
 
             ['dragenter', 'dragover'].forEach(eventName => {
                 dropZone.addEventListener(eventName, () => {
-                    dropZone.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/10');
+                    dropZone.classList.add('border-orange-500', 'bg-orange-50',
+                    'dark:bg-orange-900/10');
                 });
             });
 
             ['dragleave', 'drop'].forEach(eventName => {
                 dropZone.addEventListener(eventName, () => {
-                    dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/10');
+                    dropZone.classList.remove('border-orange-500', 'bg-orange-50',
+                        'dark:bg-orange-900/10');
                 });
             });
 

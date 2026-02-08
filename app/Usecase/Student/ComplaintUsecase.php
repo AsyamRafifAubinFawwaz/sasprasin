@@ -41,7 +41,9 @@ class ComplaintUsecase extends Usecase
                     return $query->where('aspirations.status', '=', $status);
                 })
                 ->orderBy('complaints.created_at', 'desc');
-
+            if (!empty($filterData['date'])) {
+                $query->whereDate('complaints.created_at', $filterData['date']);
+            }
             if (! empty($filterData['no_pagination'])) {
                 $data = $query->get();
             } else {
@@ -298,6 +300,9 @@ class ComplaintUsecase extends Usecase
                 })
                 ->when($filterData['status'] ?? false, function ($query, $status) {
                     return $query->where('aspirations.status', '=', $status);
+                })
+                ->when($filterData['date'] ?? false, function ($query, $date) {
+                    return $query->whereDate('complaints.created_at', $date);
                 })
                 ->orderBy('complaints.created_at', 'desc');
 

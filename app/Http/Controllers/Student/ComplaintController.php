@@ -37,6 +37,7 @@ class ComplaintController extends Controller
             'keywords' => $request->get('keywords'),
             'category_id' => $request->get('category_id'),
             'status' => $request->get('status'),
+             'date' => $request->get('date'),
         ]);
 
         $facility = $this->FacilityCategoryUsecase->getAll(['no_pagination' => true])['data']['list'] ?? [];

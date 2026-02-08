@@ -34,14 +34,17 @@
                         class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 shadow-sm"
                         placeholder="Cari Lokasi/Deskripsi">
                 </div>
-
+                <div class="relative w-40 max-w-full">
+                    <input type="date" name="date" value="{{ request('date') }}"
+                        class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm">
+                </div>
                 <div class="w-48 max-w-full">
                     <select name="category_id"
                         data-hs-select='{
                             "placeholder": "Semua Kategori",
                             "toggleTag": "<button type=\"button\"></button>",
                             "toggleClasses": "py-2 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm",
-                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                            "dropdownClasses": "mt-2 z-50 w-full max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
                             "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
                             "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
                         }'>
@@ -61,7 +64,7 @@
                             "placeholder": "Semua Status",
                             "toggleTag": "<button type=\"button\"></button>",
                             "toggleClasses": "py-2 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm",
-                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                            "dropdownClasses": "mt-2 z-50 w-full max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
                             "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
                             "optionSelectedClasses": "bg-orange-100 text-orange-800 dark:bg-orange-800/30 dark:text-orange-400"
                         }'>
@@ -80,7 +83,10 @@
                         Cari
                     </button>
 
-                    @if (request()->filled('keywords') || request()->filled('category_id') || request()->filled('status'))
+                    @if (request()->filled('keywords') ||
+                            request()->filled('category_id') ||
+                            request()->filled('status') ||
+                            request()->filled('date'))
                         <a class="py-2 px-4 text-sm font-semibold rounded-lg border border-orange-600/20 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/10 cursor-pointer flex items-center justify-center gap-x-2 transition-all active:scale-95"
                             href="{{ route('student.complaints.index') }}">
                             @include('_admin._layout.icons.reset')

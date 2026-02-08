@@ -41,7 +41,7 @@
                             "placeholder": "Semua Kelas",
                             "toggleTag": "<button type=\"button\"></button>",
                             "toggleClasses": "py-2 px-3 pe-9 w-full text-start border border-gray-200 rounded-lg text-sm bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm",
-                            "dropdownClasses": "mt-2 z-50 w-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
+                            "dropdownClasses": "mt-2 z-50 w-full max-h-40 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-neutral-700",
                             "optionClasses": "py-2 px-3 w-full text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700",
                             "optionSelectedClasses": "bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-400"
                         }'>
