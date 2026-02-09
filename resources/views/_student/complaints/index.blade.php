@@ -116,11 +116,7 @@
                                 Lokasi
                             </span>
                         </th>
-                        <th scope="col" class="px-6 py-3 text-start">
-                            <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
-                                Deskripsi
-                            </span>
-                        </th>
+
                         <th scope="col" class="px-6 py-3 text-start">
                             <span class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
                                 Tanggal
@@ -161,12 +157,7 @@
                                         class="block text-sm text-gray-800 dark:text-neutral-200">{{ $d->location }}</span>
                                 </div>
                             </td>
-                            <td class="size-px">
-                                <div class="px-6 py-3">
-                                    <span
-                                        class="block text-sm text-gray-800 dark:text-neutral-200 truncate">{{ Str::limit($d->description, 50) }}</span>
-                                </div>
-                            </td>
+
                             <td class="size-px whitespace-nowrap">
                                 <div class="px-6 py-3">
                                     <span
@@ -238,7 +229,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-neutral-500">
+                            <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-neutral-500">
                                 <x-admin.empty-state />
                             </td>
                         </tr>

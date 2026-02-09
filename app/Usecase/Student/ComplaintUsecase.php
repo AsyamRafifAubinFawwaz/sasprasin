@@ -135,7 +135,7 @@ class ComplaintUsecase extends Usecase
                 ->join('facility_categories', 'complaints.facility_category_id', '=', 'facility_categories.id')
                 ->leftJoin('locations', 'complaints.location_id', '=', 'locations.id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
-                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'facility_categories.example_items', 'aspirations.id as aspiration_id', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback')
+                ->select('complaints.*', 'locations.name as location', 'facility_categories.name as category_name', 'facility_categories.example_items', 'aspirations.id as aspiration_id', 'aspirations.status as aspiration_status', 'aspirations.feedback as aspiration_feedback', 'aspirations.image as aspiration_image')
                 ->where('complaints.id', $id)
                 ->whereNull('complaints.deleted_at')
                 ->first();

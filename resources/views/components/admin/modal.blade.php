@@ -7,6 +7,7 @@
     'navigate' => true,
     'size' => 'sm:max-w-lg',
     'footer' => null,
+    'enctype' => null,
 ])
 
 <div id="{{ $id }}"
@@ -34,37 +35,38 @@
             </div>
 
             @if ($formId)
-                <form id="{{ $formId }}" action="{{ $action }}" method="{{ $method }}" {{ $navigate ? 'navigate-form' : '' }}>
+                <form id="{{ $formId }}" action="{{ $action }}" method="{{ $method }}"
+                    {{ $navigate ? 'navigate-form' : '' }}
+                    @if ($enctype) enctype="{{ $enctype }}" @endif>
                     @if (strtoupper($method) !== 'GET')
-
                         @csrf
                     @endif
             @endif
 
-                <div class="p-4 overflow-y-auto">
-                    {{ $slot }}
-                </div>
+            <div class="p-4 overflow-y-auto">
+                {{ $slot }}
+            </div>
 
-                <div
-                    class="flex justify-end items-center gap-x-2 py-3 px-4 border-t border-gray-200 dark:border-neutral-700">
-                    @if ($footer)
-                        {{ $footer }}
-                    @else
-                        <button type="button"
-                            class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                            data-hs-overlay="#{{ $id }}">
-                            Batal
-                        </button>
-                        <button type="submit" @if ($formId) form="{{ $formId }}" @endif
-                            class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 focus:outline-hidden focus:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none">
-                            Simpan
-                        </button>
-                    @endif
-                </div>
-
-                @if ($formId)
-                    </form>
+            <div
+                class="flex justify-end items-center gap-x-2 py-3 px-4 border-t border-gray-200 dark:border-neutral-700">
+                @if ($footer)
+                    {{ $footer }}
+                @else
+                    <button type="button"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                        data-hs-overlay="#{{ $id }}">
+                        Batal
+                    </button>
+                    <button type="submit" @if ($formId) form="{{ $formId }}" @endif
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 focus:outline-hidden focus:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Simpan
+                    </button>
                 @endif
+            </div>
+
+            @if ($formId)
+                </form>
+            @endif
         </div>
     </div>
 </div>

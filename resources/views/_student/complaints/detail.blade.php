@@ -29,96 +29,117 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Kolom Kiri: Informasi Keluhan -->
         <div class="lg:col-span-2">
-            <div
-                class="bg-white overflow-hidden shadow-lg rounded-2xl dark:bg-neutral-800 border-2 border-gray-100 dark:border-neutral-700">
-                <div class="px-6 py-4 border-b border-gray-200 dark:border-neutral-700">
-                    <h2 class="text-xl font-semibold text-gray-800 dark:text-neutral-200">
+            <div class="bg-white shadow-sm border border-gray-100 rounded-2xl dark:bg-neutral-800 dark:border-neutral-700">
+                <div class="px-6 py-4 border-b border-gray-100 dark:border-neutral-700 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-[#1e293b] dark:text-neutral-200">
                         Informasi Keluhan
                     </h2>
+                    <span
+                        class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-md border border-blue-100 dark:bg-blue-900/10 dark:border-blue-800 dark:text-blue-400">
+                        ID: #{{ $data->id }}
+                    </span>
                 </div>
 
                 <div class="p-6 space-y-6">
-                    @if ($data->image)
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Gambar</label>
-                            <div class="cursor-pointer group" onclick="zoomImage(event)">
-                                <img src="{{ \App\Utils\UrlHelper::getImageUrl($data->image) }}" alt="Gambar keluhan"
-                                    class="w-full rounded-lg max-h-80 object-cover border border-gray-200 dark:border-neutral-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-200">
-                                <p class="text-xs text-gray-500 dark:text-neutral-500 mt-2 text-center font-medium">
-                                    Klik gambar untuk memperbesar
-                                </p>
+                            <label
+                                class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-1">Kategori</label>
+                            <p class="text-sm font-semibold text-gray-700 dark:text-neutral-200">
+                                {{ $data->category_name ?? 'N/A' }}</p>
+                        </div>
+                        <div>
+                            <label
+                                class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-1">Tanggal
+                                Dibuat</label>
+                            <div
+                                class="flex items-center gap-x-2 text-sm font-semibold text-gray-700 dark:text-neutral-200">
+                                <svg class="size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                                {{ \Carbon\Carbon::parse($data->created_at)->format('d/m/Y H:i') }} WIB
                             </div>
                         </div>
-                    @endif
-
-                    <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Kategori</label>
-                        <p class="text-gray-600 dark:text-neutral-400">{{ $data->category_name ?? 'N/A' }}</p>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Lokasi</label>
-                        <p class="text-gray-600 dark:text-neutral-400">{{ $data->location }}</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Deskripsi</label>
-                        <p class="text-gray-600 dark:text-neutral-400 whitespace-pre-wrap">{{ $data->description }}</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Tanggal
-                            Dibuat</label>
-                        <p class="text-gray-600 dark:text-neutral-400">
-                            {{ \Carbon\Carbon::parse($data->created_at)->format('d/m/Y') }}</p>
-                    </div>
-
-                    @if ($data->updated_at && $data->updated_at !== $data->created_at)
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Terakhir
-                                Diperbarui</label>
-                            <p class="text-gray-600 dark:text-neutral-400">
-                                {{ \Carbon\Carbon::parse($data->updated_at)->format('d/m/Y H:i') }}</p>
+                            <label
+                                class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-1">Lokasi</label>
+                            <div
+                                class="flex items-center gap-x-1.5 text-sm font-semibold text-gray-700 dark:text-neutral-200">
+                                <svg class="size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                                {{ $data->location }}
+                            </div>
                         </div>
-                    @endif
-
-                    @if ($data->aspiration_status)
                         <div>
-                            <label class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Status
+                            <label
+                                class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-2">Status
                                 Progres</label>
-                            <div class="inline-block">
+                            <div>
                                 @if ($data->aspiration_status == \App\Constants\ProgressConst::PENDING)
                                     <span
-                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-800/30 dark:text-amber-500">
-                                        <span class="size-1.5 rounded-full bg-amber-500"></span>
+                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-amber-50 text-amber-600 border border-amber-100 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400">
+                                        <span class="size-1.5 rounded-full bg-amber-600 animate-pulse"></span>
                                         Pending
                                     </span>
-                                @elseif($data->aspiration_status == \App\Constants\ProgressConst::IN_PROGRESS)
+                                @elseif ($data->aspiration_status == \App\Constants\ProgressConst::IN_PROGRESS)
                                     <span
-                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
-                                        <span class="size-1.5 rounded-full bg-blue-500"></span>
+                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-blue-50 text-blue-600 border border-blue-100 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
+                                        <span class="size-1.5 rounded-full bg-blue-600"></span>
                                         In Progress
                                     </span>
-                                @elseif($data->aspiration_status == \App\Constants\ProgressConst::DONE)
+                                @elseif ($data->aspiration_status == \App\Constants\ProgressConst::DONE)
                                     <span
-                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-500">
-                                        <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100 dark:bg-indigo-500/10 dark:border-indigo-500/20 dark:text-indigo-400">
+                                        <span class="size-1.5 rounded-full bg-indigo-600"></span>
                                         Done
                                     </span>
                                 @elseif ($data->aspiration_status == \App\Constants\ProgressConst::REJECT)
                                     <span
-                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
-                                        <span class="size-1.5 rounded-full bg-red-500"></span>
+                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-red-50 text-red-600 border border-red-100 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400">
+                                        <span class="size-1.5 rounded-full bg-red-600"></span>
                                         Reject
                                     </span>
-                                @else
-                                    <span
-                                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-white">
-                                        Pending
-                                    </span>
                                 @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-2">Deskripsi</label>
+                        <div
+                            class="bg-gray-50/50 dark:bg-neutral-900/30 border border-gray-100 dark:border-neutral-700 rounded-xl p-4">
+                            <p class="text-sm text-gray-600 dark:text-neutral-400 whitespace-pre-wrap leading-relaxed">
+                                {{ $data->description }}</p>
+                        </div>
+                    </div>
+
+                    @if ($data->image)
+                        <div class="pb-2">
+                            <label
+                                class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-3">Gambar
+                                Keluhan</label>
+                            <div class="cursor-pointer group" onclick="zoomImage(event)">
+                                <div class="flex">
+                                    <img src="{{ \App\Utils\UrlHelper::getImageUrl($data->image) }}" alt="Gambar keluhan"
+                                        class="max-h-64 w-auto rounded-2xl object-cover border border-gray-100 dark:border-neutral-700 hover:shadow-lg transition-all duration-300">
+                                </div>
+                                <p class="text-[10px] text-gray-400 dark:text-neutral-500 mt-2 font-medium italic">
+                                    Klik gambar untuk memperbesar
+                                </p>
                             </div>
                         </div>
                     @endif
@@ -126,20 +147,46 @@
                     @if ($data->aspiration_feedback)
                         <div>
                             <label
-                                class="block text-sm font-medium mb-2 text-gray-800 dark:text-neutral-200">Feedback</label>
-                            <p class="text-gray-600 dark:text-neutral-400 whitespace-pre-wrap">
-                                {{ $data->aspiration_feedback }}</p>
+                                class="flex items-center gap-x-1.5 text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-2">
+                                <svg class="size-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                </svg>
+                                Respon Petugas (Feedback)
+                            </label>
+                            <div
+                                class="bg-blue-50/40 dark:bg-blue-900/10 border border-blue-100/50 dark:border-blue-800/20 rounded-xl p-5 text-center">
+                                <p class="text-sm font-medium text-blue-800 dark:text-blue-300 italic">
+                                    "{{ $data->aspiration_feedback }}"</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if ($data->aspiration_image)
+                        <div>
+                            <label
+                                class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-3">Bukti
+                                Tindak Lanjut</label>
+                            <div class="cursor-pointer group" onclick="zoomImage(event)">
+                                <div class="flex">
+                                    <img src="{{ \App\Utils\UrlHelper::getImageUrl($data->aspiration_image) }}"
+                                        alt="Bukti Tindak Lanjut"
+                                        class="max-h-64 w-auto rounded-2xl object-cover border border-gray-100 dark:border-neutral-700 hover:shadow-lg transition-all duration-300">
+                                </div>
+                                <p class="text-[10px] text-gray-400 dark:text-neutral-500 mt-2 font-medium italic">
+                                    Klik gambar untuk memperbesar
+                                </p>
+                            </div>
                         </div>
                     @endif
                 </div>
-
-
             </div>
         </div>
 
         <div class="lg:col-span-1">
             <div
-                class="bg-white shadow-lg rounded-2xl dark:bg-neutral-800 border-2 border-gray-100 dark:border-neutral-700 h-full">
+                class="bg-white shadow-lg rounded-2xl dark:bg-neutral-800 border border-gray-100 dark:border-neutral-700 h-full">
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-neutral-700">
                     <h2 class="text-xl font-semibold text-gray-800 dark:text-neutral-200">
                         Timeline Status
@@ -147,89 +194,74 @@
                 </div>
                 <div class="p-6">
                     @if (count($logs) > 0)
-                        <div
-                            class="relative space-y-6 after:absolute after:inset-y-0 after:start-3.5 after:w-0.5 after:-translate-x-px after:bg-gray-200 dark:after:bg-neutral-700">
+                        <ol class="relative border-s border-gray-200 dark:border-neutral-700 ml-3">
                             @foreach ($logs as $log)
-                                <div class="relative ps-8 group">
-                                    <div class="absolute start-0 top-0 size-7">
-                                        @php
-                                            $iconColors = [
-                                                1 => 'bg-yellow-500',
-                                                2 => 'bg-blue-500',
-                                                3 => 'bg-green-500',
-                                                4 => 'bg-red-500',
-                                            ];
-                                        @endphp
-                                        <div
-                                            class="relative z-10 size-7 flex justify-center items-center rounded-full {{ $iconColors[$log->new_status] ?? 'bg-gray-500' }} text-white shadow-md">
-                                            @if ($log->new_status == 1)
-                                                <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <circle cx="12" cy="12" r="10" />
-                                                    <polyline points="12 6 12 12 16 14" />
-                                                </svg>
-                                            @elseif($log->new_status == 2)
-                                                @include('_admin._layout.icons.loader')
-                                            @elseif($log->new_status == 3)
-                                                @include('_student._layout.icons.check')
-                                            @elseif($log->new_status == 4)
-                                                @include('_student._layout.icons.octagon-alert')
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="pt-0.5">
-                                        <div class="flex items-center justify-between mb-1">
-                                            <span
-                                                class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-neutral-500">
-                                                {{ \Carbon\Carbon::parse($log->created_at)->format('d M Y, H:i') }}
-                                            </span>
-                                        </div>
-
-                                        <h3 class="font-bold text-gray-800 dark:text-neutral-200">
-                                            @if ($log->new_status == \App\Constants\ProgressConst::PENDING)
-                                                <span
-                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-800/30 dark:text-amber-500">
-                                                    Status: Pending
-                                                </span>
-                                            @elseif($log->new_status == \App\Constants\ProgressConst::IN_PROGRESS)
-                                                <span
-                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-lg text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
-                                                    Status: In Progress
-                                                </span>
-                                            @elseif($log->new_status == \App\Constants\ProgressConst::DONE)
-                                                <span
-                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-500">
-                                                    Status: Done
-                                                </span>
-                                            @elseif($log->new_status == \App\Constants\ProgressConst::REJECT)
-                                                <span
-                                                    class="inline-flex items-center gap-x-1.5 py-1 px-2 rounded-lg text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
-                                                    Status: Rejected
-                                                </span>
-                                            @endif
-                                        </h3>
-
-                                        @if ($log->note)
-                                            <div
-                                                class="mt-1 p-2 bg-gray-50 dark:bg-neutral-900/50 rounded-lg border border-gray-100 dark:border-neutral-700 text-sm italic text-gray-600 dark:text-neutral-400">
-                                                "{{ $log->note }}"
-                                            </div>
+                                <li class="mb-10 ms-6">
+                                    @php
+                                        $iconColors = [
+                                            1 => 'bg-amber-100 text-amber-600 ring-white dark:ring-neutral-800',
+                                            2 => 'bg-blue-100 text-blue-600 ring-white dark:ring-neutral-800',
+                                            3 => 'bg-emerald-100 text-emerald-600 ring-white dark:ring-neutral-800',
+                                            4 => 'bg-red-100 text-red-600 ring-white dark:ring-neutral-800',
+                                        ];
+                                        $badgeColors = [
+                                            1 => 'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-500 dark:border-amber-800',
+                                            2 => 'bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-900/20 dark:text-blue-500 dark:border-blue-800',
+                                            3 => 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-500 dark:border-emerald-800',
+                                            4 => 'bg-red-50 text-red-700 border-red-100 dark:bg-red-900/20 dark:text-red-500 dark:border-red-800',
+                                        ];
+                                    @endphp
+                                    <span
+                                        class="absolute flex items-center justify-center w-6 h-6 {{ $iconColors[$log->new_status] ?? 'bg-gray-100 text-gray-500' }} rounded-full -start-3 ring-8 ring-white dark:ring-neutral-800">
+                                        @if ($log->new_status == 1)
+                                            <svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="24"
+                                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <polyline points="12 6 12 12 16 14" />
+                                            </svg>
+                                        @elseif($log->new_status == 2)
+                                            @include('_admin._layout.icons.loader', [
+                                                'class' => 'size-2.5',
+                                            ])
+                                        @elseif($log->new_status == 3)
+                                            @include('_student._layout.icons.check', [
+                                                'class' => 'size-2.5',
+                                            ])
+                                        @elseif($log->new_status == 4)
+                                            @include('_student._layout.icons.octagon-alert', [
+                                                'class' => 'size-2.5',
+                                            ])
                                         @endif
-
-
-                                    </div>
-                                </div>
+                                    </span>
+                                    <time
+                                        class="bg-gray-50 dark:bg-neutral-900 border border-gray-100 dark:border-neutral-700 text-gray-500 dark:text-neutral-400 text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">
+                                        {{ \Carbon\Carbon::parse($log->created_at)->format('d M Y, H:i') }}
+                                    </time>
+                                    <h3
+                                        class="flex items-center mb-1 text-sm font-bold text-gray-800 dark:text-neutral-200 mt-3 capitalize">
+                                        {{ $log->new_status == 1 ? 'Pending' : ($log->new_status == 2 ? 'In Progress' : ($log->new_status == 3 ? 'Selesai' : 'Ditolak')) }}
+                                        @if ($loop->first)
+                                            <span
+                                                class="ms-2 {{ $badgeColors[$log->new_status] ?? 'bg-gray-100' }} border text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter">Terbaru</span>
+                                        @endif
+                                    </h3>
+                                    @if ($log->note)
+                                        <p class="text-sm text-gray-500 dark:text-neutral-400 mb-4 leading-relaxed italic">
+                                            "{{ $log->note }}"
+                                        </p>
+                                    @endif
+                                </li>
                             @endforeach
-                        </div>
+                        </ol>
                     @else
                         <div class="flex flex-col items-center justify-center py-10 text-center">
                             <div
                                 class="size-16 bg-gray-100 dark:bg-neutral-700 rounded-full flex items-center justify-center mb-4">
                                 <svg class="size-8 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <path d="M12 8v4l3 3" />
                                     <circle cx="12" cy="12" r="10" />
                                 </svg>

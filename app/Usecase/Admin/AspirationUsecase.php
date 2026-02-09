@@ -105,7 +105,8 @@ class AspirationUsecase
                     DB::raw('COALESCE(facility_categories.priority, 1) as priority'),
                     DB::raw('COALESCE(facility_categories.example_items, "Tidak ada contoh") as example_items'),
                     DB::raw('COALESCE(aspirations.status, 1) as status'),
-                    'aspirations.feedback'
+                    'aspirations.feedback',
+                    'aspirations.image as aspiration_image'
                 )
                 ->where('complaints.id', $id)
                 ->whereNull('complaints.deleted_at')
@@ -135,6 +136,7 @@ class AspirationUsecase
         $validator = Validator::make($request->all(), [
             'status' => 'required|integer|in:1,2,3,4',
             'feedback' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $validator->validate();
@@ -144,14 +146,24 @@ class AspirationUsecase
                 ->where('complaint_id', $complaintId)
                 ->first();
 
+            $updateData = [
+                'status' => $request->status,
+                'feedback' => $request->feedback,
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
+            ];
+
+            // Handle file upload
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/aspirations'), $filename);
+                $updateData['image'] = 'uploads/aspirations/' . $filename;
+            }
+
             DB::table('aspirations')
                 ->where('complaint_id', $complaintId)
-                ->update([
-                    'status' => $request->status,
-                    'feedback' => $request->feedback,
-                    'updated_by' => Auth::id(),
-                    'updated_at' => now(),
-                ]);
+                ->update($updateData);
 
             if ($currentAspiration) {
                 DB::table('aspiration_status_logs')->insert([
