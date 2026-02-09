@@ -5,7 +5,7 @@
 @section('content')
     <div class="mb-6">
         <h1 class="text-3xl font-extrabold text-gray-800 dark:text-neutral-200">
-            Selamat Datang, {{ Auth::user()->name }}! 👋
+            Selamat Datang, {{ Auth::user()->name }}
         </h1>
         <p class="text-gray-500 dark:text-neutral-400 mt-1">
             Senang melihat Anda kembali. Berikut adalah ringkasan laporan sarpras hari ini.

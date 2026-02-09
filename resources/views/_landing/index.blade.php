@@ -14,7 +14,7 @@
                 </div> --}}
 
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-[#1a202c] leading-tight">
-                        Selamat Datang  <br> <span class="text-[#1a202c]">di Sarprasin</span>
+                        Selamat Datang <br> <span class="text-[#1a202c]">di Sarprasin</span>
                     </h1>
 
                     <p class="text-base sm:text-lg text-gray-500 max-w-md leading-relaxed">
@@ -107,6 +107,48 @@
             </div>
         </div>
     </section>
+
+    {{-- Dashboard Preview Section --}}
+    <section id="dashboard" class="py-12 sm:py-24 bg-white overflow-hidden relative">
+        <div class="container mx-auto px-4 sm:px-6 md:px-20 relative z-10">
+            <div class="text-center mb-10 lg:mb-14 max-w-3xl mx-auto">
+                <h2 class="text-orange-400 font-bold tracking-wider uppercase text-sm mb-3">Preview Aplikasi</h2>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#1a202c] mb-6 leading-tight">
+                    Tampilan Dashboard Modern & Intuitif
+                </h2>
+                <p class="text-gray-500 text-lg leading-relaxed">
+                    Desain dashboard yang bersih dan informatif memudahkan Anda memantau seluruh laporan secara real-time.
+                </p>
+            </div>
+
+            <div class="relative group perspective-1000 max-w-5xl mx-auto">
+                {{-- Black shadow/glow behind the image as requested ("hanya hitam biasa aja") --}}
+                <div
+                    class="absolute -inset-1 bg-black/5 rounded-4xl blur-xl transition duration-500 group-hover:bg-black/10">
+                </div>
+
+                <!-- Main Dashboard Image Container -->
+                <div
+                    class="relative rounded-2xl sm:rounded-4xl overflow-hidden shadow-2xl border border-gray-200/50 bg-white transform transition-all duration-500 hover:scale-[1.01]">
+                    <!-- Browser Window Controls Mockup -->
+                    <div class="bg-gray-50 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
+                        <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-400"></div>
+                        <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-400"></div>
+                        <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-400"></div>
+                        <div class="ml-4 flex-1 bg-white h-5 sm:h-6 rounded-md border border-gray-100 shadow-sm"></div>
+                    </div>
+
+                    <img src="{{ asset('/image/dashboard-admin.png') }}" alt="Dashboard Admin Sasprasin"
+                        class="w-full h-auto object-cover object-top hover:object-center transition-all duration-700"
+                        loading="lazy">
+                </div>
+            </div>
+        </div>
+
+        <!-- Background Decoration (Subtle gray, no gradient) -->
+        <div class="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[500px] bg-gray-50/50 z-0 pointer-events-none"></div>
+    </section>
+
     <section id="masalah-solusi" class="py-12 sm:py-24 bg-white">
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="flex flex-col md:flex-row items-center gap-16">
