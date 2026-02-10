@@ -20,9 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('changed_by');
             $table->timestamp('created_at')->useCurrent();
 
-            // Foreign keys (optional, but good practice if tables exist)
-            // $table->foreign('aspiration_id')->references('id')->on('aspirations')->onDelete('cascade');
-            // $table->foreign('changed_by')->references('id')->on('users');
+        
         });
     }
 

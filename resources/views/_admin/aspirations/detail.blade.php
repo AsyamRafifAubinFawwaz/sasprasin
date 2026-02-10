@@ -42,7 +42,6 @@
             </div>
         @else
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Kolom Kiri: Informasi Pengaduan -->
                 <div class="lg:col-span-8 order-2 lg:order-1">
                     <div
                         class="bg-white shadow-sm border border-gray-100 rounded-2xl dark:bg-neutral-800 dark:border-neutral-700">
@@ -51,10 +50,7 @@
                             <h2 class="text-lg font-bold text-[#1e293b] dark:text-neutral-200">
                                 Informasi Pengaduan
                             </h2>
-                            <span
-                                class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-md border border-blue-100 dark:bg-blue-900/10 dark:border-blue-800 dark:text-blue-400">
-                                ID: #{{ $data->id }}
-                            </span>
+
                         </div>
 
                         <div class="p-6 space-y-6">
@@ -126,21 +122,18 @@
                                     <div>
                                         @if ($data->priority == 3)
                                             <span
-                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-red-50 text-red-600 border border-red-100 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400">
-                                                <span class="size-1.5 rounded-full bg-red-600"></span>
-                                                Prioritas Tinggi
+                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
+                                                Tinggi
                                             </span>
                                         @elseif($data->priority == 2)
                                             <span
-                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-yellow-50 text-yellow-600 border border-yellow-100 dark:bg-yellow-500/10 dark:border-yellow-500/20 dark:text-yellow-400">
-                                                <span class="size-1.5 rounded-full bg-yellow-600"></span>
-                                                Prioritas Sedang
+                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800/30 dark:text-yellow-500">
+                                                Sedang
                                             </span>
                                         @else
                                             <span
-                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-green-50 text-green-600 border border-green-100 dark:bg-green-500/10 dark:border-green-500/20 dark:text-green-400">
-                                                <span class="size-1.5 rounded-full bg-green-600"></span>
-                                                Prioritas Rendah
+                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-500">
+                                                Rendah
                                             </span>
                                         @endif
                                     </div>
@@ -152,27 +145,32 @@
                                     <div>
                                         @if ($data->status == \App\Constants\ProgressConst::PENDING)
                                             <span
-                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-amber-50 text-amber-600 border border-amber-100 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400">
-                                                <span class="size-1.5 rounded-full bg-amber-600 animate-pulse"></span>
+                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-800/30 dark:text-amber-500">
+                                                <span class="size-1.5 rounded-full bg-amber-500"></span>
                                                 Pending
                                             </span>
                                         @elseif ($data->status == \App\Constants\ProgressConst::IN_PROGRESS)
                                             <span
-                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-blue-50 text-blue-600 border border-blue-100 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
-                                                <span class="size-1.5 rounded-full bg-blue-600"></span>
+                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">
+                                                <span class="size-1.5 rounded-full bg-blue-500"></span>
                                                 In Progress
                                             </span>
                                         @elseif ($data->status == \App\Constants\ProgressConst::DONE)
                                             <span
-                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100 dark:bg-indigo-500/10 dark:border-indigo-500/20 dark:text-indigo-400">
-                                                <span class="size-1.5 rounded-full bg-indigo-600"></span>
+                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-500">
+                                                <span class="size-1.5 rounded-full bg-emerald-500"></span>
                                                 Done
                                             </span>
                                         @elseif ($data->status == \App\Constants\ProgressConst::REJECT)
                                             <span
-                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-[11px] font-bold bg-red-50 text-red-600 border border-red-100 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-400">
-                                                <span class="size-1.5 rounded-full bg-red-600"></span>
+                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-500">
+                                                <span class="size-1.5 rounded-full bg-red-500"></span>
                                                 Reject
+                                            </span>
+                                        @else
+                                            <span
+                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-white">
+                                                Pending
                                             </span>
                                         @endif
                                     </div>
@@ -188,7 +186,7 @@
                                         <div class="flex">
                                             <img src="{{ \App\Utils\UrlHelper::getImageUrl($data->image) }}"
                                                 alt="Gambar pengaduan"
-                                                class="max-h-64 w-auto rounded-2xl object-cover border border-gray-100 dark:border-neutral-700 hover:shadow-lg transition-all duration-300">
+                                                class="w-full max-h-96 rounded-2xl object-cover border border-gray-100 dark:border-neutral-700 hover:shadow-lg transition-all duration-300">
                                         </div>
                                         <p class="text-[10px] text-gray-400 dark:text-neutral-500 mt-2 font-medium italic">
                                             Klik gambar untuk memperbesar
@@ -201,9 +199,9 @@
                                 <div>
                                     <label
                                         class="flex items-center gap-x-1.5 text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-2">
-                                        <svg class="size-3" xmlns="http://www.w3.org/2000/svg" width="24"
-                                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <svg class="size-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                                         </svg>
                                         Respon Petugas (Feedback)
@@ -222,10 +220,10 @@
                                         class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-3">Bukti
                                         Tindak Lanjut</label>
                                     <div class="cursor-pointer group" onclick="zoomImage(event)">
-                                        <div class="flex">
+                                        <div class="flex w-full">
                                             <img src="{{ \App\Utils\UrlHelper::getImageUrl($data->aspiration_image) }}"
                                                 alt="Bukti Tindak Lanjut"
-                                                class="max-h-64 w-auto rounded-2xl object-cover border border-gray-100 dark:border-neutral-700 hover:shadow-lg transition-all duration-300">
+                                                class="w-full max-h-96 rounded-2xl object-cover border border-gray-100 dark:border-neutral-700 hover:shadow-lg transition-all duration-300">
                                         </div>
                                         <p class="text-[10px] text-gray-400 dark:text-neutral-500 mt-2 font-medium italic">
                                             Klik gambar untuk memperbesar
@@ -258,10 +256,10 @@
                                     <h3 class="text-xl font-black text-gray-800 dark:text-neutral-200 tracking-tight">
                                         {{ $student->name ?? 'N/A' }}
                                     </h3>
-                                    <p
+                                    {{-- <p
                                         class="text-[11px] font-bold text-gray-400 dark:text-neutral-500 mt-1 uppercase tracking-widest">
                                         Student ID: #{{ $student->nisn ?? '123' }}
-                                    </p>
+                                    </p> --}}
                                 </div>
 
                                 <!-- Info Cards -->
@@ -270,14 +268,7 @@
                                         class="flex items-center gap-x-4 p-4 bg-gray-50/50 dark:bg-neutral-900/50 border border-gray-100 dark:border-neutral-700 rounded-2xl">
                                         <div
                                             class="size-10 flex items-center justify-center rounded-xl bg-white dark:bg-neutral-800 text-blue-500 shadow-sm">
-                                            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <rect width="20" height="20" x="2" y="2" rx="5"
-                                                    ry="5" />
-                                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-                                            </svg>
+                                            @include('_admin._layout.icons.sidebar.student')
                                         </div>
                                         <div>
                                             <p
@@ -292,15 +283,7 @@
                                         class="flex items-center gap-x-4 p-4 bg-gray-50/50 dark:bg-neutral-900/50 border border-gray-100 dark:border-neutral-700 rounded-2xl">
                                         <div
                                             class="size-10 flex items-center justify-center rounded-xl bg-white dark:bg-neutral-800 text-emerald-500 shadow-sm">
-                                            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="m7.5 4.27 9 5.15" />
-                                                <path
-                                                    d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
-                                                <path d="m3.3 7 8.7 5 8.7-5" />
-                                                <path d="M12 22V12" />
-                                            </svg>
+                                            @include('_admin._layout.icons.classroom')
                                         </div>
                                         <div>
                                             <p
@@ -327,8 +310,7 @@
                             @endif
                         </div>
 
-                        <!-- Decorative Green Bar -->
-                        <div class="mt-auto h-1.5 w-full bg-[#059669]"></div>
+
                     </div>
                 </div>
             </div>

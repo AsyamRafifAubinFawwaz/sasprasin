@@ -127,10 +127,8 @@
                     class="absolute -inset-1 bg-black/5 rounded-4xl blur-xl transition duration-500 group-hover:bg-black/10">
                 </div>
 
-                <!-- Main Dashboard Image Container -->
                 <div
-                    class="relative rounded-2xl sm:rounded-4xl overflow-hidden shadow-2xl border border-gray-200/50 bg-white transform transition-all duration-500 hover:scale-[1.01]">
-                    <!-- Browser Window Controls Mockup -->
+                    class="relative rounded-2xl sm:rounded-4xl overflow-hidden shadow-2xl border border-gray-200/50 bg-white transform transition-all duration-500 hover:scale-[1.01] z-10">
                     <div class="bg-gray-50 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                         <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-400"></div>
                         <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-400"></div>
@@ -142,10 +140,22 @@
                         class="w-full h-auto object-cover object-top hover:object-center transition-all duration-700"
                         loading="lazy">
                 </div>
+
+                <div
+                    class="absolute -bottom-6 -right-4 sm:-bottom-12 sm:-right-8 md:-right-12 w-3/4 sm:w-2/3 md:w-3/5 rounded-xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/40 bg-white/80 backdrop-blur-md transform transition-all duration-500 hover:scale-[1.05] hover:-translate-y-2 z-20 group-hover:shadow-[0_25px_60px_rgba(0,0,0,0.2)]">
+                    <div class="bg-gray-50/50 border-b border-gray-100 px-3 py-2 flex items-center gap-1.5">
+                        <div class="w-2 h-2 rounded-full bg-red-400/80"></div>
+                        <div class="w-2 h-2 rounded-full bg-yellow-400/80"></div>
+                        <div class="w-2 h-2 rounded-full bg-green-400/80"></div>
+                        <div class="ml-3 flex-1 bg-white/50 h-3 rounded-sm border border-gray-100/50"></div>
+                    </div>
+
+                    <img src="{{ asset('/image/pengaduan.png') }}" alt="Monitoring Pengaduan Sasprasin"
+                        class="w-full h-auto object-cover" loading="lazy">
+                </div>
             </div>
         </div>
 
-        <!-- Background Decoration (Subtle gray, no gradient) -->
         <div class="absolute top-1/2 left-0 -translate-y-1/2 w-full h-[500px] bg-gray-50/50 z-0 pointer-events-none"></div>
     </section>
 
@@ -181,7 +191,8 @@
                             </span>
                             <div>
                                 <h4 class="font-bold text-gray-800">Laporan Sering Ghosting</h4>
-                                <p class="text-sm text-gray-600">Pengaduan sering lupa atau malah nggak ditindaklanjuti sama
+                                <p class="text-sm text-gray-600">Pengaduan sering lupa atau malah nggak ditindaklanjuti
+                                    sama
                                     sekali.</p>
                             </div>
                         </div>
@@ -234,7 +245,6 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
-                <!-- Step 1 -->
                 <div class="relative">
                     <div
                         class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border-2 border-[#ff7d26] h-full">
@@ -256,7 +266,6 @@
                     </div>
                 </div>
 
-                <!-- Step 2 -->
                 <div class="relative">
                     <div
                         class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border-2 border-gray-100 hover:border-[#ff7d26] h-full">
@@ -278,7 +287,6 @@
                     </div>
                 </div>
 
-                <!-- Step 3 -->
                 <div class="relative">
                     <div
                         class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border-2 border-gray-100 hover:border-[#ff7d26] h-full">
@@ -300,7 +308,6 @@
                     </div>
                 </div>
 
-                <!-- Step 4 -->
                 <div class="relative">
                     <div
                         class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border-2 border-gray-100 hover:border-[#ff7d26] h-full">
@@ -339,7 +346,6 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-                <!-- Untuk Siswa -->
                 <div
                     class="bg-gradient-to-br from-orange-50 to-white p-10 rounded-3xl shadow-lg border-2 border-orange-100 hover:shadow-xl transition-all">
                     <div class="flex items-center gap-4 mb-8">
@@ -402,7 +408,6 @@
                     </div>
                 </div>
 
-                <!-- Untuk Admin -->
                 <div
                     class="bg-gradient-to-br from-gray-50 to-white p-10 rounded-3xl shadow-lg border-2 border-gray-200 hover:shadow-xl transition-all">
                     <div class="flex items-center gap-4 mb-8">

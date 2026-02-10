@@ -29,16 +29,16 @@
         <div class="px-2 pt-2">
             <form action="{{ route('student.complaints.index') }}" method="GET" navigate-form
                 class="flex flex-wrap items-center gap-3">
-                <div class="relative w-64 max-w-full">
+                <div class="relative w-full md:w-56">
                     <input type="text" name="keywords" id="keywords" value="{{ $keywords ?? '' }}"
                         class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 placeholder-neutral-300 dark:placeholder-neutral-500 shadow-sm"
                         placeholder="Cari Lokasi/Deskripsi">
                 </div>
-                <div class="relative w-40 max-w-full">
+                <div class="relative w-full md:w-36">
                     <input type="date" name="date" value="{{ request('date') }}"
-                        class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm">
+                        class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 shadow-sm font-sans uppercase">
                 </div>
-                <div class="w-48 max-w-full">
+                <div class="w-full md:w-44">
                     <select name="category_id"
                         data-hs-select='{
                             "placeholder": "Semua Kategori",
@@ -58,7 +58,7 @@
                     </select>
                 </div>
 
-                <div class="w-48 max-w-full">
+                <div class="w-full md:w-44">
                     <select name="status"
                         data-hs-select='{
                             "placeholder": "Semua Status",

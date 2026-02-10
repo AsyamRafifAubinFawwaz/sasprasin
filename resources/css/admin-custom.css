@@ -101,13 +101,23 @@ html::-webkit-scrollbar,
 
     /* 7. Header Adjustment */
     body[data-sidebar-collapsed="true"] #sidebar-header {
-        padding-left: 0.5rem !important;
-        /* px-2 */
-        padding-right: 0.5rem !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 1.5rem !important;
         justify-content: center !important;
+        height: 4rem !important;
     }
 
-    /* 8. Toggle Icons */
+    /* 8. Toggle Button Refinement */
+    body[data-sidebar-collapsed="true"] #sidebar-toggle {
+        position: relative !important;
+        right: auto !important;
+        top: auto !important;
+        transform: none !important;
+        display: flex !important;
+        margin: 0 auto !important;
+    }
+
     body[data-sidebar-collapsed="true"] #toggle-icon-left {
         display: none !important;
     }

@@ -135,7 +135,7 @@
                             <div class="cursor-pointer group" onclick="zoomImage(event)">
                                 <div class="flex">
                                     <img src="{{ \App\Utils\UrlHelper::getImageUrl($data->image) }}" alt="Gambar keluhan"
-                                        class="max-h-64 w-auto rounded-2xl object-cover border border-gray-100 dark:border-neutral-700 hover:shadow-lg transition-all duration-300">
+                                        class="w-full max-h-96 rounded-2xl object-cover border border-gray-100 dark:border-neutral-700 hover:shadow-lg transition-all duration-300">
                                 </div>
                                 <p class="text-[10px] text-gray-400 dark:text-neutral-500 mt-2 font-medium italic">
                                     Klik gambar untuk memperbesar
@@ -169,10 +169,10 @@
                                 class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-3">Bukti
                                 Tindak Lanjut</label>
                             <div class="cursor-pointer group" onclick="zoomImage(event)">
-                                <div class="flex">
+                                <div class="flex w-full">
                                     <img src="{{ \App\Utils\UrlHelper::getImageUrl($data->aspiration_image) }}"
                                         alt="Bukti Tindak Lanjut"
-                                        class="max-h-64 w-auto rounded-2xl object-cover border border-gray-100 dark:border-neutral-700 hover:shadow-lg transition-all duration-300">
+                                        class="w-full max-h-96 rounded-2xl object-cover border border-gray-100 dark:border-neutral-700 hover:shadow-lg transition-all duration-300">
                                 </div>
                                 <p class="text-[10px] text-gray-400 dark:text-neutral-500 mt-2 font-medium italic">
                                     Klik gambar untuk memperbesar
