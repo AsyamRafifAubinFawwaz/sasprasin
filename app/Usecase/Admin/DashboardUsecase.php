@@ -114,8 +114,7 @@ class DashboardUsecase extends Usecase
     ')
                 ->orderBy('facility_categories.priority', 'desc')
                 ->orderBy('complaints.created_at', 'desc')
-                ->limit(5)
-                ->get();
+                ->paginate(10)->withQueryString();
 
             return Response::buildSuccess([
                 'chart' => $chartData,

@@ -245,7 +245,7 @@
                                     <td class="size-px whitespace-nowrap">
                                         <div class="ps-6 py-3">
                                             <span
-                                                class="text-sm text-gray-800 dark:text-neutral-200">{{ $loop->iteration }}</span>
+                                                class="text-sm text-gray-800 dark:text-neutral-200">{{ ($stats['latest']->currentPage() - 1) * $stats['latest']->perPage() + $loop->iteration }}</span>
                                         </div>
                                     </td>
                                     <td class="size-px whitespace-nowrap">
@@ -350,38 +350,45 @@
                         </tbody>
                     </table>
 
-                    @if ($stats['totals']->total > 10)
+                    @if ($stats['latest']->hasPages())
                         <div
                             class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-neutral-700">
                             <div>
                                 <p class="text-sm text-gray-600 dark:text-neutral-400">
+                                    Showing
                                     <span
-                                        class="font-semibold text-gray-800 dark:text-neutral-200">{{ $stats['totals']->total }}</span>
+                                        class="font-semibold text-gray-800 dark:text-neutral-200">{{ $stats['latest']->firstItem() }}</span>
+                                    to
+                                    <span
+                                        class="font-semibold text-gray-800 dark:text-neutral-200">{{ $stats['latest']->lastItem() }}</span>
+                                    of
+                                    <span
+                                        class="font-semibold text-gray-800 dark:text-neutral-200">{{ $stats['latest']->total() }}</span>
                                     results
                                 </p>
                             </div>
 
                             <div>
                                 <div class="inline-flex gap-x-2">
-                                    <button type="button"
-                                        class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+                                    <a @if ($stats['latest']->onFirstPage()) href="javascript:void(0)" @else href="{{ $stats['latest']->previousPageUrl() }}" navigate @endif
+                                        class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 {{ $stats['latest']->onFirstPage() ? 'opacity-50 pointer-events-none' : '' }}">
                                         <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
                                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="m15 18-6-6 6-6" />
                                         </svg>
                                         Prev
-                                    </button>
+                                    </a>
 
-                                    <button type="button"
-                                        class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+                                    <a @if (!$stats['latest']->hasMorePages()) href="javascript:void(0)" @else href="{{ $stats['latest']->nextPageUrl() }}" navigate @endif
+                                        class="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 {{ !$stats['latest']->hasMorePages() ? 'opacity-50 pointer-events-none' : '' }}">
                                         Next
                                         <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
                                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="m9 18 6-6-6-6" />
                                         </svg>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>

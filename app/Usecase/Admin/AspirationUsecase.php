@@ -73,7 +73,7 @@ class AspirationUsecase
             }
 
             return Response::buildSuccess([
-                'list' => $query->orderByDesc('complaints.created_at')->paginate(20),
+                'list' => $query->orderByDesc('complaints.created_at')->paginate(8),
             ]);
         } catch (Exception $e) {
             Log::error($e->getMessage());

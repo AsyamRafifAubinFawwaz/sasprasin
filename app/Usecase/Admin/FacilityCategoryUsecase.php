@@ -33,7 +33,7 @@ class FacilityCategoryUsecase extends Usecase
             if (! empty($filterData['no_pagination'])) {
                 $data = $query->get();
             } else {
-                $data = $query->paginate(10);
+                $data = $query->paginate(8);
 
                 if (! empty($filterData)) {
                     $data->appends($filterData);

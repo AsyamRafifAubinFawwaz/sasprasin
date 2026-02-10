@@ -276,29 +276,33 @@ $(document).ready(function () {
     }
 
     // Intercept clicks on elements with 'navigate' attribute
-    $("body").on("click", "a[navigate]", function (e) {
-        e.preventDefault();
-        var url = $(this).attr("href");
-        console.log("SPA Navigation clicked:", url);
+    $("body").on(
+        "click",
+        "a[navigate], .pagination a, nav[role='navigation'] a",
+        function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+            console.log("SPA Navigation clicked:", url);
 
-        if (!url || url.startsWith("#") || url.startsWith("javascript:")) {
-            return;
-        }
-
-        // Close Sidebar on Mobile if it's open
-        try {
-            if (window.HSOverlay) {
-                HSOverlay.close(
-                    document.querySelector("#hs-application-sidebar"),
-                );
+            if (!url || url.startsWith("#") || url.startsWith("javascript:")) {
+                return;
             }
-        } catch (error) {
-            // Ignore errors if overlay library isn't fully loaded or element invalid
-            console.log("Sidebar Close Debug:", error);
-        }
 
-        loadPage(url);
-    });
+            // Close Sidebar on Mobile if it's open
+            try {
+                if (window.HSOverlay) {
+                    HSOverlay.close(
+                        document.querySelector("#hs-application-sidebar"),
+                    );
+                }
+            } catch (error) {
+                // Ignore errors if overlay library isn't fully loaded or element invalid
+                console.log("Sidebar Close Debug:", error);
+            }
+
+            loadPage(url);
+        },
+    );
 
     function loadPage(url) {
         // Start Loading
