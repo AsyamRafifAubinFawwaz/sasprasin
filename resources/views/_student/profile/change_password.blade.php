@@ -19,7 +19,6 @@
                 @csrf
 
                 <div class="space-y-4">
-                    {{-- Current Password --}}
                     <div>
                         <label for="current_password" class="block text-sm font-medium mb-2 dark:text-white">Password Lama
                             <span class="text-red-500">*</span></label>
@@ -31,7 +30,6 @@
                         @enderror
                     </div>
 
-                    {{-- New Password --}}
                     <div>
                         <label for="password" class="block text-sm font-medium mb-2 dark:text-white">Password Baru <span
                                 class="text-red-500">*</span></label>
@@ -43,7 +41,6 @@
                         @enderror
                     </div>
 
-                    {{-- Confirm New Password --}}
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium mb-2 dark:text-white">Ulangi
                             Password Baru

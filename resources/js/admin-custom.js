@@ -102,9 +102,13 @@ $(document).ready(function () {
 
         var mainContentEl = doc.querySelector("#main-content");
         var sidebarEl = doc.querySelector("#hs-application-sidebar");
+        var sidebarModalsEl = doc.querySelector("#sidebar-modals");
 
         var newContent = mainContentEl ? mainContentEl.innerHTML : null;
         var newSidebar = sidebarEl ? sidebarEl.innerHTML : null;
+        var newSidebarModals = sidebarModalsEl
+            ? sidebarModalsEl.innerHTML
+            : null;
 
         if (newContent) {
             if (window.HSOverlay) {
@@ -203,6 +207,11 @@ $(document).ready(function () {
         if (newSidebar) {
             $("#hs-application-sidebar").html(newSidebar);
             console.log("Sidebar updated");
+        }
+
+        if (newSidebarModals) {
+            $("#sidebar-modals").html(newSidebarModals);
+            console.log("Sidebar modals updated");
         }
 
         // Update URL
@@ -403,6 +412,11 @@ $(document).ready(function () {
 
                 if (sidebarEl) {
                     $("#hs-application-sidebar").html(sidebarEl.innerHTML);
+                }
+
+                var sidebarModalsEl = doc.querySelector("#sidebar-modals");
+                if (sidebarModalsEl) {
+                    $("#sidebar-modals").html(sidebarModalsEl.innerHTML);
                 }
 
                 if (window.HSStaticMethods) {
