@@ -109,7 +109,7 @@
     </section>
 
     {{-- Dashboard Preview Section --}}
-    <section id="dashboard" class="pt-24 pb-40 sm:pt-32 sm:pb-60 bg-linear-to-b from-[#f8f9fa] to-white relative z-10">
+    <section id="dashboard" class="pt-24 pb-12 sm:pt-32 sm:pb-12 bg-linear-to-b from-[#f8f9fa] to-white relative z-10">
         <div class="container mx-auto px-4 sm:px-6 md:px-20 relative z-10">
             <div class="text-center mb-16 lg:mb-24 max-w-3xl mx-auto">
                 <h2 class="text-orange-400 font-bold tracking-wider uppercase text-sm mb-3">Preview Aplikasi</h2>
