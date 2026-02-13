@@ -13,7 +13,20 @@
             </p>
         </div>
 
-        <div>
+        <div class="flex items-center gap-2">
+            <button type="button" data-hs-overlay="#modal-export-excel"
+                class="py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-emerald-600/20 bg-emerald-600 text-white hover:bg-emerald-700 focus:outline-hidden focus:bg-emerald-700 transition-all shadow-md shadow-emerald-500/20 active:scale-95 cursor-pointer">
+                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                </svg>
+                Export Excel
+            </button>
             <button type="button" data-hs-overlay="#modal-export-pdf"
                 class="py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 focus:outline-hidden focus:bg-orange-700 transition-all shadow-md shadow-orange-500/20 active:scale-95 cursor-pointer">
                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -492,6 +505,57 @@
         </div>
     </x-admin.modal>
 
+    <x-admin.modal id="modal-export-excel" title="Export Laporan Excel" formId="formExportExcel" method="GET"
+        :navigate="false">
+        <div class="space-y-4">
+            <div
+                class="flex items-center gap-x-2 mb-4 bg-emerald-50 dark:bg-emerald-800/10 p-3 rounded-lg border border-emerald-100 dark:border-emerald-800/20">
+                <input type="checkbox" id="export_excel_all" name="export_all" value="1"
+                    class="shrink-0 border-gray-300 rounded-sm text-emerald-600 focus:ring-emerald-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-emerald-500 dark:checked:border-emerald-500">
+                <label for="export_excel_all"
+                    class="text-sm font-semibold text-emerald-800 dark:text-emerald-400 cursor-pointer">Export Keseluruhan
+                    Data</label>
+            </div>
+
+            <div id="excel_filter_options" class="space-y-4 transition-all duration-300">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Tanggal Mulai</label>
+                        <input type="date" name="start_date"
+                            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-emerald-500 focus:ring-emerald-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Tanggal Selesai</label>
+                        <input type="date" name="end_date"
+                            class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-emerald-500 focus:ring-emerald-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2 dark:text-white">Status</label>
+                    <select name="status"
+                        class="py-2 px-3 block w-full border-gray-200 rounded-lg text-sm focus:border-emerald-500 focus:ring-emerald-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                        <option value="">Semua Status</option>
+                        <option value="1">Pending</option>
+                        <option value="2">In Progress</option>
+                        <option value="3">Done</option>
+                    </select>
+                </div>
+            </div>
+
+            <x-slot:footer>
+                <button type="button" data-hs-overlay="#modal-export-excel"
+                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+                    Batal
+                </button>
+                <button type="button" onclick="handleExportExcel()"
+                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-emerald-600 text-white hover:bg-emerald-700 focus:outline-none focus:bg-emerald-700 disabled:opacity-50 disabled:pointer-events-none active:scale-95 transition-all">
+                    Export Excel
+                </button>
+            </x-slot:footer>
+        </div>
+    </x-admin.modal>
+
     <script>
         function handleExportPdf() {
             const form = document.getElementById('formExportPdf');
@@ -526,8 +590,53 @@
             }, 100);
         }
 
+        function handleExportExcel() {
+            const form = document.getElementById('formExportExcel');
+            const formData = new FormData(form);
+            const params = new URLSearchParams(formData).toString();
+
+            // Trigger download
+            window.location.href = `{{ route('admin.aspirations.export_excel') }}?${params}`;
+
+            if (window.Toastify && window.getToastNode) {
+                Toastify({
+                    node: window.getToastNode("Laporan Excel sedang diproses dan akan segera diunduh."),
+                    duration: 3000,
+                    className: "p-0",
+                    style: {
+                        background: "transparent",
+                        boxShadow: "none"
+                    },
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                }).showToast();
+            }
+
+            // Close modal after export
+            setTimeout(() => {
+                HSOverlay.close('#modal-export-excel');
+                form.reset();
+                const options = document.getElementById('excel_filter_options');
+                options.classList.remove('opacity-50', 'pointer-events-none');
+                options.querySelectorAll('input, select').forEach(i => i.disabled = false);
+            }, 100);
+        }
+
         document.getElementById('export_all').addEventListener('change', function() {
             const options = document.getElementById('filter_options');
+            const inputs = options.querySelectorAll('input, select');
+            if (this.checked) {
+                options.classList.add('opacity-50', 'pointer-events-none');
+                inputs.forEach(i => i.disabled = true);
+            } else {
+                options.classList.remove('opacity-50', 'pointer-events-none');
+                inputs.forEach(i => i.disabled = false);
+            }
+        });
+
+        document.getElementById('export_excel_all').addEventListener('change', function() {
+            const options = document.getElementById('excel_filter_options');
             const inputs = options.querySelectorAll('input, select');
             if (this.checked) {
                 options.classList.add('opacity-50', 'pointer-events-none');

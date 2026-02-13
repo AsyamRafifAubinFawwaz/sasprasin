@@ -28,6 +28,35 @@ $(document).ready(function () {
         const newState = !isCollapsed;
         localStorage.setItem("sidebar-collapsed", newState);
         window.applySidebarState();
+        // Close any open flyouts when toggling sidebar
+        $(".hs-accordion").removeClass("flyout-open");
+    });
+
+    // --- SIDEBAR FLYOUT LOGIC (Mini Mode Click) ---
+    $(document).on("click", ".hs-accordion-toggle", function (e) {
+        // Only trigger flyout logic if sidebar is collapsed
+        if (document.body.getAttribute("data-sidebar-collapsed") === "true") {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const $accordion = $(this).closest(".hs-accordion");
+            const wasOpen = $accordion.hasClass("flyout-open");
+
+            // Close all other flyouts
+            $(".hs-accordion").removeClass("flyout-open");
+
+            // Toggle current
+            if (!wasOpen) {
+                $accordion.addClass("flyout-open");
+            }
+        }
+    });
+
+    // Close flyouts when clicking outside
+    $(document).on("click", function (e) {
+        if (!$(e.target).closest(".hs-accordion").length) {
+            $(".hs-accordion").removeClass("flyout-open");
+        }
     });
 
     // Handle Livewire navigation as well

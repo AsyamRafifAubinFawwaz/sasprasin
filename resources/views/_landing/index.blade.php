@@ -8,7 +8,7 @@
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10">
 
-                <div class="w-full md:w-1/2 space-y-4 sm:space-y-6">
+                <div class="w-full md:w-1/2 space-y-4 sm:space-y-6" data-aos="fade-right">
                     {{-- <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
                     <span class="text-gray-700 text-sm font-medium">🌐 We host more than 120,000 websites</span>
                 </div> --}}
@@ -41,13 +41,109 @@
                     </div>
                 </div>
 
-                <div class="w-full md:w-1/2 flex justify-center items-center">
+                <div class="w-full md:w-1/2 flex justify-center items-center" data-aos="fade-left">
                     <img src="{{ asset('/image/hero.png') }}" alt="Ilustrasi" class="w-full max-w-lg object-contain">
                 </div>
 
             </div>
         </div>
     </section>
+    </section>
+
+    <section id="aspirasi" class="py-12 sm:py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 md:px-20">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div class="max-w-2xl" data-aos="fade-right">
+                    <h2 class="text-[#ff7d26] font-bold tracking-wider uppercase text-sm mb-3">Aspirasi Publik</h2>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-[#1a202c] leading-tight">
+                        Pantau Kondisi Fasilitas <br> Sekolah Secara Real-Time
+                    </h2>
+                </div>
+                <div data-aos="fade-left">
+                    <a href="{{ route('landing.aspirations') }}"
+                        class="inline-flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-all group">
+                        Lihat Semua Laporan
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-5 h-5 transform transition-transform group-hover:translate-x-1" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @forelse ($aspirations as $aspiration)
+                    <a href="{{ route('landing.aspirations.show', $aspiration->id) }}"
+                        class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-200 group flex flex-col h-full cursor-pointer"
+                        data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+                        <div class="relative h-60 sm:h-64 overflow-hidden">
+                         <img src="{{ \App\Utils\UrlHelper::getImageUrl($aspiration->image) }}"
+                                alt="{{ $aspiration->category_name }}"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        </div>
+
+                        <div class="p-8 flex flex-col flex-1">
+                            <div class="flex items-center justify-between gap-4 mb-4">
+                                <span
+                                    class="bg-gray-100 text-[#1a202c] px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider">
+                                    {{ $aspiration->category_name }}
+                                </span>
+                                @php
+                                    $statusColor = match ((int) $aspiration->status) {
+                                        2 => 'bg-yellow-50 text-yellow-600 border border-yellow-100',
+                                        3 => 'bg-green-50 text-green-600 border border-green-100',
+                                        4 => 'bg-red-50 text-red-600 border border-red-100',
+                                        default => 'bg-gray-50 text-gray-600 border border-gray-100',
+                                    };
+                                    $statusText = match ((int) $aspiration->status) {
+                                        2 => 'Dalam Proses',
+                                        3 => 'Selesai',
+                                        4 => 'Ditolak',
+                                        default => 'Pending',
+                                    };
+                                @endphp
+                                <span
+                                    class="{{ $statusColor }} px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">
+                                    {{ $statusText }}
+                                </span>
+                            </div>
+
+                            <h3
+                                class="text-xl font-bold text-[#1a202c] mb-3 group-hover:text-[#ff7d26] transition-colors leading-tight">
+                                {{ $aspiration->category_name }}
+                            </h3>
+
+                            <p class="text-gray-500 text-sm line-clamp-3 mb-6 leading-relaxed flex-1">
+                                {{ $aspiration->description }}
+                            </p>
+
+                            <div
+                                class="pt-6 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400 font-medium">
+                                <div class="flex items-center gap-1.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-gray-400" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    {{ $aspiration->location }}
+                                </div>
+                                <span>{{ \Carbon\Carbon::parse($aspiration->created_at)->format('d M Y') }}</span>
+                            </div>
+                        </div>
+                    </a>
+                @empty
+                    <div class="col-span-full text-center py-20 bg-gray-50 rounded-3xl">
+                        <p class="text-gray-500">Belum ada aspirasi publik yang dilaporkan.</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
     <section id="keunggulan" class="py-12 sm:py-20 bg-[#f8f9fa]">
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="text-center mb-16">
@@ -56,8 +152,8 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-                <div
-                    class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-[#ff7d26]">
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-[#ff7d26]"
+                    data-aos="fade-up" data-aos-delay="100">
                     <div class="w-12 h-12 bg-[#ffdec8] rounded-xl flex items-center justify-center mb-6 text-[#ff7d26]">
                         @include('_landing._layout.icons.photo')
                     </div>
@@ -67,8 +163,8 @@
                     </p>
                 </div>
 
-                <div
-                    class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-[#ff7d26]">
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-[#ff7d26]"
+                    data-aos="fade-up" data-aos-delay="200">
                     <div class="w-12 h-12 bg-[#ffdec8] rounded-xl flex items-center justify-center mb-6 text-[#ff7d26]">
                         @include('_landing._layout.icons.status')
                     </div>
@@ -78,8 +174,8 @@
                     </p>
                 </div>
 
-                <div
-                    class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-[#ff7d26]">
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-[#ff7d26]"
+                    data-aos="fade-up" data-aos-delay="300">
                     <div class="w-12 h-12 bg-[#ffdec8] rounded-xl flex items-center justify-center mb-6 text-[#ff7d26]">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-[ff7d26]" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
@@ -93,8 +189,8 @@
                     </p>
                 </div>
 
-                <div
-                    class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-[#ff7d26]">
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-100 hover:border-[#ff7d26]"
+                    data-aos="fade-up" data-aos-delay="400">
                     <div class="w-12 h-12 bg-[#ffdec8] rounded-xl flex items-center justify-center mb-6 text-[#ff7d26]">
                         @include('_landing._layout.icons.document')
                     </div>
@@ -111,7 +207,7 @@
     {{-- Dashboard Preview Section --}}
     <section id="dashboard" class="pt-24 pb-12 sm:pt-32 sm:pb-12 bg-linear-to-b from-[#f8f9fa] to-white relative z-10">
         <div class="container mx-auto px-4 sm:px-6 md:px-20 relative z-10">
-            <div class="text-center mb-16 lg:mb-24 max-w-3xl mx-auto">
+            <div class="text-center mb-16 lg:mb-24 max-w-3xl mx-auto" data-aos="fade-up">
                 <h2 class="text-orange-400 font-bold tracking-wider uppercase text-sm mb-3">Preview Aplikasi</h2>
                 <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#1a202c] mb-6 leading-tight">
                     Tampilan Dashboard Modern & Intuitif
@@ -126,8 +222,8 @@
                     class="absolute -inset-1 bg-black/5 rounded-4xl blur-xl transition duration-500 group-hover:bg-black/10">
                 </div>
 
-                <div
-                    class="relative rounded-2xl sm:rounded-4xl overflow-hidden shadow-2xl border border-gray-200/50 bg-white transform transition-all duration-500 hover:scale-[1.01] z-10">
+                <div class="relative rounded-2xl sm:rounded-4xl overflow-hidden shadow-2xl border border-gray-200/50 bg-white transform transition-all duration-500 hover:scale-[1.01] z-10"
+                    data-aos="zoom-in" data-aos-duration="1000">
                     <div class="bg-gray-50 border-b border-gray-100 px-4 py-3 flex items-center gap-2">
                         <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-400"></div>
                         <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-400"></div>
@@ -140,8 +236,8 @@
                         loading="lazy">
                 </div>
 
-                <div
-                    class="absolute -bottom-12 -right-4 sm:-bottom-24 sm:-right-8 md:-right-12 w-3/4 sm:w-2/3 md:w-3/5 rounded-xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/40 bg-white/80 backdrop-blur-md transform transition-all duration-500 hover:scale-[1.05] hover:-translate-y-2 z-20 group-hover:shadow-[0_25px_60px_rgba(0,0,0,0.2)]">
+                <div class="absolute -bottom-12 -right-4 sm:-bottom-24 sm:-right-8 md:-right-12 w-3/4 sm:w-2/3 md:w-3/5 rounded-xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/40 bg-white/80 backdrop-blur-md transform transition-all duration-500 hover:scale-[1.05] hover:-translate-y-2 z-20 group-hover:shadow-[0_25px_60px_rgba(0,0,0,0.2)]"
+                    data-aos="fade-up" data-aos-delay="400">
                     <div class="bg-gray-50/50 border-b border-gray-100 px-3 py-2 flex items-center gap-1.5">
                         <div class="w-2 h-2 rounded-full bg-red-400/80"></div>
                         <div class="w-2 h-2 rounded-full bg-yellow-400/80"></div>
@@ -160,7 +256,7 @@
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="flex flex-col md:flex-row items-center gap-16">
 
-                <div class="w-full md:w-1/2">
+                <div class="w-full md:w-1/2" data-aos="fade-right">
                     <div class="relative">
                         <div
                             class="absolute -top-4 -left-4 w-72 h-72 bg-orange-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
@@ -169,7 +265,7 @@
                     </div>
                 </div>
 
-                <div class="w-full md:w-1/2 space-y-8">
+                <div class="w-full md:w-1/2 space-y-8" data-aos="fade-left">
                     <div class="space-y-4">
                         <h2 class="text-orange-400 font-bold tracking-wider uppercase text-sm">Masalah & Solusi</h2>
                         <h2 class="text-4xl font-extrabold text-[#1a202c] leading-tight">
@@ -232,7 +328,7 @@
 
     <section id="cara-kerja" class="py-12 sm:py-24 bg-[#f8f9fa]">
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
-            <div class="text-center mb-16 space-y-4">
+            <div class="text-center mb-16 space-y-4" data-aos="fade-up">
                 <h2 class="text-orange-400 font-bold tracking-wider uppercase text-sm">Alur Proses</h2>
                 <h2 class="text-4xl font-extrabold text-[#1a202c]">Cara Kerja Aplikasi</h2>
                 <p class="text-gray-500 text-lg max-w-2xl mx-auto">
@@ -242,7 +338,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
-                <div class="relative">
+                <div class="relative" data-aos="fade-up" data-aos-delay="100">
                     <div
                         class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border-2 border-[#ff7d26] h-full">
                         <div
@@ -263,7 +359,7 @@
                     </div>
                 </div>
 
-                <div class="relative">
+                <div class="relative" data-aos="fade-up" data-aos-delay="200">
                     <div
                         class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border-2 border-gray-100 hover:border-[#ff7d26] h-full">
                         <div
@@ -284,7 +380,7 @@
                     </div>
                 </div>
 
-                <div class="relative">
+                <div class="relative" data-aos="fade-up" data-aos-delay="300">
                     <div
                         class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border-2 border-gray-100 hover:border-[#ff7d26] h-full">
                         <div
@@ -305,7 +401,7 @@
                     </div>
                 </div>
 
-                <div class="relative">
+                <div class="relative" data-aos="fade-up" data-aos-delay="400">
                     <div
                         class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all border-2 border-gray-100 hover:border-[#ff7d26] h-full">
                         <div
@@ -333,7 +429,7 @@
     </section>
     <section id="role" class="py-12 sm:py-24 bg-white">
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
-            <div class="text-center mb-16 space-y-4">
+            <div class="text-center mb-16 space-y-4" data-aos="fade-up">
                 <h2 class="text-orange-400 font-bold tracking-wider uppercase text-sm">Fitur Berdasarkan Role</h2>
                 <h2 class="text-4xl font-extrabold text-[#1a202c]">Siapa Saja yang Menggunakan?</h2>
                 <p class="text-gray-500 text-lg max-w-2xl mx-auto">
@@ -343,8 +439,8 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-                <div
-                    class="bg-gradient-to-br from-orange-50 to-white p-10 rounded-3xl shadow-lg border-2 border-orange-100 hover:shadow-xl transition-all">
+                <div class="bg-gradient-to-br from-orange-50 to-white p-10 rounded-3xl shadow-lg border-2 border-orange-100 hover:shadow-xl transition-all"
+                    data-aos="fade-right">
                     <div class="flex items-center gap-4 mb-8">
                         <div class="w-16 h-16 bg-[#ff7d26] rounded-2xl flex items-center text-white justify-center">
                             @include('_landing._layout.icons.student')
@@ -405,8 +501,8 @@
                     </div>
                 </div>
 
-                <div
-                    class="bg-gradient-to-br from-gray-50 to-white p-10 rounded-3xl shadow-lg border-2 border-gray-200 hover:shadow-xl transition-all">
+                <div class="bg-gradient-to-br from-gray-50 to-white p-10 rounded-3xl shadow-lg border-2 border-gray-200 hover:shadow-xl transition-all"
+                    data-aos="fade-left">
                     <div class="flex items-center gap-4 mb-8">
                         <div class="w-16 h-16 bg-[#1a202c] rounded-2xl flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none"

@@ -18,6 +18,8 @@ Route::get('/', function () {
     return redirect()->route('landing.index');
 });
 Route::get('/landing', [LandingController::class, 'index'])->name('landing.index');
+Route::get('/aspirasi', [LandingController::class, 'aspirations'])->name('landing.aspirations');
+Route::get('/aspirasi/{id}', [LandingController::class, 'show'])->name('landing.aspirations.show');
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'doLogin'])->name('login.post');
@@ -91,6 +93,7 @@ Route::middleware(['auth', 'role:1'])->prefix('admin')->name('admin.')->group(fu
     Route::prefix('aspirations')->name('aspirations.')->group(function () {
         Route::get('/', [AspirationController::class, 'index'])->name('index');
         Route::get('/export-pdf', [AspirationController::class, 'exportPdf'])->name('export_pdf');
+        Route::get('/export-excel', [AspirationController::class, 'exportExcel'])->name('export_excel');
         Route::get('/add', [AspirationController::class, 'add'])->name('add');
         Route::post('/create', [AspirationController::class, 'doCreate'])->name('do_create');
         Route::get('/detail/{id}', [AspirationController::class, 'detail'])->name('detail');

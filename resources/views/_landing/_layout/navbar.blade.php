@@ -8,28 +8,36 @@
             </a>
         </div>
 
+        @php
+            $isHomepage = request()->is('/') || request()->is('');
+        @endphp
         <ul class="hidden xl:flex gap-x-8 2xl:gap-x-12 text-[15px] 2xl:text-[16px] items-center">
             <li
                 class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 after:transition-transform">
-                <a href="#beranda" class="nav-link">Beranda</a>
+                <a href="{{ $isHomepage ? '#beranda' : url('/#beranda') }}" class="nav-link">Beranda</a>
             </li>
             <li
                 class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 after:transition-transform">
-                <a href="#keunggulan" class="nav-link">Keunggulan</a>
+                <a href="{{ $isHomepage ? '#keunggulan' : url('/#keunggulan') }}" class="nav-link">Keunggulan</a>
             </li>
             <li
                 class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 after:transition-transform">
-                <a href="#cara-kerja" class="nav-link">Cara Kerja Aplikasi</a>
+                <a href="{{ $isHomepage ? '#cara-kerja' : url('/#cara-kerja') }}" class="nav-link">Cara Kerja
+                    Aplikasi</a>
             </li>
             <li
                 class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 after:transition-transform">
-                <a href="#role" class="nav-link">Fitur</a>
+                <a href="{{ $isHomepage ? '#role' : url('/#role') }}" class="nav-link">Fitur</a>
+            </li>
+            <li
+                class="relative overflow-hidden hover:after:translate-x-0 hover:after:scale-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-5 after:h-[2.5px] after:bg-[#ff7d26] after:rounded-full after:scale-0 after:transition-transform">
+                <a href="{{ route('landing.aspirations') }}" class="nav-link-page">Lihat Semua Aspirasi</a>
             </li>
 
         </ul>
 
-        <!-- BUTTON DESKTOP -->
-        <a href="/login" class="hidden xl:flex items-center gap-x-3 text-[14px] 2xl:text-[16px]
+        <a href="/login"
+            class="hidden xl:flex items-center gap-x-3 text-[14px] 2xl:text-[16px]
             px-5 py-2 rounded-full font-semibold text-gray-100 bg-[#ff7d26]">
             Masuk
         </a>
@@ -49,17 +57,25 @@
 
 
 <!-- NAV MOBILE -->
-<div id="nav-mobile" class="fixed bg-white/70 backdrop-blur-sm shadow-md z-99 w-full
+<div id="nav-mobile"
+    class="fixed bg-white/70 backdrop-blur-sm shadow-md z-99 w-full
     flex flex-col mt-20 xl:hidden transition duration-500 translate-x-[2000px]">
 
-    <li class="list-none text-center py-3"><a href="#beranda" class="nav-link">Beranda</a></li>
-    <li class="list-none text-center py-3"><a href="#keunggulan" class="nav-link">Keunggulan</a></li>
-    <li class="list-none text-center py-3"><a href="#cara-kerja" class="nav-link">Cara Kerja Aplikasi</a></li>
-    <li class="list-none text-center py-3"><a href="#role" class="nav-link">Fitur</a></li>
+    <li class="list-none text-center py-3"><a href="{{ $isHomepage ? '#beranda' : url('/#beranda') }}"
+            class="nav-link">Beranda</a></li>
+    <li class="list-none text-center py-3"><a href="{{ $isHomepage ? '#keunggulan' : url('/#keunggulan') }}"
+            class="nav-link">Keunggulan</a></li>
+    <li class="list-none text-center py-3"><a href="{{ $isHomepage ? '#cara-kerja' : url('/#cara-kerja') }}"
+            class="nav-link">Cara Kerja Aplikasi</a></li>
+    <li class="list-none text-center py-3"><a href="{{ $isHomepage ? '#role' : url('/#role') }}"
+            class="nav-link">Fitur</a></li>
+    <li class="list-none text-center py-3"><a href="{{ route('landing.aspirations') }}" class="nav-link-page">Lihat
+            Semua Aspirasi</a></li>
 
 
     <li class="flex justify-center py-3">
-        <a href="/login" class="flex items-center gap-x-3 px-5 py-2 rounded-full text-sm min-[768px]:text-[15px]
+        <a href="/login"
+            class="flex items-center gap-x-3 px-5 py-2 rounded-full text-sm min-[768px]:text-[15px]
             font-semibold text-gray-100 bg-[#ff7d26]">
             @include('_landing._layout.icons.log-in') Masuk
         </a>
@@ -75,27 +91,33 @@
         navMobile.classList.toggle("translate-x-0");
     });
 
-    // Smooth scrolling for all nav links
+    // Smooth scrolling for hash nav links (only on homepage)
     document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
 
-            if (targetSection) {
-                // Close mobile menu if open
-                if (!navMobile.classList.contains('translate-x-[2000px]')) {
-                    hamburger.classList.remove('active');
-                    navMobile.classList.add('translate-x-[2000px]');
-                    navMobile.classList.remove('translate-x-0');
+            // Only prevent default and smooth scroll if it's a pure hash link (starts with #)
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1); // Remove the #
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    // Close mobile menu if open
+                    if (!navMobile.classList.contains('translate-x-[2000px]')) {
+                        hamburger.classList.remove('active');
+                        navMobile.classList.add('translate-x-[2000px]');
+                        navMobile.classList.remove('translate-x-0');
+                    }
+
+                    // Smooth scroll to section
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
-
-                // Smooth scroll to section
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
             }
+            // If it's a full URL (like /#beranda), let browser handle it normally
         });
     });
 

@@ -220,13 +220,15 @@
                 <tr>
                     <th style="width: 3%;">No</th>
                     <th style="width: 12%;">Nama Siswa</th>
+                    <th style="width: 8%;">NISN</th>
                     <th style="width: 10%;">Tanggal</th>
-                    <th style="width: 8%;">Gambar</th>
-                    <th style="width: 12%;">Lokasi</th>
+                    <th style="width: 8%;">Foto Laporan</th>
+                    <th style="width: 8%;">Foto Selesai</th>
+                    <th style="width: 10%;">Lokasi</th>
                     <th style="width: 10%;">Kategori</th>
                     <th style="width: 7%;">Prioritas</th>
-                    <th style="width: 25%;">Deskripsi</th>
-                    <th style="width: 8%;">Status</th>
+                    <th style="width: 15%;">Deskripsi</th>
+                    <th style="width: 7%;">Status</th>
                     <th style="width: 15%;">Feedback</th>
                 </tr>
             </thead>
@@ -235,12 +237,20 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $item->student_name ?? 'N/A' }}</td>
+                        <td>{{ $item->nisn ?? '-' }}</td>
                         <td>{{ date('d/m/Y H:i', strtotime($item->created_at)) }}</td>
                         <td class="image-cell">
                             @if ($item->image)
                                 <img src="{{ public_path($item->image) }}" alt="Gambar">
                             @else
-                                <span style="color: #999; font-size: 8px;">Tidak ada gambar</span>
+                                <span style="color: #999; font-size: 8px;">-</span>
+                            @endif
+                        </td>
+                        <td class="image-cell">
+                            @if ($item->aspiration_image)
+                                <img src="{{ public_path($item->aspiration_image) }}" alt="Foto Selesai">
+                            @else
+                                <span style="color: #999; font-size: 8px;">-</span>
                             @endif
                         </td>
                         <td>{{ $item->location }}</td>

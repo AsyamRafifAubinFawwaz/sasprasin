@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Constants\DatabaseConst;
 use App\Constants\ResponseConst;
+use App\Exports\AspirationExport;
 use App\Http\Controllers\Controller;
 use App\Usecase\Admin\AspirationUsecase;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AspirationController extends Controller
 {
@@ -84,6 +86,24 @@ class AspirationController extends Controller
         $pdf->setPaper('a4', 'landscape');
 
         return $pdf->download('laporan-aspirasi-'.date('Y-m-d').'.pdf');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $data = $this->usecase->getAllForExcel([
+            'status' => $request->get('status'),
+            'priority' => $request->get('priority'),
+            'search' => $request->get('search'),
+            'date' => $request->get('date'),
+            'start_date' => $request->get('start_date'),
+            'end_date' => $request->get('end_date'),
+            'export_all' => $request->get('export_all'),
+        ]);
+
+        return Excel::download(
+            new AspirationExport($data['data']['list'] ?? []),
+            'laporan-aspirasi-'.date('Y-m-d').'.xlsx'
+        );
     }
 
     public function doUpdate(Request $request, int $complaintId): RedirectResponse

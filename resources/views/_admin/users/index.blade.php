@@ -193,7 +193,7 @@
             <p class="text-gray-500 dark:text-neutral-500">
                 Apakah Anda yakin ingin mereset password <span id="reset-item-name"
                     class="font-semibold text-gray-800 dark:text-neutral-200"></span>?
-                <br>Password akan direset menjadi default: <span class="font-bold text-blue-600">default</span>
+                <br>Password akan direset menjadi default: <span class="font-bold text-blue-600">password</span>
             </p>
         </div>
 
