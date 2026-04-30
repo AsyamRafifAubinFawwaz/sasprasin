@@ -26,8 +26,8 @@ class UserUsecase extends Usecase
                 ->whereNull('deleted_at')
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
                     return $query->where(function ($q) use ($keywords) {
-                        $q->where('name', 'like', '%'.$keywords.'%')
-                            ->orWhere('email', 'like', '%'.$keywords.'%');
+                        $q->where('name', 'like', '%' . $keywords . '%')
+                            ->orWhere('email', 'like', '%' . $keywords . '%');
                     });
                 })
                 ->when($filterData['access_type'] ?? false, function ($query, $accessType) {
@@ -98,7 +98,7 @@ class UserUsecase extends Usecase
                 ->insert([
                     'name' => $data['name'],
                     'email' => $data['email'],
-                    'access_type' => 1,
+                    'access_type' => $data['access_type'] ?? 1,
                     'password' => Hash::make(self::DEFAULT_PASSWORD),
                     'created_by' => Auth::user()?->id,
                     'created_at' => now(),
@@ -297,7 +297,7 @@ class UserUsecase extends Usecase
 
         $validator = Validator::make($data, [
             'name' => ['required', 'string', 'max:255', 'min:3'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$userID],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $userID],
         ]);
 
         $customAttributes = [

@@ -1,2 +1,4 @@
 User-agent: *
-Disallow:
+Allow: /
+
+Sitemap: https://sarprasin.eskalaber.my.id/sitemap.xml

@@ -11,6 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -55,7 +56,24 @@ class AspirationController extends Controller
             'page' => $this->page,
             'data' => $data['data']['data'] ?? null,
             'student' => $data['data']['student'] ?? null,
+            'toolsmans' => $data['data']['toolsmans'] ?? [],
+            'assignment' => $data['data']['assignment'] ?? null,
         ]);
+    }
+
+    public function doAssign(Request $request, int $id): RedirectResponse
+    {
+        $process = $this->usecase->doAssign($request, $id);
+
+        if ($process['success']) {
+            return redirect()
+                ->back()
+                ->with('success', $process['message']);
+        }
+
+        return redirect()
+            ->back()
+            ->with('error', $process['message'] ?? ResponseConst::DEFAULT_ERROR_MESSAGE);
     }
 
     public function exportPdf(Request $request)
@@ -85,7 +103,7 @@ class AspirationController extends Controller
 
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->download('laporan-aspirasi-'.date('Y-m-d').'.pdf');
+        return $pdf->download('laporan-aspirasi-' . date('Y-m-d') . '.pdf');
     }
 
     public function exportExcel(Request $request)
@@ -102,7 +120,7 @@ class AspirationController extends Controller
 
         return Excel::download(
             new AspirationExport($data['data']['list'] ?? []),
-            'laporan-aspirasi-'.date('Y-m-d').'.xlsx'
+            'laporan-aspirasi-' . date('Y-m-d') . '.xlsx'
         );
     }
 

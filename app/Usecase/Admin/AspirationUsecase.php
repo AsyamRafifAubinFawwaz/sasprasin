@@ -3,8 +3,11 @@
 namespace App\Usecase\Admin;
 
 use App\Constants\DatabaseConst;
+use App\Constants\ProgressConst;
 use App\Constants\ResponseConst;
 use App\Http\Presenter\Response;
+use App\Usecase\LandingUsecase;
+use App\Usecase\Usecase;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +49,6 @@ class AspirationUsecase
                 } else {
                     $query->where('aspirations.status', $filter['status']);
                 }
-
             }
 
             if (! empty($filter['priority'])) {
@@ -62,9 +64,9 @@ class AspirationUsecase
 
             if (! empty($filter['search'])) {
                 $query->where(function ($q) use ($filter) {
-                    $q->where('users.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('locations.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('complaints.description', 'like', '%'.$filter['search'].'%');
+                    $q->where('users.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('locations.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('complaints.description', 'like', '%' . $filter['search'] . '%');
                 });
             }
 
@@ -116,6 +118,20 @@ class AspirationUsecase
                 return Response::buildErrorService(ResponseConst::ERROR_MESSAGE_NOT_FOUND);
             }
 
+            $toolsmans = DB::table(DatabaseConst::TOOLSMAN . ' as o')
+                ->join(DatabaseConst::USER . ' as u', 'o.user_id', '=', 'u.id')
+                ->whereNull('o.deleted_at')
+                ->whereNull('u.deleted_at')
+                ->select('o.id', 'u.name', 'o.skill')
+                ->get();
+
+            $assignment = DB::table(DatabaseConst::COMPLAINT_ASSIGNMENT . ' as ca')
+                ->join(DatabaseConst::TOOLSMAN . ' as o', 'ca.assigned_to', '=', 'o.id')
+                ->join(DatabaseConst::USER . ' as u', 'o.user_id', '=', 'u.id')
+                ->where('ca.complaint_id', $id)
+                ->select('u.name', 'o.skill', 'ca.assigned_at')
+                ->first();
+
             return Response::buildSuccess([
                 'data' => $data,
                 'student' => (object) [
@@ -123,11 +139,62 @@ class AspirationUsecase
                     'nisn' => $data->nisn,
                     'class_name' => $data->class_name,
                 ],
+                'toolsmans' => $toolsmans,
+                'assignment' => $assignment,
             ]);
         } catch (Exception $e) {
-            Log::error('AspirationUsecase::getById - '.$e->getMessage());
+            Log::error('AspirationUsecase::getById - ' . $e->getMessage());
 
             return Response::buildErrorService($e->getMessage());
+        }
+    }
+
+    public function doAssign(Request $request, int $id): array
+    {
+        $validator = Validator::make($request->all(), [
+            'toolsman_id' => 'required|exists:' . DatabaseConst::TOOLSMAN . ',id',
+        ]);
+
+        if ($validator->fails()) {
+            return Response::buildError(ResponseConst::HTTP_BAD_REQUEST, $validator->errors()->first());
+        }
+
+        try {
+            DB::table(DatabaseConst::COMPLAINT_ASSIGNMENT)->updateOrInsert(
+                ['complaint_id' => $id],
+                [
+                    'assigned_to' => $request->toolsman_id,
+                    'assigned_by' => Auth::user()->id,
+                    'assigned_at' => now(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+
+            $aspiration = DB::table(DatabaseConst::ASPIRATION)->where('complaint_id', $id)->first();
+            if ($aspiration && $aspiration->status == ProgressConst::PENDING) {
+                DB::table(DatabaseConst::ASPIRATION)->where('complaint_id', $id)->update([
+                    'status' => ProgressConst::PENDING,
+                    'updated_at' => now(),
+                ]);
+
+                // DB::table(DatabaseConst::ASPIRATION_STATUS_LOG)->insert([
+                //     'aspiration_id' => $aspiration->id,
+                //     'old_status' => ProgressConst::PENDING,
+                //     'new_status' => ProgressConst::IN_PROGRESS,
+                //     'note' => 'Sedang dikerjakan',
+                //     'changed_by' => Auth::user()->id,
+                //     'created_at' => now(),
+                // ]);
+            }
+
+            LandingUsecase::clearCache();
+
+            return Response::buildSuccess(message: 'Tugas berhasil dikirim ke petugas.');
+        } catch (Exception $e) {
+            Log::error('AspirationUsecase::doAssign - ' . $e->getMessage());
+
+            return Response::buildErrorService('Gagal mengirim tugas: ' . $e->getMessage());
         }
     }
 
@@ -156,9 +223,9 @@ class AspirationUsecase
             // Handle file upload
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
-                $filename = time().'_'.$file->getClientOriginalName();
+                $filename = time() . '_' . $file->getClientOriginalName();
                 $file->move(public_path('uploads/aspirations'), $filename);
-                $updateData['image'] = 'uploads/aspirations/'.$filename;
+                $updateData['image'] = 'uploads/aspirations/' . $filename;
             }
 
             DB::table('aspirations')
@@ -166,7 +233,7 @@ class AspirationUsecase
                 ->update($updateData);
 
             if ($currentAspiration) {
-                DB::table('aspiration_status_logs')->insert([
+                DB::table(DatabaseConst::ASPIRATION_STATUS_LOG)->insert([
                     'aspiration_id' => $currentAspiration->id,
                     'old_status' => $currentAspiration->status,
                     'new_status' => $request->status,
@@ -175,6 +242,8 @@ class AspirationUsecase
                     'created_at' => now(),
                 ]);
             }
+
+            LandingUsecase::clearCache();
 
             return Response::buildSuccess(
                 message: ResponseConst::SUCCESS_MESSAGE_UPDATED
@@ -195,6 +264,9 @@ class AspirationUsecase
                 ->leftJoin('users', 'complaints.student_id', '=', 'users.id')
                 ->leftJoin('students', 'users.id', '=', 'students.user_id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
+                ->leftJoin(DatabaseConst::COMPLAINT_ASSIGNMENT . ' as ca', 'complaints.id', '=', 'ca.complaint_id')
+                ->leftJoin(DatabaseConst::TOOLSMAN . ' as ts', 'ca.assigned_to', '=', 'ts.id')
+                ->leftJoin('users as toolsman_user', 'ts.user_id', '=', 'toolsman_user.id')
                 ->select(
                     'complaints.id',
                     'users.name as student_name',
@@ -207,7 +279,8 @@ class AspirationUsecase
                     'facility_categories.priority',
                     'aspirations.status',
                     'aspirations.feedback',
-                    'aspirations.image as aspiration_image'
+                    'aspirations.image as aspiration_image',
+                    'toolsman_user.name as toolsman_name'
                 )
                 ->whereNull('complaints.deleted_at');
 
@@ -228,9 +301,9 @@ class AspirationUsecase
 
             if (! empty($filter['search'])) {
                 $query->where(function ($q) use ($filter) {
-                    $q->where('users.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('locations.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('complaints.description', 'like', '%'.$filter['search'].'%');
+                    $q->where('users.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('locations.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('complaints.description', 'like', '%' . $filter['search'] . '%');
                 });
             }
 
@@ -272,6 +345,9 @@ class AspirationUsecase
                 ->leftJoin('users', 'complaints.student_id', '=', 'users.id')
                 ->leftJoin('students', 'users.id', '=', 'students.user_id')
                 ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
+                ->leftJoin(DatabaseConst::COMPLAINT_ASSIGNMENT . ' as ca', 'complaints.id', '=', 'ca.complaint_id')
+                ->leftJoin(DatabaseConst::TOOLSMAN . ' as ts', 'ca.assigned_to', '=', 'ts.id')
+                ->leftJoin('users as toolsman_user', 'ts.user_id', '=', 'toolsman_user.id')
                 ->select(
                     'complaints.id',
                     'users.name as student_name',
@@ -284,7 +360,8 @@ class AspirationUsecase
                     'facility_categories.priority',
                     'aspirations.status',
                     'aspirations.feedback',
-                    'aspirations.image as aspiration_image'
+                    'aspirations.image as aspiration_image',
+                    'toolsman_user.name as toolsman_name'
                 )
                 ->whereNull('complaints.deleted_at');
 
@@ -305,9 +382,9 @@ class AspirationUsecase
 
             if (! empty($filter['search'])) {
                 $query->where(function ($q) use ($filter) {
-                    $q->where('users.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('locations.name', 'like', '%'.$filter['search'].'%')
-                        ->orWhere('complaints.description', 'like', '%'.$filter['search'].'%');
+                    $q->where('users.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('locations.name', 'like', '%' . $filter['search'] . '%')
+                        ->orWhere('complaints.description', 'like', '%' . $filter['search'] . '%');
                 });
             }
 

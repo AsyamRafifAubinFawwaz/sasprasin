@@ -6,21 +6,34 @@ use App\Constants\DatabaseConst;
 use App\Constants\ResponseConst;
 use App\Http\Presenter\Response;
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class LandingUsecase
 {
+    protected const CACHE_TTL = 3600; // 1 hour
+    protected const CACHE_PREFIX = 'landing_';
+
+    public static function clearCache(): void
+    {
+        Cache::flush();
+    }
+
     public function getLatestAspirations(int $limit = 6): array
     {
         try {
-            $query = $this->getBaseQuery();
+            $cacheKey = self::CACHE_PREFIX . 'latest_' . $limit;
 
-            return Response::buildSuccess([
-                'list' => $query->orderByDesc('complaints.created_at')->limit($limit)->get(),
-            ]);
+            return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($limit) {
+                $query = $this->getBaseQuery();
+
+                return Response::buildSuccess([
+                    'list' => $query->orderByDesc('complaints.created_at')->limit($limit)->get(),
+                ]);
+            });
         } catch (Exception $e) {
-            Log::error('LandingUsecase::getLatestAspirations - '.$e->getMessage());
+            Log::error('LandingUsecase::getLatestAspirations - ' . $e->getMessage());
 
             return Response::buildErrorService($e->getMessage());
         }
@@ -29,33 +42,38 @@ class LandingUsecase
     public function getAllAspirations(array $filter = []): array
     {
         try {
-            $query = $this->getBaseQuery();
+            $page = request()->get('page', 1);
+            $cacheKey = self::CACHE_PREFIX . 'all_' . md5(json_encode($filter) . $page);
 
-            if (! empty($filter['status'])) {
-                $query->where('aspirations.status', $filter['status']);
-            }
+            return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($filter) {
+                $query = $this->getBaseQuery();
 
-            if (! empty($filter['facility_category_id'])) {
-                $query->where('complaints.facility_category_id', $filter['facility_category_id']);
-            }
+                if (!empty($filter['status'])) {
+                    $query->where('aspirations.status', $filter['status']);
+                }
 
-            if (!empty($filter['search'])) {
-                $query->where(function ($q) use ($filter) {
-                    $q->where('locations.name', 'like', '%' . $filter['search'] . '%')
-                        ->orWhere('complaints.description', 'like', '%' . $filter['search'] . '%')
-                        ->orWhere('facility_categories.name', 'like', '%' . $filter['search'] . '%');
-                });
-            }
+                if (!empty($filter['facility_category_id'])) {
+                    $query->where('complaints.facility_category_id', $filter['facility_category_id']);
+                }
 
-            if (!empty($filter['date'])) {
-                $query->whereDate('complaints.created_at', $filter['date']);
-            }
+                if (!empty($filter['search'])) {
+                    $query->where(function ($q) use ($filter) {
+                        $q->where('locations.name', 'like', '%' . $filter['search'] . '%')
+                            ->orWhere('complaints.description', 'like', '%' . $filter['search'] . '%')
+                            ->orWhere('facility_categories.name', 'like', '%' . $filter['search'] . '%');
+                    });
+                }
 
-            return Response::buildSuccess([
-                'list' => $query->orderByDesc('complaints.created_at')->paginate(12),
-            ]);
+                if (!empty($filter['date'])) {
+                    $query->whereDate('complaints.created_at', $filter['date']);
+                }
+
+                return Response::buildSuccess([
+                    'list' => $query->orderByDesc('complaints.created_at')->paginate(12),
+                ]);
+            });
         } catch (Exception $e) {
-            Log::error('LandingUsecase::getAllAspirations - '.$e->getMessage());
+            Log::error('LandingUsecase::getAllAspirations - ' . $e->getMessage());
 
             return Response::buildErrorService($e->getMessage());
         }
@@ -64,31 +82,36 @@ class LandingUsecase
     public function getById(int $id): array
     {
         try {
-            $data = $this->getBaseQuery()
-                ->addSelect('aspirations.id as aspiration_id', 'aspirations.image as aspiration_image', 'aspirations.feedback')
-                ->where('complaints.id', $id)
-                ->first();
+            $cacheKey = self::CACHE_PREFIX . 'detail_' . $id;
 
-            if (! $data) {
-                return Response::buildErrorService(ResponseConst::ERROR_MESSAGE_NOT_FOUND);
-            }
+            return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($id) {
+                $data = $this->getBaseQuery()
+                    ->addSelect('aspirations.id as aspiration_id', 'aspirations.image as aspiration_image', 'aspirations.feedback')
+                    ->where('complaints.id', $id)
+                    ->first();
 
-            // Fetch status logs
-            $logs = [];
-            if ($data->aspiration_id) {
-                $logs = DB::table('aspiration_status_logs')
-                    ->join('users', 'aspiration_status_logs.changed_by', '=', 'users.id')
-                    ->where('aspiration_id', $data->aspiration_id)
-                    ->select('aspiration_status_logs.*', 'users.name as changer_name')
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-            }
+                if (!$data) {
+                    return Response::buildErrorService(ResponseConst::ERROR_MESSAGE_NOT_FOUND);
+                }
 
-            return Response::buildSuccess([
-                'data' => $data,
-                'logs' => $logs,
-            ]);
+                // Fetch status logs
+                $logs = [];
+                if ($data->aspiration_id) {
+                    $logs = DB::table(DatabaseConst::ASPIRATION_STATUS_LOG)
+                        ->join('users', DatabaseConst::ASPIRATION_STATUS_LOG . '.changed_by', '=', 'users.id')
+                        ->where('aspiration_id', $data->aspiration_id)
+                        ->select(DatabaseConst::ASPIRATION_STATUS_LOG . '.*', 'users.name as changer_name')
+                        ->orderBy(DatabaseConst::ASPIRATION_STATUS_LOG . '.created_at', 'desc')
+                        ->get();
+                }
+
+                return Response::buildSuccess([
+                    'data' => $data,
+                    'logs' => $logs,
+                ]);
+            });
         } catch (Exception $e) {
+            Log::error('LandingUsecase::getById - ' . $e->getMessage());
             return Response::buildErrorService($e->getMessage());
         }
     }

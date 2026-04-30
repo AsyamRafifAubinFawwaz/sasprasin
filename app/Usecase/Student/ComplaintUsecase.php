@@ -6,6 +6,7 @@ use App\Constants\DatabaseConst;
 use App\Constants\ProgressConst;
 use App\Constants\ResponseConst;
 use App\Http\Presenter\Response;
+use App\Usecase\LandingUsecase;
 use App\Usecase\Usecase;
 use Exception;
 use Illuminate\Http\Request;
@@ -27,8 +28,8 @@ class ComplaintUsecase extends Usecase
                 ->whereNull('complaints.deleted_at')
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
                     return $query->where(function ($q) use ($keywords) {
-                        $q->where('complaints.description', 'like', '%'.$keywords.'%')
-                            ->orWhere('locations.name', 'like', '%'.$keywords.'%');
+                        $q->where('complaints.description', 'like', '%' . $keywords . '%')
+                            ->orWhere('locations.name', 'like', '%' . $keywords . '%');
                     });
                 })
                 ->when($filterData['category_id'] ?? false, function ($query, $categoryId) {
@@ -79,7 +80,7 @@ class ComplaintUsecase extends Usecase
             'facility_category_id' => 'required|integer|exists:facility_categories,id',
             'description' => 'required|string',
             'location_id' => 'required|integer|exists:locations,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
 
         $validator->validate();
@@ -91,17 +92,15 @@ class ComplaintUsecase extends Usecase
             $payload['created_at'] = now();
             $payload['updated_at'] = now();
 
-            // Handle file upload
             if ($data->hasFile('image')) {
                 $file = $data->file('image');
-                $filename = time().'_'.$file->getClientOriginalName();
+                $filename = time() . '_' . $file->getClientOriginalName();
                 $file->move(public_path('uploads/complaints'), $filename);
-                $payload['image'] = 'uploads/complaints/'.$filename;
+                $payload['image'] = 'uploads/complaints/' . $filename;
             }
 
             $complaintId = DB::table('complaints')->insertGetId($payload);
 
-            // Insert ke aspirations table dengan status Pending
             DB::table('aspirations')->insert([
                 'complaint_id' => $complaintId,
                 'status' => ProgressConst::PENDING,
@@ -112,6 +111,8 @@ class ComplaintUsecase extends Usecase
             ]);
 
             DB::commit();
+
+            LandingUsecase::clearCache();
 
             return Response::buildSuccessCreated();
         } catch (Exception $e) {
@@ -147,10 +148,10 @@ class ComplaintUsecase extends Usecase
             // Fetch status logs
             $logs = [];
             if ($data->aspiration_id) {
-                $logs = DB::table('aspiration_status_logs')
-                    ->join('users', 'aspiration_status_logs.changed_by', '=', 'users.id')
+                $logs = DB::table(DatabaseConst::ASPIRATION_STATUS_LOG)
+                    ->join('users', DatabaseConst::ASPIRATION_STATUS_LOG . '.changed_by', '=', 'users.id')
                     ->where('aspiration_id', $data->aspiration_id)
-                    ->select('aspiration_status_logs.*', 'users.name as changer_name')
+                    ->select(DatabaseConst::ASPIRATION_STATUS_LOG . '.*', 'users.name as changer_name')
                     ->orderBy('created_at', 'desc')
                     ->get();
             }
@@ -191,9 +192,9 @@ class ComplaintUsecase extends Usecase
         // Handle file upload
         if ($data->hasFile('image')) {
             $file = $data->file('image');
-            $filename = time().'_'.$file->getClientOriginalName();
+            $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('uploads/complaints'), $filename);
-            $update['image'] = 'uploads/complaints/'.$filename;
+            $update['image'] = 'uploads/complaints/' . $filename;
         }
 
         DB::beginTransaction();
@@ -218,7 +219,7 @@ class ComplaintUsecase extends Usecase
                     ]);
 
                 // Log status change
-                DB::table('aspiration_status_logs')->insert([
+                DB::table(DatabaseConst::ASPIRATION_STATUS_LOG)->insert([
                     'aspiration_id' => $currentAspiration->id,
                     'old_status' => $currentAspiration->status,
                     'new_status' => ProgressConst::PENDING,
@@ -237,6 +238,8 @@ class ComplaintUsecase extends Usecase
             }
 
             DB::commit();
+
+            LandingUsecase::clearCache();
 
             return Response::buildSuccess(
                 message: ResponseConst::SUCCESS_MESSAGE_UPDATED
@@ -262,6 +265,8 @@ class ComplaintUsecase extends Usecase
                 ]);
 
             DB::commit();
+
+            LandingUsecase::clearCache();
 
             return Response::buildSuccess(
                 message: ResponseConst::SUCCESS_MESSAGE_DELETED
@@ -291,8 +296,8 @@ class ComplaintUsecase extends Usecase
                 ->whereNull('complaints.deleted_at')
                 ->when($filterData['keywords'] ?? false, function ($query, $keywords) {
                     return $query->where(function ($q) use ($keywords) {
-                        $q->where('complaints.description', 'like', '%'.$keywords.'%')
-                            ->orWhere('locations.name', 'like', '%'.$keywords.'%');
+                        $q->where('complaints.description', 'like', '%' . $keywords . '%')
+                            ->orWhere('locations.name', 'like', '%' . $keywords . '%');
                     });
                 })
                 ->when($filterData['category_id'] ?? false, function ($query, $categoryId) {

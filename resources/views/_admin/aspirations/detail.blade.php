@@ -109,8 +109,7 @@
                                     class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-2">Deskripsi</label>
                                 <div
                                     class="bg-gray-50/50 dark:bg-neutral-900/30 border border-gray-100 dark:border-neutral-700 rounded-xl p-4">
-                                    <p
-                                        class="text-sm text-gray-600 dark:text-neutral-400 whitespace-pre-wrap leading-relaxed">
+                                    <p class="text-sm text-gray-600 dark:text-neutral-400 leading-relaxed">
                                         {{ $data->description }}</p>
                                 </div>
                             </div>
@@ -238,7 +237,7 @@
                 <!-- Kolom Kanan: Profil Pelapor -->
                 <div class="lg:col-span-4 order-1 lg:order-2">
                     <div
-                        class="bg-white shadow-sm border border-gray-100 rounded-2xl dark:bg-neutral-800 dark:border-neutral-700 sticky top-4 overflow-hidden flex flex-col">
+                        class="bg-white shadow-sm border border-gray-100 rounded-2xl dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden flex flex-col">
                         <div class="px-6 py-4 border-b border-gray-100 dark:border-neutral-700">
                             <h2 class="text-sm font-bold text-gray-800 dark:text-neutral-200">
                                 Profil Pelapor
@@ -310,10 +309,147 @@
                             @endif
                         </div>
 
+                        <div
+                            class="mt-6 bg-white shadow-sm border border-gray-100 rounded-2xl dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden flex flex-col">
+                            <div class="px-6 py-4 border-b border-gray-100 dark:border-neutral-700">
+                                <h2 class="text-sm font-bold text-gray-800 dark:text-neutral-200">
+                                    Penugasan Petugas
+                                </h2>
+                            </div>
 
+                            <div class="p-6">
+                                @if ($assignment)
+                                    <div
+                                        class="bg-blue-50/50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/30 rounded-2xl p-4">
+                                        <div class="flex items-center gap-x-3 mb-3">
+                                            <div
+                                                class="size-10 flex items-center justify-center rounded-xl bg-white dark:bg-neutral-800 text-blue-600 shadow-sm text-sm font-bold">
+                                                {{ strtoupper(substr($assignment->name, 0, 1)) }}
+                                            </div>
+                                            <div>
+                                                <p
+                                                    class="text-[10px] font-black text-blue-400 dark:text-blue-500 uppercase tracking-tighter">
+                                                    Petugas Terpilih</p>
+                                                <p class="text-sm font-bold text-gray-800 dark:text-neutral-200">
+                                                    {{ $assignment->name }}</p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex items-center gap-x-2 text-[11px] text-gray-500 dark:text-neutral-400 mb-4">
+                                            <span
+                                                class="inline-flex items-center gap-x-1 py-0.5 px-2 rounded-full bg-white dark:bg-neutral-700 border border-gray-100 dark:border-neutral-600 font-medium">
+                                                {{ $assignment->skill ?? 'Umum' }}
+                                            </span>
+                                            <span class="text-gray-300 dark:text-neutral-600">•</span>
+                                            <span>{{ \Carbon\Carbon::parse($assignment->assigned_at)->format('d M Y, H:i') }}</span>
+                                        </div>
+                                        <button type="button" data-hs-overlay="#assignment-modal"
+                                            @if ($data->status == \App\Constants\ProgressConst::DONE) disabled @endif
+                                            class="w-full py-2 px-3 inline-flex justify-center items-center gap-x-2 text-xs font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 transition-all active:scale-95 cursor-pointer shadow-sm shadow-blue-500/10 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed">
+                                            @if ($data->status == \App\Constants\ProgressConst::DONE)
+                                                <svg class="shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
+                                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <rect width="18" height="11" x="3" y="11" rx="2"
+                                                        ry="2" />
+                                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                                </svg>
+                                                Tugas Selesai (Final)
+                                            @else
+                                                Ganti Petugas
+                                            @endif
+                                        </button>
+                                    </div>
+                                @else
+                                    <div class="text-center py-4">
+                                        <div
+                                            class="size-12 bg-gray-50 dark:bg-neutral-900 rounded-full flex items-center justify-center mx-auto mb-3 border border-dashed border-gray-200 dark:border-neutral-700 text-gray-300">
+                                            <svg class="size-6" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M16 11V7a4 4 0 11-8 0v4M5 9h14l1 12H4L5 9z" />
+                                            </svg>
+                                        </div>
+                                        <p class="text-xs font-medium text-gray-500 dark:text-neutral-400 mb-4">Belum ada
+                                            petugas yang ditugaskan</p>
+                                        <button type="button" @if ($data->status == \App\Constants\ProgressConst::DONE) disabled @endif
+                                            data-hs-overlay="#assignment-modal"
+                                            class="py-2.5 px-6 inline-flex justify-center items-center gap-x-2 text-xs font-bold rounded-xl border border-transparent bg-orange-600 text-white hover:bg-orange-700 shadow-md shadow-orange-500/20 transition-all active:scale-95 cursor-pointer w-full disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed">
+                                            @if ($data->status == \App\Constants\ProgressConst::DONE)
+                                                Laporan Selesai
+                                            @else
+                                                Pilih Petugas
+                                            @endif
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <x-admin.modal id="assignment-modal" title="Tugaskan Petugas">
+                <form id="assignment-form" action="{{ route('admin.aspirations.do_assign', $data->id) }}" method="POST"
+                    navigate-form>
+                    @csrf
+                    <div class="space-y-4">
+                        <div>
+                            <label
+                                class="block text-xs font-black text-gray-400 dark:text-neutral-500 uppercase tracking-widest mb-3">Pilih
+                                Petugas Lapangan</label>
+                            <div class="grid grid-cols-1 gap-3 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+                                @forelse($toolsmans as $off)
+                                    <label
+                                        class="relative flex items-center p-3 rounded-2xl border border-gray-100 dark:border-neutral-700 hover:bg-orange-50/50 dark:hover:bg-neutral-700/50 cursor-pointer transition-all group">
+                                        <input type="radio" name="toolsman_id" value="{{ $off->id }}"
+                                            class="hidden peer" required @if ($assignment && $assignment->name == $off->name) checked @endif>
+                                        <div
+                                            class="absolute inset-0 rounded-2xl border-2 border-transparent peer-checked:border-orange-500 pointer-events-none transition-all">
+                                        </div>
+
+                                        <div
+                                            class="size-10 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-neutral-900 text-gray-400 group-hover:text-orange-500 peer-checked:bg-orange-500 peer-checked:text-white transition-all shadow-sm">
+                                            {{ strtoupper(substr($off->name, 0, 1)) }}
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <p class="text-sm font-bold text-gray-800 dark:text-neutral-200">
+                                                {{ $off->name }}</p>
+                                            <p class="text-[10px] text-gray-400 dark:text-neutral-500">
+                                                {{ $off->skill ?? 'Spesialis Umum' }}</p>
+                                        </div>
+                                        <div class="hidden peer-checked:block text-orange-500">
+                                            <svg class="size-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </label>
+                                @empty
+                                    <div
+                                        class="text-center py-4 bg-gray-50 dark:bg-neutral-900 rounded-2xl border border-dashed border-gray-100 dark:border-neutral-700">
+                                        <p class="text-xs text-gray-400">Tidak ada petugas yang tersedia</p>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <x-slot name="footer">
+                    <button type="button"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                        data-hs-overlay="#assignment-modal">
+                        Batal
+                    </button>
+                    <button type="submit" form="assignment-form"
+                        class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-bold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 focus:outline-none focus:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Tugaskan Sekarang
+                    </button>
+                </x-slot>
+            </x-admin.modal>
         @endif
 
 
@@ -334,7 +470,6 @@
                     'fixed inset-0 z-[100] bg-black/95 flex items-center justify-center overflow-hidden backdrop-blur-md transition-all duration-300';
                 modal.tabIndex = 0;
 
-                // Container for the image to handle initial scaling/fitting
                 const imgContainer = document.createElement('div');
                 imgContainer.className = 'relative w-full h-full flex items-center justify-center p-4 sm:p-8';
 
@@ -344,7 +479,6 @@
                     'max-w-full max-h-full object-contain cursor-grab select-none shadow-2xl transition-transform duration-75 ease-out';
                 zoomedImg.style.transform = 'translate(0px, 0px) scale(1)';
 
-                // Tombol Close
                 const closeBtn = document.createElement('button');
                 closeBtn.className =
                     'absolute top-4 right-4 z-[110] size-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 focus:outline-none';
@@ -353,7 +487,6 @@
                 `;
                 closeBtn.onclick = () => modal.remove();
 
-                // Info text
                 const infoText = document.createElement('div');
                 infoText.className =
                     'absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-xs font-medium bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-sm pointer-events-none';
@@ -381,7 +514,6 @@
                     passive: false
                 });
 
-                // Handlers for Mouse and Touch
                 const startDrag = (x, y) => {
                     isDragging = true;
                     startX = x - translateX;
@@ -402,12 +534,9 @@
                     zoomedImg.classList.remove('cursor-grabbing');
                 };
 
-                // Mouse Events
                 zoomedImg.addEventListener('mousedown', (e) => startDrag(e.clientX, e.clientY));
                 window.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
                 window.addEventListener('mouseup', endDrag);
-
-                // Touch Events
                 zoomedImg.addEventListener('touchstart', (e) => {
                     if (e.touches.length === 1) {
                         startDrag(e.touches[0].clientX, e.touches[0].clientY);

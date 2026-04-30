@@ -2,7 +2,14 @@
 
 namespace App\Providers;
 
+use App\Constants\DatabaseConst;
+use App\Constants\ProgressConst;
+use App\Constants\UserConst;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Blaze\Blaze;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,21 +26,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \Illuminate\Support\Facades\View::composer('_layout.sidebar', function ($view) {
-            $pendingAspirationsCount = 0;
 
-            if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->access_type == \App\Constants\UserConst::ADMIN) {
-                $pendingAspirationsCount = \Illuminate\Support\Facades\DB::table(\App\Constants\DatabaseConst::COMPLAINT)
-                    ->leftJoin('aspirations', 'complaints.id', '=', 'aspirations.complaint_id')
-                    ->whereNull('complaints.deleted_at')
-                    ->where(function ($query) {
-                        $query->where('aspirations.status', \App\Constants\ProgressConst::PENDING)
-                            ->orWhereNull('aspirations.status');
-                    })
-                    ->count();
-            }
+        Blaze::optimize()->in(
+            resource_path('views/components'),
+        );
 
-            $view->with('pendingAspirationsCount', $pendingAspirationsCount);
-        });
+        View::composer('_layout.sidebar', \App\Http\View\Composers\SidebarComposer::class);
     }
 }

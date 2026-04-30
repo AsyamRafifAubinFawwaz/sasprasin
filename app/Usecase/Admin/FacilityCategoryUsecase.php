@@ -5,6 +5,7 @@ namespace App\Usecase\Admin;
 use App\Constants\DatabaseConst;
 use App\Constants\ResponseConst;
 use App\Http\Presenter\Response;
+use App\Usecase\LandingUsecase;
 use App\Usecase\Usecase;
 use Exception;
 use Illuminate\Http\Request;
@@ -80,6 +81,8 @@ class FacilityCategoryUsecase extends Usecase
 
             DB::commit();
 
+            LandingUsecase::clearCache();
+
             return Response::buildSuccessCreated();
         } catch (Exception $e) {
             DB::rollback();
@@ -143,6 +146,8 @@ class FacilityCategoryUsecase extends Usecase
                 ->update($update);
             DB::commit();
 
+            LandingUsecase::clearCache();
+
             return Response::buildSuccess(
                 message: ResponseConst::SUCCESS_MESSAGE_UPDATED
             );
@@ -167,6 +172,8 @@ class FacilityCategoryUsecase extends Usecase
                 ]);
 
             DB::commit();
+
+            LandingUsecase::clearCache();
 
             return Response::buildSuccess(
                 message: ResponseConst::SUCCESS_MESSAGE_DELETED

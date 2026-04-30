@@ -224,6 +224,7 @@
                     <th style="width: 10%;">Tanggal</th>
                     <th style="width: 8%;">Foto Laporan</th>
                     <th style="width: 8%;">Foto Selesai</th>
+                    <th style="width: 8%;">Petugas</th>
                     <th style="width: 10%;">Lokasi</th>
                     <th style="width: 10%;">Kategori</th>
                     <th style="width: 7%;">Prioritas</th>
@@ -253,6 +254,7 @@
                                 <span style="color: #999; font-size: 8px;">-</span>
                             @endif
                         </td>
+                        <td>{{ $item->toolsman_name ?? '-' }}</td>
                         <td>{{ $item->location }}</td>
                         <td>{{ $item->category_name }}</td>
                         <td>

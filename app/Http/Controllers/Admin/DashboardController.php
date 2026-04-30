@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Usecase\Admin\DashboardUsecase;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class DashboardController extends Controller
@@ -13,7 +14,7 @@ class DashboardController extends Controller
         protected DashboardUsecase $usecase
     ) {}
 
-    public function index(\Illuminate\Http\Request $request): View|Response
+    public function index(Request $request): View|Response
     {
         $range = $request->get('range', '30_days');
         $response = $this->usecase->getStatistics($range);

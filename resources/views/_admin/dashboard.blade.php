@@ -466,6 +466,7 @@
                         type: "category",
                         tickPlacement: "on",
                         categories: categories,
+                        tickAmount: 10,
                         axisBorder: {
                             show: false,
                         },
@@ -484,12 +485,15 @@
                             enabled: false,
                         },
                         labels: {
+                            rotate: 0,
+                            rotateAlways: false,
                             style: {
                                 colors: mode === 'dark' ? "#a3a3a3" : "#9ca3af",
-                                fontSize: "13px",
-                                fontFamily: "Inter, ui-sans-serif",
+                                fontSize: "12px",
+                                // fontFamily: "Inter, ui-sans-serif",
                                 fontWeight: 400,
                             },
+                            hideOverlappingLabels: true,
                             formatter: (title) => {
                                 if (!title || typeof title !== 'string') return title;
                                 const parts = title.split(' ');
@@ -508,7 +512,7 @@
                             style: {
                                 colors: mode === 'dark' ? "#a3a3a3" : "#9ca3af",
                                 fontSize: "13px",
-                                fontFamily: "Inter, ui-sans-serif",
+                                // fontFamily: "Inter, ui-sans-serif",
                                 fontWeight: 400,
                             },
                             formatter: (value) => Math.floor(value),

@@ -42,7 +42,8 @@ class AuthController extends Controller
                 return redirect()->route('admin.dashboard');
             case UserConst::STUDENT:
                 return redirect()->route('student.dashboard');
-
+            case UserConst::TOOLSMAN:
+                return redirect()->route('toolsman.dashboard');
             default:
                 return redirect()->intended(route('admin.dashboard'));
         }

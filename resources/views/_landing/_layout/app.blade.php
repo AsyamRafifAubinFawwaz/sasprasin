@@ -9,6 +9,13 @@
 
     <title>{{ env('APP_ENV') == 'local' ? '[LOCAL] ' : '' }}SARPRASIN - @yield('title')</title>
 
+    <meta name="description" content="@yield('description', 'Sistem manajemen sarana prasarana sekolah')">
+
+    <meta name="keywords" content="sarpras sekolah, manajemen sarana prasarana, aplikasi sarpras">
+
+    <meta name="robots" content="index, follow">
+
+    <meta name="author" content="Sarprasin">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

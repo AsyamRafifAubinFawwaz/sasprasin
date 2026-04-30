@@ -5,6 +5,7 @@ namespace App\Usecase\Admin;
 use App\Constants\DatabaseConst;
 use App\Constants\ResponseConst;
 use App\Http\Presenter\Response;
+use App\Usecase\LandingUsecase;
 use App\Usecase\Usecase;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -71,6 +72,8 @@ class LocationUsecase extends Usecase
 
             DB::commit();
 
+            LandingUsecase::clearCache();
+
             return Response::buildSuccessCreated();
         } catch (Exception $e) {
             DB::rollback();
@@ -128,6 +131,8 @@ class LocationUsecase extends Usecase
                 ->update($update);
             DB::commit();
 
+            LandingUsecase::clearCache();
+
             return Response::buildSuccess(
                 message: ResponseConst::SUCCESS_MESSAGE_UPDATED
             );
@@ -149,6 +154,8 @@ class LocationUsecase extends Usecase
                 ->delete();
 
             DB::commit();
+
+            LandingUsecase::clearCache();
 
             return Response::buildSuccess(
                 message: ResponseConst::SUCCESS_MESSAGE_DELETED

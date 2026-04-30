@@ -1,10 +1,10 @@
 @extends('_landing._layout.app')
 
-@section('title', 'Landing')
-
+@section('title', 'Manajemen Sarana Prasarana Sekolah')
+@section('description', 'Panduan lengkap mengelola sarana prasarana sekolah secara digital')
 @section('content')
     <section id="beranda"
-        class="hero-section w-full min-h-screen flex items-center bg-white overflow-hidden pt-24 sm:pt-28 md:pt-32">
+        class="hero-section w-full min-h-screen flex items-center bg-white overflow-hidden pt-24 sm:pt-28 md:pt-10">
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10">
 
@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="w-full md:w-1/2 flex justify-center items-center" data-aos="fade-left">
-                    <img src="{{ asset('/image/hero.png') }}" alt="Ilustrasi" class="w-full max-w-lg object-contain">
+                    <img src="{{ asset('/image/hero.png') }}" alt="Ilustrasi" class="w-full max-w-sm object-contain">
                 </div>
 
             </div>
@@ -50,7 +50,7 @@
     </section>
     </section>
 
-    <section id="aspirasi" class="py-12 sm:py-20 bg-white">
+    <section id="aspirasi" class="py-12 sm:py-10 bg-white">
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                 <div class="max-w-2xl" data-aos="fade-right">
@@ -79,7 +79,7 @@
                         class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-gray-200 group flex flex-col h-full cursor-pointer"
                         data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
                         <div class="relative h-60 sm:h-64 overflow-hidden">
-                         <img src="{{ \App\Utils\UrlHelper::getImageUrl($aspiration->image) }}"
+                            <img src="{{ \App\Utils\UrlHelper::getImageUrl($aspiration->image) }}"
                                 alt="{{ $aspiration->category_name }}"
                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         </div>
@@ -205,7 +205,7 @@
     </section>
 
     {{-- Dashboard Preview Section --}}
-    <section id="dashboard" class="pt-24 pb-12 sm:pt-32 sm:pb-12 bg-linear-to-b from-[#f8f9fa] to-white relative z-10">
+    <section id="dashboard" class="pt-24 pb-12 sm:pt-10 sm:pb-12 bg-linear-to-b from-[#f8f9fa] to-white relative z-10">
         <div class="container mx-auto px-4 sm:px-6 md:px-20 relative z-10">
             <div class="text-center mb-16 lg:mb-24 max-w-3xl mx-auto" data-aos="fade-up">
                 <h2 class="text-orange-400 font-bold tracking-wider uppercase text-sm mb-3">Preview Aplikasi</h2>
@@ -252,7 +252,7 @@
         </div>
     </section>
 
-    <section id="masalah-solusi" class="pt-24 pb-12 sm:pt-48 sm:pb-24 bg-white relative z-0">
+    <section id="masalah-solusi" class="pt-24 pb-12 sm:pt-28 sm:pb-20 bg-white relative z-0">
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="flex flex-col md:flex-row items-center gap-16">
 

@@ -23,4 +23,10 @@ class DatabaseConst
     const LOCATION = 'locations';
 
     const ASPIRATION = 'aspirations';
+
+    const TOOLSMAN = 'toolsman';
+
+    const COMPLAINT_ASSIGNMENT = 'complaint_assignments';
+
+    const ASPIRATION_STATUS_LOG = 'aspiration_status_logs';
 }

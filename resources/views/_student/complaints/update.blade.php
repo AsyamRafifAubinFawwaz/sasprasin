@@ -147,14 +147,8 @@
                                 Upload File
                             </button>
                             <button type="button" id="btn-camera"
-                                class="tab-btn py-2 px-4 text-sm font-medium rounded-lg border transition-all">
-                                <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
+                                class="tab-btn py-2 px-4 text-sm flex items-center gap-x-2 font-medium rounded-lg border transition-all">
+                                @include('_toolsman._layout.icons.camera')
                                 Ambil Foto
                             </button>
                         </div>
@@ -198,31 +192,31 @@
                         </div>
 
                         <div id="camera-section" class="hidden">
-                            <div class="relative">
-                                <video id="camera-preview" autoplay playsinline class="w-full rounded-lg bg-black"
-                                    style="max-height: 400px;"></video>
-                                <canvas id="camera-canvas" class="hidden"></canvas>
-
-                                <div class="flex justify-center gap-3 mt-3">
-                                    <button type="button" id="btn-capture"
-                                        class="py-2 px-4 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium">
-                                        <svg class="inline-block w-5 h-5 mr-1" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <circle cx="12" cy="12" r="10" stroke-width="2" />
-                                            <circle cx="12" cy="12" r="3" fill="currentColor" />
-                                        </svg>
-                                        Ambil Foto
-                                    </button>
-                                    <button type="button" id="btn-switch-camera"
-                                        class="py-2 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 font-medium">
-                                        <svg class="inline-block w-5 h-5" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                        </svg>
-                                    </button>
+                            <div
+                                class="relative w-full bg-gray-100 dark:bg-neutral-900/50 rounded-2xl overflow-hidden aspect-video shadow-inner border-2 border-dashed border-gray-200 dark:border-neutral-700 flex flex-col items-center justify-center text-center p-6">
+                                <div
+                                    class="size-16 bg-orange-50 dark:bg-orange-900/20 rounded-full flex items-center justify-center mb-3">
+                                    <svg class="size-8 text-orange-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
                                 </div>
+                                <p class="text-sm font-bold text-gray-800 dark:text-neutral-200">Kamera Bawaan Perangkat
+                                </p>
+                                <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-widest text-center">Gunakan
+                                    kamera HP Anda secara langsung</p>
                             </div>
+
+                            <label for="student_update_camera_input"
+                                class="mt-3 w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-bold rounded-xl border border-transparent bg-orange-600 text-white hover:bg-orange-700 transition-all active:scale-95 shadow-lg shadow-orange-500/20 cursor-pointer">
+                                @include('_toolsman._layout.icons.camera')
+                                Buka Kamera
+                            </label>
+                            <input id="student_update_camera_input" type="file" accept="image/*"
+                                capture="environment" class="hidden" />
                         </div>
 
                         <p class="text-xs text-gray-500 mt-2 dark:text-neutral-400">
@@ -320,8 +314,6 @@
             if (!form || form.dataset.scriptLoaded) return;
             form.dataset.scriptLoaded = 'true';
 
-            let cameraStream = null;
-            let currentCamera = 'user';
             const fileInput = document.getElementById('image');
             const dropZone = document.getElementById('drop-zone');
             const dropZoneContent = document.getElementById('drop-zone-content');
@@ -329,8 +321,6 @@
             const previewContainer = document.getElementById('preview-container');
             const uploadSection = document.getElementById('upload-section');
             const cameraSection = document.getElementById('camera-section');
-            const cameraPreview = document.getElementById('camera-preview');
-            const cameraCanvas = document.getElementById('camera-canvas');
             const currentImage = document.getElementById('current-image');
 
             // Remove current image
@@ -338,7 +328,6 @@
             if (btnRemoveCurrent) {
                 btnRemoveCurrent.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    // Seamlessly hide current image without alert
                     currentImage.style.display = 'none';
                 });
             }
@@ -360,110 +349,25 @@
                     btnCamera.classList.remove('active');
                     uploadSection.classList.remove('hidden');
                     cameraSection.classList.add('hidden');
-                    stopCamera();
                 } else {
                     btnCamera.classList.add('active');
                     btnUpload.classList.remove('active');
                     cameraSection.classList.remove('hidden');
                     uploadSection.classList.add('hidden');
-                    startCamera();
                 }
             }
 
-            async function startCamera() {
-                try {
-                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                        throw new Error(
-                            "Browser Anda tidak mendukung akses kamera di konteks ini (Perlu HTTPS atau localhost)"
-                            );
-                    }
-
-                    if (cameraStream) {
-                        stopCamera();
-                    }
-                    cameraStream = await navigator.mediaDevices.getUserMedia({
-                        video: {
-                            facingMode: currentCamera
-                        }
-                    });
-                    cameraPreview.srcObject = cameraStream;
-                } catch (err) {
-                    let errorMessage = 'Tidak dapat mengakses kamera: ' + err.message;
-                    if (!window.isSecureContext) {
-                        errorMessage = `
-                                Browser memblokir kamera karena Anda mengakses melalui jaringan lokal (IP) tanpa HTTPS.<br><br>
-                                <strong>Cara Perbaikan (Testing):</strong><br>
-                                1. Gunakan <strong>localhost</strong> jika di PC.<br>
-                                2. Jika di HP (Chrome), buka:<br>
-                                   <code class="bg-gray-100 dark:bg-neutral-700 p-1 rounded text-xs select-all">chrome://flags/#unsafely-treat-insecure-origin-as-secure</code><br>
-                                   Lalu masukkan IP: <code class="bg-gray-100 dark:bg-neutral-700 p-1 rounded text-xs">http://${location.host}</code>
-                                   <button type="button" onclick="navigator.clipboard.writeText('http://' + location.host); this.innerText='Tersalin!'; setTimeout(()=>this.innerText='Salin', 2000)" class="text-[10px] bg-orange-100 dark:bg-orange-900/30 text-orange-600 px-1 rounded ml-1">Salin</button>
-                                   dan set <strong>Enabled</strong>.
-                            `;
-                    }
-
-                    const errorDiv = document.createElement('div');
-                    errorDiv.id = 'camera-error-modal';
-                    errorDiv.className =
-                        'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm';
-                    errorDiv.innerHTML = `
-                            <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-xl max-w-sm w-full p-6 animate-toast-pop">
-                                <div class="flex items-center gap-3 mb-4 text-red-600">
-                                    <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                                    <h3 class="font-bold text-lg">Akses Kamera Gagal</h3>
-                                </div>
-                                <div class="text-sm text-gray-600 dark:text-neutral-400 mb-6">
-                                    ${errorMessage}
-                                </div>
-                                <button type="button" onclick="document.getElementById('camera-error-modal').remove()" 
-                                    class="w-full py-2.5 bg-orange-600 text-white rounded-xl font-semibold hover:bg-orange-700 transition-colors">
-                                    Dimengerti
-                                </button>
-                            </div>
-                        `;
-                    document.body.appendChild(errorDiv);
-                    switchTab('upload');
-                }
-            }
-
-            function stopCamera() {
-                if (cameraStream) {
-                    cameraStream.getTracks().forEach(track => track.stop());
-                    cameraStream = null;
-                    // Explicitly clear srcObject to release hardware fully
-                    cameraPreview.srcObject = null;
-                }
-            }
-
-            document.getElementById('btn-capture').addEventListener('click', () => {
-                const context = cameraCanvas.getContext('2d');
-                cameraCanvas.width = cameraPreview.videoWidth;
-                cameraCanvas.height = cameraPreview.videoHeight;
-                context.drawImage(cameraPreview, 0, 0);
-
-                cameraCanvas.toBlob(blob => {
-                    const file = new File([blob], 'camera-photo.jpg', {
-                        type: 'image/jpeg'
-                    });
+            // Wire native camera input to main file input + preview
+            const cameraInput = document.getElementById('student_update_camera_input');
+            cameraInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
                     const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
+                    dataTransfer.items.add(e.target.files[0]);
                     fileInput.files = dataTransfer.files;
-
-                    showPreview(URL.createObjectURL(blob));
+                    showPreview(URL.createObjectURL(e.target.files[0]));
                     if (currentImage) currentImage.style.display = 'none';
-                    stopCamera();
                     switchTab('upload');
-                }, 'image/jpeg', 0.95);
-            });
-
-            document.getElementById('btn-switch-camera').addEventListener('click', () => {
-                currentCamera = currentCamera === 'user' ? 'environment' : 'user';
-
-                // Stop current camera and wait a bit before starting new one
-                stopCamera();
-                setTimeout(() => {
-                    startCamera();
-                }, 300);
+                }
             });
 
             dropZone.addEventListener('click', () => fileInput.click());
@@ -514,16 +418,11 @@
             document.getElementById('btn-remove').addEventListener('click', (e) => {
                 e.stopPropagation();
                 fileInput.value = '';
+                cameraInput.value = '';
                 previewContainer.classList.add('hidden');
                 dropZoneContent.classList.remove('hidden');
                 preview.src = '';
-                // If we remove the new preview, we show the current image back (only if it wasn't hidden by btnRemoveCurrent)
-                if (currentImage && currentImage.style.display !== 'none') {
-                    currentImage.style.display = 'block';
-                }
             });
-
-            window.addEventListener('beforeunload', stopCamera);
         })();
     </script>
 @endsection

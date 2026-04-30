@@ -122,7 +122,7 @@
                             class="block text-[10px] font-bold text-gray-400 dark:text-neutral-500 uppercase tracking-wider mb-2">Deskripsi</label>
                         <div
                             class="bg-gray-50/50 dark:bg-neutral-900/30 border border-gray-100 dark:border-neutral-700 rounded-xl p-4">
-                            <p class="text-sm text-gray-600 dark:text-neutral-400 whitespace-pre-wrap leading-relaxed">
+                            <p class="text-sm text-gray-600 dark:text-neutral-400 leading-relaxed">
                                 {{ $data->description }}</p>
                         </div>
                     </div>

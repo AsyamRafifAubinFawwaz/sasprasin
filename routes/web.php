@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ClassroomController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FacilityCategoryController;
 use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\ToolsmansController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TaskCategoryController;
 use App\Http\Controllers\Admin\TaskController;
@@ -12,10 +13,23 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Student\ComplaintController;
+use App\Http\Controllers\Toolsman\AspirationController as ToolsmanAspirationController;
+use App\Http\Controllers\Toolsman\DashboardController as ToolsmanDashboardController;
+use App\Http\Controllers\Toolsman\ProfileController;
+use Illuminate\Support\Benchmark;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('landing.index');
+});
+
+Route::get('test', function () {
+    Benchmark::dd(function (){
+        (string) view('welcome');
+
+    });
+
+
 });
 Route::get('/landing', [LandingController::class, 'index'])->name('landing.index');
 Route::get('/aspirasi', [LandingController::class, 'aspirations'])->name('landing.aspirations');
@@ -74,6 +88,17 @@ Route::middleware(['auth', 'role:1'])->prefix('admin')->name('admin.')->group(fu
         Route::post('/reset-password/{id}', [StudentController::class, 'doResetPassword'])->name('doResetPassword');
     });
 
+    Route::prefix('toolsmans')->name('toolsmans.')->group(function () {
+        Route::get('/', [ToolsmansController::class, 'index'])->name('index');
+        Route::get('/add', [ToolsmansController::class, 'add'])->name('add');
+        Route::post('/create', [ToolsmansController::class, 'doCreate'])->name('do_create');
+        Route::get('/detail/{id}', [ToolsmansController::class, 'detail'])->name('detail');
+        Route::get('/update/{id}', [ToolsmansController::class, 'update'])->name('update');
+        Route::post('/update/{id}', [ToolsmansController::class, 'doUpdate'])->name('do_update');
+        Route::delete('/delete/{id}', [ToolsmansController::class, 'delete'])->name('delete');
+        Route::post('/reset-password/{id}', [ToolsmansController::class, 'doResetPassword'])->name('doResetPassword');
+    });
+
     Route::prefix('locations')->name('locations.')->group(function () {
         Route::get('/', [LocationController::class, 'index'])->name('index');
         Route::post('/create', [LocationController::class, 'doCreate'])->name('do_create');
@@ -97,6 +122,7 @@ Route::middleware(['auth', 'role:1'])->prefix('admin')->name('admin.')->group(fu
         Route::get('/add', [AspirationController::class, 'add'])->name('add');
         Route::post('/create', [AspirationController::class, 'doCreate'])->name('do_create');
         Route::get('/detail/{id}', [AspirationController::class, 'detail'])->name('detail');
+        Route::post('/assign/{id}', [AspirationController::class, 'doAssign'])->name('do_assign');
         Route::post('/update/{id}', [AspirationController::class, 'doUpdate'])->name('do_update');
         Route::delete('/delete/{id}', [AspirationController::class, 'delete'])->name('delete');
     });
@@ -126,5 +152,23 @@ Route::middleware(['auth', 'role:2'])->prefix('student')->name('student.')->grou
         Route::post('/update', [\App\Http\Controllers\Student\ProfileController::class, 'doUpdateProfile'])->name('do_update');
         Route::get('/change-password', [\App\Http\Controllers\Student\ProfileController::class, 'changePassword'])->name('change_password');
         Route::post('/change-password', [\App\Http\Controllers\Student\ProfileController::class, 'doChangePassword'])->name('do_change_password');
+    });
+});
+
+Route::middleware(['auth', 'role:3'])->prefix('toolsman')->name('toolsman.')->group(function () {
+    Route::get('/dashboard', [ToolsmanDashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('aspirations')->name('aspirations.')->group(function () {
+        Route::get('/', [ToolsmanAspirationController::class, 'index'])->name('index');
+        Route::get('/detail/{id}', [ToolsmanAspirationController::class, 'detail'])->name('detail');
+        Route::post('/update/{id}', [ToolsmanAspirationController::class, 'doUpdate'])->name('do_update');
+    });
+
+
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/update', [ProfileController::class, 'updateProfile'])->name('update');
+        Route::post('/update', [ProfileController::class, 'doUpdateProfile'])->name('do_update');
+        Route::get('/change-password', [ProfileController::class, 'changePassword'])->name('change_password');
+        Route::post('/change-password', [ProfileController::class, 'doChangePassword'])->name('do_change_password');
     });
 });

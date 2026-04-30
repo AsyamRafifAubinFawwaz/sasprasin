@@ -30,6 +30,15 @@ $(document).ready(function () {
         window.applySidebarState();
         // Close any open flyouts when toggling sidebar
         $(".hs-accordion").removeClass("flyout-open");
+
+        // Force a window resize event to recalculate charts after sidebar transition
+        // Use an interval to capture the transition progress
+        let count = 0;
+        const interval = setInterval(() => {
+            window.dispatchEvent(new Event("resize"));
+            count++;
+            if (count > 7) clearInterval(interval);
+        }, 50); // Every 50ms for ~350ms
     });
 
     // --- SIDEBAR FLYOUT LOGIC (Mini Mode Click) ---

@@ -13,6 +13,8 @@
                     @include('_admin._layout.icons.sidebar.logo')
                 @elseif(Auth::user()->access_type == UserConst::STUDENT)
                     @include('_admin._layout.icons.sidebar.logo')
+                @elseif(Auth::user()->access_type == UserConst::TOOLSMAN)
+                    @include('_admin._layout.icons.sidebar.logo')
                 @endif
             </a>
             <!-- Sidebar Toggle -->
@@ -41,6 +43,7 @@
                             $dashboardRoute = match (Auth::user()->access_type) {
                                 UserConst::ADMIN => 'admin.dashboard',
                                 UserConst::STUDENT => 'student.dashboard',
+                                UserConst::TOOLSMAN => 'toolsman.dashboard',
                                 default => 'admin.dashboard',
                             };
                         @endphp
@@ -50,6 +53,8 @@
                             @if (Auth::user()->access_type == UserConst::ADMIN)
                                 @include('_admin._layout.icons.sidebar.dashboard')
                             @elseif(Auth::user()->access_type == UserConst::STUDENT)
+                                @include('_admin._layout.icons.sidebar.dashboard')
+                            @elseif(Auth::user()->access_type == UserConst::TOOLSMAN)
                                 @include('_admin._layout.icons.sidebar.dashboard')
                             @endif
                             <span class="sidebar-text">Dashboard</span>
@@ -79,6 +84,15 @@
                                 href="{{ route('admin.students.index') }}">
                                 @include('_admin._layout.icons.sidebar.student')
                                 <span class="sidebar-text">Manajemen Siswa</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a navigate
+                                class="flex items-center gap-x-3.5 py-2.5 px-3 {{ request()->routeIs('admin.toolsmans.*') ? 'bg-orange-100 text-orange-600 dark:bg-neutral-700 dark:text-orange-400' : 'text-gray-800 dark:text-white' }} text-sm rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 font-semibold"
+                                href="{{ route('admin.toolsmans.index') }}">
+                                @include('_admin._layo
+                                ut.icons.sidebar.community')
+                                <span class="sidebar-text">Manajemen Petugas</span>
                             </a>
                         </li>
 
@@ -166,6 +180,25 @@
                         </li>
                     @endif
 
+                    @if (Auth::user()->access_type == UserConst::TOOLSMAN)
+                        <li>
+                            <a navigate
+                                class="flex items-center gap-x-3.5 py-2.5 px-3 {{ request()->routeIs('toolsman.aspirations.*') ? 'bg-orange-100 text-orange-600 dark:bg-neutral-700 dark:text-orange-400' : 'text-gray-800 dark:text-white' }} text-sm rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 font-semibold"
+                                href="{{ route('toolsman.aspirations.index') }}">
+                                <div class="relative">
+                                    @include('_admin._layout.icons.sidebar.task')
+                                    @if (isset($pendingToolsmanAspirationsCount) && $pendingToolsmanAspirationsCount > 0)
+                                        <span
+                                            class="absolute -top-1 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-1 ring-white dark:ring-neutral-800">
+                                            {{ $pendingToolsmanAspirationsCount > 9 ? '9+' : $pendingToolsmanAspirationsCount }}
+                                        </span>
+                                    @endif
+                                </div>
+                                <span class="sidebar-text">Pengaduan Sarana</span>
+                            </a>
+                        </li>
+                    @endif
+
                 </ul>
             </nav>
         </div>
@@ -226,11 +259,13 @@
                             $updateProfileRoute = match (Auth::user()->access_type) {
                                 UserConst::ADMIN => 'admin.profile.update',
                                 UserConst::STUDENT => 'student.profile.update',
+                                UserConst::TOOLSMAN => 'toolsman.profile.update',
                                 default => 'admin.profile.update',
                             };
                             $changePasswordRoute = match (Auth::user()->access_type) {
                                 UserConst::ADMIN => 'admin.profile.change_password',
                                 UserConst::STUDENT => 'student.profile.change_password',
+                                UserConst::TOOLSMAN => 'toolsman.profile.change_password',
                                 default => 'admin.profile.change_password',
                             };
                         @endphp

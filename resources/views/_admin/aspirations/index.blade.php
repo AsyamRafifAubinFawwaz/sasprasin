@@ -382,64 +382,50 @@
 
                 <!-- Mode Kamera -->
                 <div id="mode-camera" class="hidden flex-col items-center justify-center w-full gap-3">
-                    <div class="relative w-full bg-black rounded-lg overflow-hidden aspect-video">
-                        <video id="camera-stream" class="w-full h-full object-cover" autoplay playsinline></video>
-                        <canvas id="camera-canvas" class="hidden"></canvas>
-                        <div id="camera-placeholder"
-                            class="absolute inset-0 flex items-center justify-center text-white/50 bg-neutral-800">
-                            <p class="text-sm">Kamera tidak aktif</p>
+                    <div
+                        class="relative w-full bg-gray-100 dark:bg-neutral-900/50 rounded-2xl overflow-hidden aspect-video shadow-inner border-2 border-dashed border-gray-200 dark:border-neutral-700 flex flex-col items-center justify-center text-center p-6">
+                        <div
+                            class="size-16 bg-orange-50 dark:bg-orange-900/20 rounded-full flex items-center justify-center mb-3">
+                            <svg class="size-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
                         </div>
+                        <p class="text-sm font-bold text-gray-800 dark:text-neutral-200">Kamera Bawaan Perangkat</p>
+                        <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-widest text-center">Gunakan kamera HP
+                            Anda secara langsung</p>
                     </div>
 
-                    <div class="flex w-full gap-2">
-                        <button type="button" onclick="startCamera()" id="btn-start-camera"
-                            class="flex-1 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path
-                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                                <circle cx="12" cy="13" r="4" />
-                            </svg>
-                            Mulai Kamera
-                        </button>
-                        <button type="button" onclick="takePhoto()" id="btn-take-photo"
-                            class="hidden flex-1 py-2 px-3 justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="12" y1="8" x2="12" y2="16" />
-                                <line x1="8" y1="12" x2="16" y2="12" />
-                            </svg>
-                            Ambil Foto
-                        </button>
-                        <button type="button" onclick="switchCamera()" id="btn-switch-camera"
-                            class="hidden py-2 px-3 justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-gray-600 text-white hover:bg-gray-700 disabled:opacity-50 disabled:pointer-events-none transition-all"
-                            title="Ganti Kamera">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
-                        </button>
-                    </div>
+                    <label for="admin_camera_input"
+                        class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-bold rounded-xl border border-transparent bg-orange-600 text-white hover:bg-orange-700 transition-all active:scale-95 shadow-lg shadow-orange-500/20 cursor-pointer">
+                        @include('_toolsman._layout.icons.camera')
+                        Buka Kamera
+                    </label>
+                    <input id="admin_camera_input" name="image" type="file" accept="image/*" capture="environment"
+                        class="hidden" onchange="previewImage(this)" />
                 </div>
 
                 <!-- Preview Area -->
-                <div id="image-preview-container" class="hidden mt-4 relative group w-full">
-                    <p class="text-xs font-semibold text-gray-500 mb-2 dark:text-neutral-400">Preview:</p>
-                    <img id="image-preview" src="#" alt="Preview"
-                        class="max-h-64 rounded-lg mx-auto shadow-md object-contain border border-gray-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800">
-                    <button type="button" onclick="removeImage()"
-                        class="absolute top-8 right-2 bg-red-500/80 hover:bg-red-600 text-white rounded-full p-1.5 backdrop-blur-sm transition-all shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </button>
+                <div id="image-preview-container" class="hidden mt-2 relative group w-full">
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Preview Foto:</p>
+                    <div
+                        class="relative rounded-2xl overflow-hidden border border-gray-100 dark:border-neutral-700 bg-black/5 shadow-inner group">
+                        <img id="image-preview" src="#" alt="Preview"
+                            class="w-full max-h-64 object-contain transition-all duration-300">
+                        <div
+                            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                            <p class="text-white text-[10px] font-bold uppercase tracking-widest">Ganti Foto?</p>
+                        </div>
+                        <button type="button" onclick="removeImage()"
+                            class="absolute top-3 right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 shadow-xl transition-all active:scale-90 z-10">
+                            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -448,7 +434,7 @@
                     Feedback
                 </label>
                 <textarea name="feedback" id="modal_feedback" rows="4"
-                    class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400"
+                    class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400"
                     placeholder="Berikan feedback untuk pengaduan ini..."></textarea>
             </div>
         </div>
@@ -669,14 +655,9 @@
                 sectionUpload.classList.remove('hidden');
             } else {
                 sectionUpload.classList.add('hidden');
-                stopCamera();
                 removeImage();
             }
         }
-
-        // Camera Variables
-        let stream = null;
-        let currentCamera = 'environment';
 
         function switchUploadMode(mode) {
             const btnFile = document.getElementById('btn-mode-file');
@@ -717,127 +698,6 @@
             }
         }
 
-        async function startCamera() {
-            const video = document.getElementById('camera-stream');
-            const placeholder = document.getElementById('camera-placeholder');
-            const btnStart = document.getElementById('btn-start-camera');
-            const btnTake = document.getElementById('btn-take-photo');
-            const btnSwitch = document.getElementById('btn-switch-camera');
-
-            try {
-                if (stream) {
-                    stopCamera();
-                }
-
-                stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: currentCamera,
-                        width: {
-                            ideal: 1280
-                        },
-                        height: {
-                            ideal: 720
-                        }
-                    }
-                });
-
-                video.srcObject = stream;
-
-                video.onloadedmetadata = () => {
-                    placeholder.classList.add('hidden');
-                    btnStart.classList.add('hidden');
-                    btnTake.classList.remove('hidden');
-                    btnSwitch.classList.remove('hidden');
-                };
-            } catch (err) {
-                console.error("Gagal mengakses kamera:", err);
-                let msg = "Tidak dapat mengakses kamera. Pastikan izin kamera diberikan.";
-                if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-                    msg += " (Fitur kamera butuh HTTPS)";
-                }
-
-                if (window.Toastify) {
-                    Toastify({
-                        text: msg,
-                        duration: 4000,
-                        style: {
-                            background: "#EF4444"
-                        }, // Red color
-                        gravity: "top",
-                        position: "right",
-                    }).showToast();
-                } else {
-                    alert(msg);
-                }
-            }
-        }
-
-        function stopCamera() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-            }
-
-            const video = document.getElementById('camera-stream');
-            if (video) video.srcObject = null;
-
-            document.getElementById('camera-placeholder').classList.remove('hidden');
-            document.getElementById('btn-start-camera').classList.remove('hidden');
-            document.getElementById('btn-take-photo').classList.add('hidden');
-            document.getElementById('btn-switch-camera').classList.add('hidden');
-        }
-
-        function switchCamera() {
-            currentCamera = currentCamera === 'user' ? 'environment' : 'user';
-            startCamera();
-        }
-
-        function takePhoto() {
-            const video = document.getElementById('camera-stream');
-            const canvas = document.getElementById('camera-canvas');
-
-            if (!stream) return;
-
-            // Set ukuran canvas sama dengan video asli
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-
-            const context = canvas.getContext('2d');
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Konversi ke file Blob
-            canvas.toBlob((blob) => {
-                const file = new File([blob], "camera_capture_" + Date.now() + ".jpg", {
-                    type: "image/jpeg"
-                });
-
-                // Masukkan ke input file element
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-
-                const fileInput = document.getElementById('modal_image');
-                fileInput.files = dataTransfer.files;
-
-                // Trigger preview
-                previewImage(fileInput);
-
-                // Matikan kamera dan kembali ke preview
-                stopCamera();
-                // switchUploadMode('file'); // Optional: kembali ke mode file atau tetap
-
-                if (window.Toastify && window.getToastNode) {
-                    Toastify({
-                        node: window.getToastNode("Foto berhasil diambil!"),
-                        duration: 3000,
-                        className: "p-0",
-                        gravity: "top",
-                        position: "right",
-                        stopOnFocus: true,
-                    }).showToast();
-                }
-            }, 'image/jpeg', 0.85); // Quality 0.85
-        }
-
         function previewImage(input) {
             const container = document.getElementById('image-preview-container');
             const preview = document.getElementById('image-preview');
@@ -857,26 +717,21 @@
         }
 
         function removeImage() {
-            const input = document.getElementById('modal_image');
+            const fileInput = document.getElementById('modal_image');
+            const cameraInput = document.getElementById('admin_camera_input');
             const container = document.getElementById('image-preview-container');
             const preview = document.getElementById('image-preview');
 
-            input.value = '';
+            if (fileInput) fileInput.value = '';
+            if (cameraInput) cameraInput.value = '';
             preview.src = '#';
             container.classList.add('hidden');
-
-            // Jika sedang mode kamera tapi sudah ada foto, saat dihapus biarkan kamera mati dulu (harus start lagi)
-            // Atau biarkan user menekan start lagi
-
-            // Optional: reset ke mode file jika preferensi UX begitu
-            // switchUploadMode('file');
         }
 
-        // Clean up kamera saat modal ditutup
+        // Clean up saat modal ditutup
         const modalElement = document.getElementById('modal-update');
         if (modalElement) {
             modalElement.addEventListener('close.hs.overlay', function() {
-                stopCamera();
                 removeImage();
             });
         }
