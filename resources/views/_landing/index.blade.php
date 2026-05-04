@@ -48,18 +48,17 @@
             </div>
         </div>
     </section>
-    </section>
 
     <section id="aspirasi" class="py-12 sm:py-10 bg-white">
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-                <div class="max-w-2xl" data-aos="fade-right">
+                <div class="max-w-2xl" data-aos="fade-up">
                     <h2 class="text-[#ff7d26] font-bold tracking-wider uppercase text-sm mb-3">Aspirasi Publik</h2>
                     <h2 class="text-3xl md:text-4xl font-extrabold text-[#1a202c] leading-tight">
                         Pantau Kondisi Fasilitas <br> Sekolah Secara Real-Time
                     </h2>
                 </div>
-                <div data-aos="fade-left">
+                <div data-aos="fade-up">
                     <a href="{{ route('landing.aspirations') }}"
                         class="inline-flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-all group">
                         Lihat Semua Laporan
@@ -205,7 +204,7 @@
     </section>
 
     {{-- Dashboard Preview Section --}}
-    <section id="dashboard" class="pt-24 pb-12 sm:pt-10 sm:pb-12 bg-linear-to-b from-[#f8f9fa] to-white relative z-10">
+    <section id="dashboard" class="pt-24 pb-12 sm:pt-10 sm:pb-12 bg-linear-to-b from-[#f8f9fa] to-white relative z-10 overflow-hidden">
         <div class="container mx-auto px-4 sm:px-6 md:px-20 relative z-10">
             <div class="text-center mb-16 lg:mb-24 max-w-3xl mx-auto" data-aos="fade-up">
                 <h2 class="text-orange-400 font-bold tracking-wider uppercase text-sm mb-3">Preview Aplikasi</h2>
@@ -252,11 +251,11 @@
         </div>
     </section>
 
-    <section id="masalah-solusi" class="pt-24 pb-12 sm:pt-28 sm:pb-20 bg-white relative z-0">
+    <section id="masalah-solusi" class="pt-24 pb-12 sm:pt-28 sm:pb-20 bg-white relative z-0 overflow-hidden">
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="flex flex-col md:flex-row items-center gap-16">
 
-                <div class="w-full md:w-1/2" data-aos="fade-right">
+                <div class="w-full md:w-1/2" data-aos="fade-up">
                     <div class="relative">
                         <div
                             class="absolute -top-4 -left-4 w-72 h-72 bg-orange-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob">
@@ -265,7 +264,7 @@
                     </div>
                 </div>
 
-                <div class="w-full md:w-1/2 space-y-8" data-aos="fade-left">
+                <div class="w-full md:w-1/2 space-y-8" data-aos="fade-up">
                     <div class="space-y-4">
                         <h2 class="text-orange-400 font-bold tracking-wider uppercase text-sm">Masalah & Solusi</h2>
                         <h2 class="text-4xl font-extrabold text-[#1a202c] leading-tight">
@@ -326,7 +325,7 @@
         </div>
     </section>
 
-    <section id="cara-kerja" class="py-12 sm:py-24 bg-[#f8f9fa]">
+    <section id="cara-kerja" class="py-12 sm:py-24 bg-[#f8f9fa] overflow-hidden">
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="text-center mb-16 space-y-4" data-aos="fade-up">
                 <h2 class="text-orange-400 font-bold tracking-wider uppercase text-sm">Alur Proses</h2>
@@ -440,7 +439,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
                 <div class="bg-gradient-to-br from-orange-50 to-white p-10 rounded-3xl shadow-lg border-2 border-orange-100 hover:shadow-xl transition-all"
-                    data-aos="fade-right">
+                    data-aos="fade-up">
                     <div class="flex items-center gap-4 mb-8">
                         <div class="w-16 h-16 bg-[#ff7d26] rounded-2xl flex items-center text-white justify-center">
                             @include('_landing._layout.icons.student')
@@ -502,7 +501,7 @@
                 </div>
 
                 <div class="bg-gradient-to-br from-gray-50 to-white p-10 rounded-3xl shadow-lg border-2 border-gray-200 hover:shadow-xl transition-all"
-                    data-aos="fade-left">
+                    data-aos="fade-up">
                     <div class="flex items-center gap-4 mb-8">
                         <div class="w-16 h-16 bg-[#1a202c] rounded-2xl flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none"

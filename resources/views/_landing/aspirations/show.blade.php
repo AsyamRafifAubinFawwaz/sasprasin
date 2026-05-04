@@ -21,7 +21,7 @@
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div class="lg:col-span-7 space-y-8">
-                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100" data-aos="fade-right">
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100" data-aos="fade-up">
                         <div class="flex items-start justify-between gap-4 mb-6">
                             <div>
                                 <span
@@ -127,7 +127,7 @@
 
                 <div class="lg:col-span-5">
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 sticky top-24"
-                        data-aos="fade-left">
+                        data-aos="fade-up">
                         <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-6">Timeline Status</h3>
 
                         @if (count($logs) > 0)

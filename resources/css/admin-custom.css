@@ -48,6 +48,14 @@ body {
     -ms-overflow-style: none;
 }
 
+/* Prevent horizontal scroll on real mobile browsers.
+   overflow-x: clip (unlike hidden) also clips position:fixed elements
+   that extend beyond the viewport — this is what causes the bug on
+   real phones while laptop responsive mode looks fine. */
+html {
+    overflow-x: clip;
+}
+
 html::-webkit-scrollbar,
 *::-webkit-scrollbar {
     display: none;
