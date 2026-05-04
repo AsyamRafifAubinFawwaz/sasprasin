@@ -8,7 +8,7 @@
         <div class="container mx-auto px-4 sm:px-6 md:px-20">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10">
 
-                <div class="w-full md:w-1/2 space-y-4 sm:space-y-6" data-aos="fade-right">
+                <div class="w-full md:w-1/2 space-y-4 sm:space-y-6" data-aos="fade-up">
                     {{-- <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
                     <span class="text-gray-700 text-sm font-medium">🌐 We host more than 120,000 websites</span>
                 </div> --}}
@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="w-full md:w-1/2 flex justify-center items-center" data-aos="fade-left">
+                <div class="w-full md:w-1/2 flex justify-center items-center" data-aos="fade-up">
                     <img src="{{ asset('/image/hero.png') }}" alt="Ilustrasi" class="w-full max-w-sm object-contain">
                 </div>
 

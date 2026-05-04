@@ -34,7 +34,7 @@
 
 </head>
 
-<body>
+<body class="overflow-x-hidden">
     @include('_landing._layout.navbar')
 
     <!-- Content -->

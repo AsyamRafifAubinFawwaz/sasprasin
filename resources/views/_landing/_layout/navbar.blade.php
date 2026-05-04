@@ -59,7 +59,7 @@
 <!-- NAV MOBILE -->
 <div id="nav-mobile"
     class="fixed bg-white/70 backdrop-blur-sm shadow-md z-99 w-full
-    flex flex-col mt-20 xl:hidden transition duration-500 translate-x-[2000px]">
+    flex flex-col mt-20 xl:hidden transition duration-500 translate-x-full">
 
     <li class="list-none text-center py-3"><a href="{{ $isHomepage ? '#beranda' : url('/#beranda') }}"
             class="nav-link">Beranda</a></li>
@@ -87,7 +87,7 @@
 
     hamburger.addEventListener("click", () => {
         hamburger.classList.toggle("active");
-        navMobile.classList.toggle("translate-x-[2000px]");
+        navMobile.classList.toggle("translate-x-full");
         navMobile.classList.toggle("translate-x-0");
     });
 
@@ -104,9 +104,9 @@
 
                 if (targetSection) {
                     // Close mobile menu if open
-                    if (!navMobile.classList.contains('translate-x-[2000px]')) {
+                    if (!navMobile.classList.contains('translate-x-full')) {
                         hamburger.classList.remove('active');
-                        navMobile.classList.add('translate-x-[2000px]');
+                        navMobile.classList.add('translate-x-full');
                         navMobile.classList.remove('translate-x-0');
                     }
 
