@@ -90,8 +90,7 @@
                             <a navigate
                                 class="flex items-center gap-x-3.5 py-2.5 px-3 {{ request()->routeIs('admin.toolsmans.*') ? 'bg-orange-100 text-orange-600 dark:bg-neutral-700 dark:text-orange-400' : 'text-gray-800 dark:text-white' }} text-sm rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 font-semibold"
                                 href="{{ route('admin.toolsmans.index') }}">
-                                @include('_admin._layo
-                                ut.icons.sidebar.community')
+                                @include('_admin._layout.icons.sidebar.community')
                                 <span class="sidebar-text">Manajemen Petugas</span>
                             </a>
                         </li>
