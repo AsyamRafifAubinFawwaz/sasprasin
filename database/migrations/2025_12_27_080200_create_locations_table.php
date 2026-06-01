@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-      Schema::create('complaint_assignments', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('complaint_id')->constrained('complaints')->onDelete('cascade');
-            $table->foreignId('assigned_to')->constrained('users');
-            $table->foreignId('assigned_by')->constrained('users');
-
-            $table->timestamp('assigned_at')->nullable();
+            $table->string('name', 150);
+            $table->integer('created_by')->default(0);
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
-
     }
 
     /**
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('complaint_assignments');
+        Schema::dropIfExists('locations');
     }
 };
