@@ -1,45 +1,54 @@
-FROM php:8.3-cli
+# ==============================================================================
+# STAGE 1: Kompilasi Aset Frontend (Bun)
+# ==============================================================================
+FROM --platform=linux/amd64 oven/bun:1.1-slim AS frontend-builder
+WORKDIR /build
 
-# 1. Set working dir
+COPY package.json bun.lockb* ./
+RUN bun install --frozen-lockfile
+
+COPY . .
+RUN bun run build
+
+# ==============================================================================
+# STAGE 2: Runtime Aplikasi (PHP CLI)
+# ==============================================================================
+FROM --platform=linux/amd64 php:8.3-cli AS runner
 WORKDIR /app
 
-COPY --chown=www-data:www-data . /app
-
-# 2. Install OS libs, build tools & PHP extensions in satu layer
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    libzip4 libpng16-16 libjpeg62-turbo libfreetype6 \
-    libzip-dev libpng-dev libjpeg-dev libfreetype6-dev \
-    build-essential nano git unzip \
+# 1. Install dependensi OS dan ekstensi PHP yang dibutuhkan Laravel & Redis
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libzip-dev libpng-dev libjpeg-dev libfreetype6-dev unzip git \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) zip gd pcntl opcache pdo pdo_mysql \
-    && pecl install redis \
-    && docker-php-ext-enable redis \
-    # hapus build deps
-    && apt-get purge -y --auto-remove build-essential libzip-dev libpng-dev libjpeg-dev libfreetype6-dev \
+    && docker-php-ext-install zip gd pdo pdo_mysql \
+    && pecl install redis && docker-php-ext-enable redis \
+    && apt-get purge -y --auto-remove libzip-dev libpng-dev libjpeg-dev libfreetype6-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# 3. Copy konfigurasi PHP kustom
-COPY ./deploy/php.ini /usr/local/etc/php/conf.d/99-custom.ini
+# 2. Ambil Composer dari image resmi
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 4. Copy hanya file composer untuk memanfaatkan cache
-# COPY ./composer.json ./composer.lock /app/
-
-# 5. Install PHP dependencies lewat Composer (layer terpisah)
-COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
-RUN composer install --optimize-autoloader --no-dev --prefer-dist \
+# 3. Copy file composer untuk caching layer
+COPY composer.json composer.lock ./
+RUN composer install --optimize-autoloader --no-dev --prefer-dist --no-scripts \
     && rm -rf ~/.composer/cache
 
-# 6. Copy seluruh kode aplikasi
-# COPY --chown=www-data:www-data . /app
+# 4. Copy seluruh kode aplikasi Laravel ke dalam container
+COPY --chown=www-data:www-data . /app
 
-# 7. Artisan tasks & Octane
-RUN php artisan storage:link \
-    && php artisan optimize \
-    && php artisan octane:install --server=frankenphp
+# 5. Copy hasil kompilasi aset (Vite) dari STAGE 1
+COPY --from=frontend-builder --chown=www-data:www-data /build/public/build ./public/build
 
-# 8. Set permissions, expose port & start Octane
-RUN chown -R www-data:www-data storage bootstrap/cache
+# 6. Jalankan optimasi Laravel dengan key dummy agar tidak error saat build
+RUN APP_ENV=local APP_KEY=base64:dGhpcy1pcy1hLWR1bW15LWtleS1mb3RetWlkaW5nLW9ubHk= \
+    php artisan storage:link \
+    && php artisan optimize
 
+# 7. Set permission untuk folder storage dan cache
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
+
+# Buka port 8000 sesuai instruksi
 EXPOSE 8000
-CMD ["php", "artisan", "octane:start", "--workers=14", "--server=frankenphp", "--host=0.0.0.0", "--port=8000"]
+
+# 8. Jalankan aplikasi menggunakan php artisan serve
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
